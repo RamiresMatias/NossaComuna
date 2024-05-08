@@ -4,9 +4,9 @@ import path from 'path'
 export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: [
-    '@nuxtjs/tailwindcss',
-    'nuxt-primevue',
-    '@nuxtjs/google-fonts',
+    '@nuxtjs/tailwindcss', 
+    'nuxt-primevue', 
+    '@nuxtjs/google-fonts', 
     // '@nuxtjs/supabase'
   ],
   css: ['primeicons/primeicons.css'],
@@ -24,5 +24,10 @@ export default defineNuxtConfig({
     families: {
       Inter: [300, 500, 800],
     }
-  }
+  },
+  vite: {
+    optimizeDeps: {
+      include: ["@editorjs/editorjs"],
+    },
+  },
 })

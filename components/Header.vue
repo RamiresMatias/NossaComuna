@@ -12,6 +12,7 @@
             text
             icon-pos="right"
             icon="pi pi-plus"
+            @click="() => emit('post-create')"
           />
           <Button 
             label="Login"
@@ -30,5 +31,6 @@
 
 const emit = defineEmits<{
   (e: 'authenticate'): void
+  (e: 'post-create'): void
 }>()
 </script>

@@ -15,6 +15,7 @@ export interface Profile {
 
 export interface Post {
   id: string
+  code: string
   description: string
   title: string
   createdAt: Date
