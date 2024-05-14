@@ -2,7 +2,7 @@
   <div class="w-full h-full flex flex-col">
     <Content>
       <template #header>
-        <Header @authenticate="handleAuth" />
+        <Header @authenticate="handleAuth" @navigate-to-post-create="handlePostCreate" />
       </template>
       <template #content>
         <Hero @navigate-to-posts="navigaToPosts" />
@@ -24,4 +24,6 @@ const handleAuth = () => {
 const navigaToPosts = () => {
   router.push('/posts')
 }
+
+const handlePostCreate = () => router.push('/posts/create')
 </script>

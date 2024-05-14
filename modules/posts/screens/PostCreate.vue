@@ -1,44 +1,110 @@
 <template>
-  <div class="w-full h-full max-w-screen-md mx-auto">
-    <div class="w-full h-full bg-white p-5 flex flex-col gap-6 rounded-md">
-      <div>
-        <Button 
-          label="Add imagem de capa" 
-          severity="secondary"
-          icon="pi pi-plus"
-          icon-pos="right"
-          outlined
-          size="small"
+  <div class="w-full h-full max-w-screen-md mx-auto flex flex-col">
+    <div v-if="!preview" class="card-post">
+      <div class="md:px-6 mb-4">
+        <FileUpload 
+          v-if="!file"
+          mode="basic" 
+          name="demo[]" 
+          url="/api/upload" 
+          accept="image/png, image/jpeg" 
+          :maxFileSize="2e+6" 
+          @upload="onUpload" 
+          :auto="true"
+          chooseLabel="Add Imagem de capa"
         />
+        <div v-else class="flex items-center w-full gap-10">
+          <img :src="file?.objectURL" alt="Imagem de capa do post" class="rounded-md w-24 h-24" />
+          <div>
+            <Button 
+              label="Remover"
+              icon="pi pi-trash"
+              severity="danger"
+              icon-pos="right"
+              outlined
+              @click="removeFile"
+            />
+          </div>
+        </div>
       </div>
-      <div class="w-full h-full flex flex-col gap-6">
+      <div class="w-full flex flex-col gap-6">
         <textarea 
+          v-model="form.title"
           ref="titleRef"
           id="title-post"
           type="text" 
-          class="w-full font-bold text-xl md:text-5xl placeholder:text-gray-700 p-2 border-none outline-none rounded-md
-          resize-none overflow-hidden" 
+          class="w-full font-bold text-xl md:text-3xl placeholder:text-gray-300 py-2 md:px-6 border-none outline-none rounded-md"
           placeholder="Titulo do post aqui"
-          :style="{'height': `${heightTextarea}px`}"
           @input="handleTitle"
         />
+        <div class="w-full bg-gray-100 h-0.5 rounded-md"></div>
+        <Editor 
+          v-model="form.description"
+          placeholder="Descrição do post aqui"
+        />
       </div>
+    </div>
+    <div v-else class="card-post readonly">
+      <img v-if="file?.objectURL" :src="file?.objectURL" alt="Imagem de capa do post" class="w-full h-[300px] object-cover" />
+      <div class="w-full font-bold text-xl md:text-3xl placeholder:text-gray-300 pt-8 px-2 md:px-14 border-none outline-none rounded-md">
+        {{ form.title }}
+      </div>
+      <Editor 
+        v-model="form.description"
+        readonly
+        class="p-2 md:p-0"
+      />
+    </div>
+    <div class="flex gap-4 w-full justify-between">
+      <Button 
+        label="Salvar" 
+      />
+      <Button 
+        :label="preview ? 'Voltar' : 'Pré-visualizar'" 
+        outlined
+        @click="preview = !preview"
+      />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import type { OutputData } from '@editorjs/editorjs'
+import type { FileUploadUploadEvent } from 'primevue/fileupload'
+
+interface UploadType {
+  objectURL: string
+}
+
 const titleRef = ref<HTMLTextAreaElement>()
 
 const form = reactive<{
-  description: string
+  description: OutputData
+  title: string
 }>({
-  description: ''
+  title: '',
+  description: {
+    blocks: [],
+    time: 0,
+    version: ''
+  }
 })
 
-const limitLines = 80
+const file = ref<File & UploadType | null>()
+const preview = ref(false)
 
-const heightTextarea = computed(() => titleRef.value ? Math.min(titleRef.value.scrollHeight, limitLines) : 0)
+const removeFile = () => {
+  file.value = null
+}
+
+// const limitLines = 80
+
+// const heightTextarea = computed(() => titleRef.value ? Math.min(titleRef.value.scrollHeight, limitLines) : 20)
+
+const onUpload = (event: FileUploadUploadEvent) => {
+  const fileFm = Array.isArray(event.files) ? event.files[0] : event.files
+  file.value = {...fileFm, objectURL: (fileFm as any).objectURL}
+}
 
 const handleTitle = () => {
   // if (!titleRef.value) return
@@ -50,3 +116,17 @@ const handleTitle = () => {
   // }
 }
 </script>
+
+<style scoped lang="scss">
+
+
+.card-post {
+  @apply w-full h-full bg-white p-8 flex flex-col gap-6 rounded-md mb-4 overflow-y-auto box-border;
+
+  &.readonly {
+    @apply gap-0 p-0;
+  }
+
+  height: calc(100vh - 180px);
+}
+</style>

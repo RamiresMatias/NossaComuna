@@ -1,5 +1,5 @@
 <template>
-  <section class="w-full h-full flex flex-col items-center justify-center">
+  <section class="w-full h-full flex flex-col items-center justify-center bg-[--body-color]">
     <h1 class="w-full font-[Inter] text-balance mb-4 text-3xl lg:text-5xl grid place-items-center font-extrabold text-black h-full">
       Bem vindo a nossa Comunidade
     </h1>

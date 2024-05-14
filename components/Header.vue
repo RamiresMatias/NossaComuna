@@ -1,7 +1,7 @@
 <template>
   <header class="w-full shadow">
     <nav class="bg-white px-4 lg:px-6 py-2.5">
-      <div class="flex justify-center md:justify-between items-center mx-auto max-w-screen-xl">
+      <div class="flex justify-center md:justify-between items-center mx-auto max-w-screen-lg">
         <NuxtLink to="/">
           <Logo />
         </NuxtLink>
@@ -12,7 +12,7 @@
             text
             icon-pos="right"
             icon="pi pi-plus"
-            @click="() => emit('post-create')"
+            @click="() => emit('navigate-to-post-create')"
           />
           <Button 
             label="Login"
@@ -31,6 +31,6 @@
 
 const emit = defineEmits<{
   (e: 'authenticate'): void
-  (e: 'post-create'): void
+  (e: 'navigate-to-post-create'): void
 }>()
 </script>

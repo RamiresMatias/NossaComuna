@@ -2,7 +2,7 @@
   <div class="w-full h-full flex flex-col items-center">
     <MainContent>
       <template #header>
-        <Header @authenticate="handleAuth" @post-create="handlePostCreate" />
+        <Header @authenticate="handleAuth" @navigate-to-post-create="handlePostCreate" />
       </template>
       <template #content>
         <slot></slot>

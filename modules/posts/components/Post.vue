@@ -1,7 +1,7 @@
 <template>
-  <NuxtLink :to=" profile ? `/${profile.username}/${code}` : ''">
-    <div 
-      class="w-full p-4 bg-white flex flex-col gap-3 border-b border-solid border-b-gray-200 last:border-b-0 cursor-pointer"
+  <NuxtLink :to=" profile ? `/${profile.username}/${code}` : ''" class="w-full mx-auto">
+    <article 
+      class="w-full p-4 bg-white flex flex-col gap-3 border-b border-solid border-b-gray-200 last:border-b-0 cursor-pointer rounded-md"
     >
       <div class="flex w-full justify-between items-center gap-4">
         <div class="w-12 h-12 rounded-full overflow-hidden">
@@ -31,7 +31,7 @@
           </template>
         </Stat>
       </div>
-    </div>
+    </article>
   </NuxtLink>
 </template>
 
