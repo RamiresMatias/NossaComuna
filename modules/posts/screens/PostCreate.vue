@@ -28,15 +28,7 @@
         </div>
       </div>
       <div class="w-full flex flex-col gap-6">
-        <textarea 
-          v-model="form.title"
-          ref="titleRef"
-          id="title-post"
-          type="text" 
-          class="w-full font-bold text-xl md:text-3xl placeholder:text-gray-300 py-2 md:px-6 border-none outline-none rounded-md"
-          placeholder="Titulo do post aqui"
-          @input="handleTitle"
-        />
+        <Textarea v-model="form.title" autoResize rows="2" cols="30" class="title-post" placeholder="Insira o titulo aqui" />
         <div class="w-full bg-gray-100 h-0.5 rounded-md"></div>
         <Editor 
           v-model="form.description"
@@ -46,7 +38,7 @@
     </div>
     <div v-else class="card-post readonly">
       <img v-if="file?.objectURL" :src="file?.objectURL" alt="Imagem de capa do post" class="w-full h-[300px] object-cover" />
-      <div class="w-full font-bold text-xl md:text-3xl placeholder:text-gray-300 pt-8 px-2 md:px-14 border-none outline-none rounded-md">
+      <div class="w-full font-bold text-xl md:text-3xl placeholder:text-gray-300 pt-8 px-2 md:px-14 border-none outline-none rounded-md text-pretty break-words">
         {{ form.title }}
       </div>
       <Editor 
@@ -121,10 +113,15 @@ const handleTitle = () => {
 
 
 .card-post {
+
+  .title-post {
+    @apply w-full font-bold text-xl md:text-3xl placeholder:text-gray-300 py-2 md:px-6 border-none outline-none rounded-md;
+  }
+
   @apply w-full h-full bg-white p-8 flex flex-col gap-6 rounded-md mb-4 overflow-y-auto box-border;
 
   &.readonly {
-    @apply gap-0 p-0;
+    @apply gap-0 p-0 overflow-hidden;
   }
 
   height: calc(100vh - 180px);

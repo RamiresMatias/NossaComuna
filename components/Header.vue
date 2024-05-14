@@ -1,7 +1,7 @@
 <template>
   <header class="w-full shadow">
     <nav class="bg-white px-4 lg:px-6 py-2.5">
-      <div class="flex justify-center md:justify-between items-center mx-auto max-w-screen-lg">
+      <div class="flex justify-between items-center mx-auto max-w-screen-lg">
         <NuxtLink to="/">
           <Logo />
         </NuxtLink>
@@ -22,12 +22,28 @@
             @click="() => emit('authenticate')"
           />
         </div>
+        <Button 
+          icon-pos="right"
+          icon="pi pi-bars"
+          outlined
+          text
+          @click="menu = !menu"
+          class="static md:hidden"
+        />
+        <Sidebar v-model:visible="menu" header="Menu" position="right">
+          <div class="flex flex-col w-full gap-4 items-start justify-center">
+            <Button label="Novo post" link />
+            <Button label="Login" link />
+          </div>
+        </Sidebar>
       </div>
     </nav>
   </header>
 </template>
 
 <script setup lang="ts">
+
+const menu = ref(false)
 
 const emit = defineEmits<{
   (e: 'authenticate'): void
