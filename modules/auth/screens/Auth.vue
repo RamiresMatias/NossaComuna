@@ -1,6 +1,6 @@
 <template>
   <div class="w-full flex flex-col items-center max-w-screen-sm mx-auto p-4">
-    <NuxtLink to="/" class="mb-10 hover:bg-gray-100 p-4 transition-all rounded-md">
+    <NuxtLink to="/posts" class="mb-10 hover:bg-gray-100 p-4 transition-all rounded-md">
       <Logo size="xl" />
     </NuxtLink>
     <FormLogin v-model="form" />

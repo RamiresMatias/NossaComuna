@@ -18,7 +18,7 @@ import Content from '@/modules/landing-page/components/Content.vue'
 const router = useRouter()
 
 const handleAuth = () => {
-  console.log('handleAuth');
+  router.push('/auth')
 }
 
 const navigaToPosts = () => {

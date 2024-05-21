@@ -16,7 +16,7 @@
 const router = useRouter()
 
 const handleAuth = () => {
-  console.log('handleAuth');
+  router.push('/auth')
 }
 
 const handlePostCreate = () => router.push('/posts/create')

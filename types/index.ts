@@ -1,7 +1,22 @@
+import type { OutputData } from "@editorjs/editorjs"
+
 export interface Tag {
   id: string
   name: string
 }
+
+// export interface EditorData {
+//   blocks: {
+//     data: {
+//       text: string
+//       level: String
+//     }
+//     id: string
+//     type: string
+//   }[]
+//   time: number
+//   version: string
+// }
 
 export interface Profile {
   id: string
@@ -16,7 +31,7 @@ export interface Profile {
 export interface Post {
   id: string
   code: string
-  description: string
+  description: OutputData
   title: string
   createdAt: Date
   profile: Partial<Profile>

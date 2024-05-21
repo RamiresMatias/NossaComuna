@@ -11,7 +11,7 @@
       <Button label="Criar" class="w-full mt-4" @click="onSubmit" />
       <Divider />
       <div class="w-full text-center">
-        já possui uma conta? <NuxtLink to="/auth" class="hover:text-blue-400">Logar</NuxtLink>
+        Já possui uma conta? <NuxtLink to="/auth" class="hover:text-blue-400">Logar</NuxtLink>
       </div>
     </div>
   </div>
