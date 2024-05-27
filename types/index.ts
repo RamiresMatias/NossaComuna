@@ -2,7 +2,7 @@ import type { OutputData } from "@editorjs/editorjs"
 
 export interface Tag {
   id: string
-  name: string
+  description: string
 }
 
 // export interface EditorData {

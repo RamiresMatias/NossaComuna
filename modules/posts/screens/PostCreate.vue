@@ -14,7 +14,7 @@
           chooseLabel="Add Imagem de capa"
         />
         <div v-else class="flex items-center w-full gap-10">
-          <img :src="file?.objectURL" alt="Imagem de capa do post" class="rounded-md w-24 h-24" />
+          <img :src="file?.objectURL" alt="Imagem de capa do post" class="rounded-md w-24 h-24 object-contain" />
           <div>
             <Button 
               label="Remover"
@@ -38,7 +38,7 @@
     </div>
     <div v-else class="card-post readonly">
       <img v-if="file?.objectURL" :src="file?.objectURL" alt="Imagem de capa do post" class="w-full h-[300px] object-cover" />
-      <div class="w-full font-bold text-xl md:text-3xl placeholder:text-gray-300 pt-8 px-2 md:px-14 border-none outline-none rounded-md text-pretty break-words">
+      <div class="title-post">
         {{ form.title }}
       </div>
       <Editor 
@@ -115,13 +115,17 @@ const handleTitle = () => {
 .card-post {
 
   .title-post {
-    @apply w-full font-bold text-xl md:text-3xl placeholder:text-gray-300 py-2 md:px-6 border-none outline-none rounded-md;
+    @apply w-full font-bold text-3xl md:text-5xl placeholder:text-gray-300 py-2 md:px-6 border-none outline-none rounded-md;
   }
 
   @apply w-full h-full bg-white p-8 flex flex-col gap-6 rounded-md mb-4 overflow-y-auto box-border;
 
   &.readonly {
-    @apply gap-0 p-0 overflow-hidden;
+    @apply gap-0 p-0;
+
+    .title-post {
+      @apply pt-8 px-2 md:px-14;
+    }
   }
 
   height: calc(100vh - 180px);

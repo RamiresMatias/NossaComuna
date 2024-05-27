@@ -50,8 +50,26 @@ onUnmounted(() => editor.value?.destroy())
 
 <style lang="scss">
 .editorjs {
+  .ce-header {
+    @apply text-black font-bold;
+  }
   h1.ce-header{
-    @apply text-5xl text-black font-bold;
+    @apply text-[34px] md:text-5xl  leading-[34px] -tracking-wider;
+  }
+  h2.ce-header{
+    @apply text-[18px] md:text-[30px] leading-[32px] -tracking-wider;
+  }
+  h3.ce-header{
+    @apply text-[18px] md:text-2xl leading-[26px] -tracking-wide;
+  }
+  h4.ce-header{
+    @apply text-[18px] md:text-xl -tracking-wide;
+  }
+  h5.ce-header{
+    @apply text-[18px];
+  }
+  h6.ce-header{
+    @apply text-[16px];
   }
 }
 </style>
