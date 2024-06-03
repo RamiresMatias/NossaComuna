@@ -7,7 +7,7 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss', 
     'nuxt-primevue', 
     '@nuxtjs/google-fonts', 
-    // '@nuxtjs/supabase',
+    '@nuxtjs/supabase',
   ],
   css: ['primeicons/primeicons.css'],
   primevue: {
@@ -30,4 +30,22 @@ export default defineNuxtConfig({
       include: ["@editorjs/editorjs"],
     },
   },
+  supabase: {
+    redirect: false
+  },
+  imports: {
+    dirs: [
+      // "./composables/useMarkdown", 
+      "./composables/useServices",
+      // "./composables/useLogger"
+    ]
+  },
+  runtimeConfig: {
+    public: {
+      siteUrl: process.env.SITE_URL,
+      nodeEnv: process.env.NODE_ENV,
+      supabaseUrl: process.env.SUPABASE_URL,
+      supabaseKey: process.env.SUPABASE_KEY
+    }
+  }
 })

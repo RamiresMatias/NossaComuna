@@ -7,7 +7,7 @@
     <Button 
       label="Entrar"
       class="w-full mt-4"
-      @click="onSubmit"
+      @click="authWithEmail"
     />
     <Divider align="center" class="my-8">
       <span>OU</span>
@@ -41,6 +41,8 @@
 import Divider from 'primevue/divider'
 import FormLogin from '@/modules/auth/components/FormLogin.vue'
 
+const services = useServices()
+
 const form = reactive<{
   email: string
   password: string
@@ -49,8 +51,10 @@ const form = reactive<{
   password: ''
 })
 
-const onSubmit = async () => {
 
+
+const authWithEmail = async () => {
+  const res = await services.auth.signInWithEmail(form.email, form.password)
 }
 
 </script>

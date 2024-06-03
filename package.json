@@ -7,7 +7,8 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "db:generate-types": "supabase gen types typescript --local > ./libs/supabase/schema.ts"
   },
   "dependencies": {
     "@editorjs/checklist": "^1.6.0",
@@ -20,6 +21,7 @@
     "@nuxtjs/supabase": "^1.2.2",
     "@nuxtjs/tailwindcss": "^6.11.4",
     "@supabase/supabase-js": "^2.43.3",
+    "axios": "^1.7.2",
     "nuxt": "^3.11.1",
     "nuxt-primevue": "^0.3.1",
     "primeicons": "^6.0.1",

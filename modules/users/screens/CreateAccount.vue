@@ -25,6 +25,8 @@ const state = ref<'buttons' | 'form'>('buttons')
 
 const route = useRoute()
 
+const services = useServices()
+
 const form = reactive<{
   avatar: string
   email: string
@@ -40,7 +42,14 @@ const form = reactive<{
 })
 
 const onSubmit = async () => {
-
+  if (state.value === 'form') {
+    await services.auth.createUser({
+      email: form.email, 
+      password: form.password,
+      username: form.username,
+      avatar: ''
+    })
+  }
 }
 
 const checkState = () => {
