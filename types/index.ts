@@ -5,28 +5,16 @@ export interface Tag {
   description: string
 }
 
-// export interface EditorData {
-//   blocks: {
-//     data: {
-//       text: string
-//       level: String
-//     }
-//     id: string
-//     type: string
-//   }[]
-//   time: number
-//   version: string
-// }
-
 export interface Profile {
   id: string
   email: string
-  name: string
   createdAt: Date
   username?: string
   bio?: string
   avatarUrl?: string
 }
+
+export interface User extends Profile {}
 
 export interface Post {
   id: string

@@ -8,7 +8,7 @@
       <FormCreateAccount v-if="state === 'form'" v-model="form" />
       <ButtonsGroup v-else-if="state === 'buttons'" @on-create-email="state = 'form'" />
 
-      <Button label="Criar" class="w-full mt-4" @click="onSubmit" />
+      <Button label="Criar" class="w-full mt-4" @click="onSubmit" :loading="loading" />
       <Divider />
       <div class="w-full text-center">
         Já possui uma conta? <NuxtLink to="/auth" class="hover:text-blue-400">Logar</NuxtLink>
@@ -21,11 +21,12 @@
 import FormCreateAccount from '@/modules/users/components/FormCreateAccount.vue'
 import ButtonsGroup from '@/modules/users/components/ButtonsGroup.vue'
 
-const state = ref<'buttons' | 'form'>('buttons')
 
 const route = useRoute()
-
 const services = useServices()
+
+const loading = ref(false)
+const state = ref<'buttons' | 'form'>('buttons')
 
 const form = reactive<{
   avatar: string
@@ -43,11 +44,12 @@ const form = reactive<{
 
 const onSubmit = async () => {
   if (state.value === 'form') {
+    loading.value = true
     await services.auth.createUser({
       email: form.email, 
       password: form.password,
       username: form.username,
-      avatar: ''
+      avatar: form.avatar
     })
   }
 }

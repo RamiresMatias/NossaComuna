@@ -24,35 +24,43 @@ export default (client: SupabaseClient<Database>, options: ServiceOptions) => ({
   },
 
   async signInWithEmail(email: string, password: string) {
-    const { error } = await client.auth.signInWithPassword({
+    const { error, data } = await client.auth.signInWithPassword({
       email: email,
       password: password,
     })
 
-    if (error) console.log(error)
+    if (!error) {
+      navigateTo('/auth/redirect')
+    }
   },
 
   async signOut() {
-    const response = await client.auth.signOut()
-    return response
+    const { error } = await client.auth.signOut()
+    if (!error) navigateTo('/auth')
+    return error
   },
 
   async createUser(user: NewUserProps) {
-    const res = await client.auth.signUp({
+    const { error } = await client.auth.signUp({
       email: user.email,
       password: user.password,
       options: {
         data: {
-          avatar_url: '',
           username: user.username
         }
       }
     })
-    console.log(res);
-    // if (!error && user.avatar) {
-    //   const fileExt = `${user.email}.${user.avatar.split('.').at(0)}`
-    //   const responseUplaod = await client.storage.from("avatars").upload(fileExt, user.avatar)
-    //   console.log({responseUplaod});
-    // }
+    if (error) return false
+
+    console.log(user);
+    if (user.avatar) {
+      const fileExt = `${user.email}.${user.avatar.split('.').at(0)}`
+      client.storage
+        .from("avatars")
+        .upload(fileExt, user.avatar)
+        .then((res: any) => {
+          console.log(res);
+        })
+    }
   }
 })

@@ -7,6 +7,7 @@
     <Button 
       label="Entrar"
       class="w-full mt-4"
+      :loading="loading"
       @click="authWithEmail"
     />
     <Divider align="center" class="my-8">
@@ -43,6 +44,8 @@ import FormLogin from '@/modules/auth/components/FormLogin.vue'
 
 const services = useServices()
 
+const loading = ref(false)
+
 const form = reactive<{
   email: string
   password: string
@@ -54,7 +57,8 @@ const form = reactive<{
 
 
 const authWithEmail = async () => {
-  const res = await services.auth.signInWithEmail(form.email, form.password)
+  loading.value = true
+  await services.auth.signInWithEmail(form.email, form.password)
 }
 
 </script>

@@ -2,8 +2,7 @@ CREATE TABLE profiles(
   id uuid PRIMARY KEY references auth.users ( id ),
   email varchar not null,
   username varchar,
-  name varchar not null,
   bio varchar,
-  avatar_url varchar not null,
+  avatar_url varchar,
   created_at timestamp with time zone default current_timestamp not null
 )

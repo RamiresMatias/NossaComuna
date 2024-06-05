@@ -11,4 +11,7 @@
 
 <script setup lang="ts">
 import Post from '@/modules/posts/components/Post.vue'
+
+onMounted(() => {
+})
 </script>
