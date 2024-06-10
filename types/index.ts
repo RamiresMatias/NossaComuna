@@ -57,3 +57,11 @@ export interface Likes {
   postId?: string
   commentId?: string
 }
+
+export interface FormEditUser {
+  avatar?: File
+  email?: string
+  username: string
+  bio?: string
+  avatarUrl?: string
+}

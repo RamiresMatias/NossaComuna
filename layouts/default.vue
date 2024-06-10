@@ -7,6 +7,7 @@
           :nickname="user?.username || 'Usuário'"
           :profile-pic="user?.avatarUrl"
           @logout="handleLogout"
+          @navigate-to-edit-profile="handleNavigateEditProfile"
         /> 
         <Header v-else @authenticate="handleAuth" @navigate-to-post-create="handlePostCreate" />
       </template>
@@ -36,6 +37,10 @@ const handlePostCreate = () => router.push('/posts/create')
 
 const handleLogout = async () => {
   session.logout()
+}
+
+const handleNavigateEditProfile = () => {
+  router.push('/profile/edit')
 }
 
 onMounted(() => console.log(user.value))

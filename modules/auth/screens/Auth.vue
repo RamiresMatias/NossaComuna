@@ -59,6 +59,7 @@ const form = reactive<{
 const authWithEmail = async () => {
   loading.value = true
   await services.auth.signInWithEmail(form.email, form.password)
+  loading.value = false
 }
 
 </script>

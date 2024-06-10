@@ -52,15 +52,17 @@ export default (client: SupabaseClient<Database>, options: ServiceOptions) => ({
     })
     if (error) return false
 
-    console.log(user);
-    if (user.avatar) {
-      const fileExt = `${user.email}.${user.avatar.split('.').at(0)}`
-      client.storage
-        .from("avatars")
-        .upload(fileExt, user.avatar)
-        .then((res: any) => {
-          console.log(res);
-        })
-    }
+    // if (user.avatar) {
+    //   const fileExt = `public/${user.email}.${user.avatar?.split(';')?.at(0)?.split('/').at(-1)}`
+    //   client.storage
+    //     .from("avatars")
+    //     .upload(fileExt, user.avatar, {
+    //       cacheControl: '3600',
+    //       upsert: false
+    //     })
+    //     .then((res: any) => {
+    //       console.log(res);
+    //     })
+    // }
   }
 })

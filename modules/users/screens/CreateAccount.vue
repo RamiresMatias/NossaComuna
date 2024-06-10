@@ -51,6 +51,7 @@ const onSubmit = async () => {
       username: form.username,
       avatar: form.avatar
     })
+    loading.value = false
   }
 }
 
