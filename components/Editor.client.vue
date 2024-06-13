@@ -27,7 +27,7 @@ onMounted(() => {
   editor.value = new EditorJS({
     holder: 'editorjs',
     tools: { 
-      Header,
+      heading: Header,
       List,
       Checklist,
       Quote,
@@ -51,7 +51,7 @@ onUnmounted(() => editor.value?.destroy())
 <style lang="scss">
 .editorjs {
   .ce-header {
-    @apply text-black font-bold;
+    @apply text-neutral-900 font-bold;
   }
   h1.ce-header{
     @apply text-[34px] md:text-5xl  leading-[34px] -tracking-wider;

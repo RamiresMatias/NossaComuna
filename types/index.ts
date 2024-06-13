@@ -1,4 +1,5 @@
 import type { OutputData } from "@editorjs/editorjs"
+import type { Database } from "@/libs/supabase/schema"
 
 export interface Tag {
   id: string
@@ -16,20 +17,19 @@ export interface Profile {
 
 export interface User extends Profile {}
 
-export interface Post {
+export interface PostType {
   id: string
   code: string
-  description: OutputData
   title: string
-  createdAt: Date
+  createdAt?: Date
   profile: Partial<Profile>
   coverImage: string
   isDraft?: boolean
-  totalComments: number
-  totalLikes: number
+  totalLikes?: number
+  totalComments?: number
 }
 
-export interface Comment {
+export interface CommentType {
   id: string
   description: string
   profile: Profile
@@ -41,13 +41,15 @@ export interface Comment {
 
 export interface PostDetail {
   id: string
+  code: string
+  description: OutputData
   title: string
-  createdAt: Date
-  profileId: string
+  createdAt?: Date
+  profile: Partial<Profile>
   coverImage: string
-  likes: number
   isDraft?: boolean
-  comments: Comment[]
+  totalComments?: number
+  totalLikes?: number
 }
 
 export interface Likes {
@@ -64,4 +66,16 @@ export interface FormEditUser {
   username: string
   bio?: string
   avatarUrl?: string
+}
+
+export type ProfileTableRow = Database['public']['Tables']['profiles']
+
+export type PostTable = Database['public']['Tables']['post']
+
+export type ReadAllRow = PostTable['Row'] & {
+  profiles: ProfileTableRow['Row'] | null
+}
+
+export type ReadOneRow = PostTable['Row'] & {
+  profiles: ProfileTableRow['Row'] | null
 }

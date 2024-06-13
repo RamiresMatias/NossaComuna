@@ -36,17 +36,14 @@
 </template>
 
 <script setup lang="ts">
-import type { Post } from '@/types/index'
+import type { PostType } from '@/types/index'
 import Stat from '@/modules/posts/components/Stat.vue'
 
 withDefaults(
-  defineProps<Post>(),
+  defineProps<PostType>(),
   {
     code: 'nome-da-discussao',
     title: 'Nome da discussão que o klebin criou',
-    description: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi, ullam, 
-      quibusdam accusantium ipsum soluta explicabo iure, consectetur cupiditate necessitatibus odio natus commodi 
-      corrupti! Deleniti perferendis laudantium rem voluptatum repellendus magnam!`,
     id: '',
     coverImage: '',
     totalLikes: 0,

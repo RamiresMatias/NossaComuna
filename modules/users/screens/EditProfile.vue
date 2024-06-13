@@ -99,7 +99,6 @@ const handleUpdateProfile = async () => {
       life: 2000
     })
   } catch (error) {
-    console.log(error);
     toast.add({
       severity: 'error',
       summary: 'Ops!',

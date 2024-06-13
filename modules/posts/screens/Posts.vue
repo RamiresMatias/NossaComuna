@@ -1,17 +1,51 @@
 <template>
-  <div class="flex flex-col w-full h-full gap-4 max-w-3xl mx-auto justify-center items-center">
-    <Post 
-      v-for="item in 10" 
-      :key="item" 
-      :total-likes="Math.round(Math.random() * 100)"
-      :total-comments="Math.round(Math.random() * 100)"
+  <div class="flex flex-col w-full h-full gap-4 max-w-3xl mx-auto items-center">
+    <PostSkeleton 
+      v-if="loading"
+      v-for="item in 4"
+      :key="item"
+    />
+    <Post
+      v-else
+      v-for="(item, i) in posts" 
+      :key="i"
+      :id="item.id"
+      :code="item.code"
+      :cover-image="item.coverImage"
+      :created-at="item.createdAt"
+      :is-draft="item.isDraft"
+      :title="item.title"
+      :profile="item.profile"
+      :total-comments="0"
+      :total-likes="0"
     />
   </div>
 </template>
 
 <script setup lang="ts">
 import Post from '@/modules/posts/components/Post.vue'
+import PostSkeleton from '@/modules/posts/components/PostSkeleton.vue'
 
-onMounted(() => {
-})
+import type { PostType } from '@/types'
+
+const services = useServices()
+
+const loading = ref(false)
+const posts = ref<PostType[]>()
+
+const loadPosts = async () => {
+  try {
+    loading.value = true
+
+    posts.value = await services.post.getAllPosts()
+
+    setTimeout(() => {
+      loading.value = false
+    }, 1000)
+  } catch (error) {
+    loading.value = false
+  }
+}
+
+onMounted(() => loadPosts())
 </script>

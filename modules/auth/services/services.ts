@@ -41,7 +41,7 @@ export default (client: SupabaseClient<Database>, options: ServiceOptions) => ({
   },
 
   async createUser(user: NewUserProps) {
-    const { error } = await client.auth.signUp({
+    return await client.auth.signUp({
       email: user.email,
       password: user.password,
       options: {
@@ -50,19 +50,5 @@ export default (client: SupabaseClient<Database>, options: ServiceOptions) => ({
         }
       }
     })
-    if (error) return false
-
-    // if (user.avatar) {
-    //   const fileExt = `public/${user.email}.${user.avatar?.split(';')?.at(0)?.split('/').at(-1)}`
-    //   client.storage
-    //     .from("avatars")
-    //     .upload(fileExt, user.avatar, {
-    //       cacheControl: '3600',
-    //       upsert: false
-    //     })
-    //     .then((res: any) => {
-    //       console.log(res);
-    //     })
-    // }
   }
 })

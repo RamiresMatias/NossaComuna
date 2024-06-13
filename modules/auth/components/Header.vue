@@ -7,7 +7,15 @@
             <Logo />
           </NuxtLink>
         </div>
-        <div class="flex items-center">
+        <div class="flex items-center gap-4">
+          <Button 
+            label="Novo post" 
+            severity="secondary" 
+            text
+            icon-pos="right"
+            icon="pi pi-plus"
+            @click="() => emit('navigate-to-post-create')"
+          />
           <button class="flex gap-2 items-center" aria-haspopup="tree" aria-controls="header-auth-menu" @click="toggle">
             <Avatar v-if="props.profilePic" :image="props.profilePic" shape="circle" />
             <Avatar v-else icon="pi pi-user" style="background-color: #dee9fc; color: #1a2551" shape="circle" />
@@ -25,6 +33,7 @@
 const emit = defineEmits<{
   (e: 'navigate-to-edit-profile'): void
   (e: 'logout'): void
+  (e: 'navigate-to-post-create'): void
 }>()
 
 const props = defineProps<{

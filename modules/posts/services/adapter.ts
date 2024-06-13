@@ -1,0 +1,42 @@
+import type { PostDetail, PostType, ReadAllRow, ReadOneRow } from "@/types"
+
+export function readAllAdapter(values: ReadAllRow[] | null): PostType[] | [] {
+  if(!values) return []
+
+  return values.map(el => ({
+    id: el.id,
+    title: el.title,
+    isDraft: el.is_draft,
+    code: el.code,
+    createdAt: new Date(el.created_at),
+    coverImage: el.cover_image,
+    totalComments: 0,
+    totalLikes: 0,
+    profile: {
+      id: el.profile_id,
+      username: el.profiles.username,
+      avatarUrl: el.profiles.avatar_url
+    }
+  }))
+}
+
+export function readOneAdapter(value: ReadOneRow | null): PostDetail | null {
+  if(!value) return null
+
+  return {
+    id: value.id,
+    title: value.title,
+    isDraft: value.is_draft,
+    code: value.code,
+    createdAt: new Date(value.created_at),
+    coverImage: value.cover_image,
+    totalComments: 0,
+    totalLikes: 0,
+    profile: {
+      id: value.profile_id,
+      username: value.profiles.username,
+      avatarUrl: value.profiles.avatar_url
+    },
+    description: JSON.parse(value.description)
+  }
+}

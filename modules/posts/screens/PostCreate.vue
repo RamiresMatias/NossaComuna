@@ -49,11 +49,16 @@
     </div>
     <div class="flex gap-4 w-full justify-between">
       <Button 
-        label="Salvar" 
+        label="Salvar"
+        icon="pi pi-plus"
+        icon-pos="left"
+        :loading="loading"
+        @click="handleSubmit"
       />
       <Button 
         :label="preview ? 'Voltar' : 'Pré-visualizar'" 
         outlined
+        :disabled="loading"
         @click="preview = !preview"
       />
     </div>
@@ -61,20 +66,20 @@
 </template>
 
 <script setup lang="ts">
-import type { OutputData } from '@editorjs/editorjs'
 import type { FileUploadUploadEvent } from 'primevue/fileupload'
+import type { PostDetail } from '@/types'
+
+const services = useServices()
 
 interface UploadType {
   objectURL: string
 }
 
-const titleRef = ref<HTMLTextAreaElement>()
-
-const form = reactive<{
-  description: OutputData
-  title: string
-}>({
+const form = reactive<Partial<PostDetail>>({
+  coverImage: '',
+  code: '',
   title: '',
+  isDraft: false,
   description: {
     blocks: [],
     time: 0,
@@ -84,28 +89,30 @@ const form = reactive<{
 
 const file = ref<File & UploadType | null>()
 const preview = ref(false)
+const loading = ref(false)
 
 const removeFile = () => {
   file.value = null
 }
-
-// const limitLines = 80
-
-// const heightTextarea = computed(() => titleRef.value ? Math.min(titleRef.value.scrollHeight, limitLines) : 20)
 
 const onUpload = (event: FileUploadUploadEvent) => {
   const fileFm = Array.isArray(event.files) ? event.files[0] : event.files
   file.value = {...fileFm, objectURL: (fileFm as any).objectURL}
 }
 
-const handleTitle = () => {
-  // if (!titleRef.value) return
+const handleSubmit = async () => {
+  try {
+    loading.value = true
 
-  // const el = document.getElementById('title-post')
+    await services.post.createPost({...form})
+    
+    loading.value = false
 
-  // if (el) {
-  //   el.style.height = `${Math.min(titleRef.value.scrollHeight, limitLines)}px`
-  // }
+    navigateTo('/posts')
+  } catch (error) {
+    console.log(error);
+    loading.value = false
+  }
 }
 </script>
 
@@ -115,7 +122,7 @@ const handleTitle = () => {
 .card-post {
 
   .title-post {
-    @apply w-full font-bold text-3xl md:text-5xl placeholder:text-gray-300 py-2 md:px-6 border-none outline-none rounded-md;
+    @apply w-full font-bold text-3xl md:text-5xl placeholder:text-gray-300 text-neutral-900 py-2 md:px-6 border-none outline-none rounded-md;
   }
 
   @apply w-full h-full bg-white p-8 flex flex-col gap-6 rounded-md mb-4 overflow-y-auto box-border;

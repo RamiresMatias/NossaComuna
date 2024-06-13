@@ -85,30 +85,30 @@ export type Database = {
       }
       post: {
         Row: {
-          code: string
-          cover_image: string
-          created_at: string
-          description: Json
+          code: string | null
+          cover_image: string | null
+          created_at: string | null
+          description: string | null
           id: string
           is_draft: boolean
           profile_id: string | null
           title: string
         }
         Insert: {
-          code: string
-          cover_image: string
-          created_at?: string
-          description: Json
+          code?: string | null
+          cover_image?: string | null
+          created_at?: string | null
+          description?: string | null
           id: string
           is_draft: boolean
           profile_id?: string | null
           title: string
         }
         Update: {
-          code?: string
-          cover_image?: string
-          created_at?: string
-          description?: Json
+          code?: string | null
+          cover_image?: string | null
+          created_at?: string | null
+          description?: string | null
           id?: string
           is_draft?: boolean
           profile_id?: string | null

@@ -13,3 +13,17 @@ export const customBase64Uploader = async (file: any): Promise<{base64: string, 
     }
   })
 }
+
+export const removeAccents = (str: string = '') => {
+  return str
+    .normalize('NFD')
+    .replace(/\p{Diacritic}/gu, '')
+    .replace(/[\u0300-\u036f]/gi, '')
+}
+
+export const transformCode = (str: string = '') => {
+  return str
+    .split(" ")
+    .map(el => el.toLowerCase())
+    .join("-")
+}

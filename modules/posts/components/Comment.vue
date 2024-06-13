@@ -20,10 +20,10 @@
 </template>
 
 <script setup lang="ts">
-import type { Comment } from '@/types'
+import type { CommentType } from '@/types'
 
 const props = withDefaults(
-  defineProps<Comment>(),
+  defineProps<CommentType>(),
   {
     id: '',
     description: `Seeing those example file structures is extremely helpful! In a way, I already used the Atomic Design approach without the molecules level. Depending on the project size, I guess it's fine to skip one level.`,

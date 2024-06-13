@@ -8,6 +8,7 @@
           :profile-pic="user?.avatarUrl"
           @logout="handleLogout"
           @navigate-to-edit-profile="handleNavigateEditProfile"
+          @navigate-to-post-create="handleNavigateToCreatePost"
         /> 
         <Header v-else @authenticate="handleAuth" @navigate-to-post-create="handlePostCreate" />
       </template>
@@ -43,5 +44,8 @@ const handleNavigateEditProfile = () => {
   router.push('/profile/edit')
 }
 
-onMounted(() => console.log(user.value))
+const handleNavigateToCreatePost = () => {
+  router.push('/posts/create')
+}
+
 </script>
