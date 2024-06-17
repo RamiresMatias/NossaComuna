@@ -71,5 +71,9 @@ onUnmounted(() => editor.value?.destroy())
   h6.ce-header{
     @apply text-[16px];
   }
+
+  .codex-editor__redactor {
+    padding-bottom: 100px !important;
+  }
 }
 </style>

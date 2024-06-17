@@ -32,11 +32,8 @@ export interface PostType {
 export interface CommentType {
   id: string
   description: string
-  profile: Profile
+  profile: Partial<Profile>
   createdAt: Date
-  postId?: string
-  commentId?: string
-  comments?: Comment[]
 }
 
 export interface PostDetail {
@@ -68,14 +65,27 @@ export interface FormEditUser {
   avatarUrl?: string
 }
 
+export interface CreatePostType {
+  id?: string
+  description: OutputData
+  title: string
+  coverImage: File
+  isDraft?: boolean
+}
+
 export type ProfileTableRow = Database['public']['Tables']['profiles']
 
 export type PostTable = Database['public']['Tables']['post']
+export type CommentTable = Database['public']['Tables']['comment']
 
 export type ReadAllRow = PostTable['Row'] & {
   profiles: ProfileTableRow['Row'] | null
 }
 
 export type ReadOneRow = PostTable['Row'] & {
+  profiles: ProfileTableRow['Row'] | null
+}
+
+export type ReadAllRowComments = CommentTable['Row'] & {
   profiles: ProfileTableRow['Row'] | null
 }

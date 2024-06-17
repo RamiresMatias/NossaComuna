@@ -27,3 +27,11 @@ export const transformCode = (str: string = '') => {
     .map(el => el.toLowerCase())
     .join("-")
 }
+
+export const sleep = (delay = 1000) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(true)
+    }, delay)
+  })
+}

@@ -1,4 +1,4 @@
-import type { PostDetail, PostType, ReadAllRow, ReadOneRow } from "@/types"
+import type { PostDetail, PostType, ReadAllRow, ReadAllRowComments, ReadOneRow, CommentType } from "@/types"
 
 export function readAllAdapter(values: ReadAllRow[] | null): PostType[] | [] {
   if(!values) return []
@@ -39,4 +39,19 @@ export function readOneAdapter(value: ReadOneRow | null): PostDetail | null {
     },
     description: JSON.parse(value.description)
   }
+}
+
+export function readAllCommentsAdapter(values: ReadAllRowComments[] | null): CommentType[] | [] {
+  if(!values) return []
+
+  return values.map(el => ({
+    id: el.id,
+    description: el.description,
+    createdAt: new Date(el.created_at),
+    profile: {
+      id: el.profiles.id,
+      username: el.profiles.username,
+      avatarUrl: el.profiles.avatar_url
+    }
+  }))
 }

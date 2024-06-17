@@ -67,7 +67,7 @@
 
 <script setup lang="ts">
 import type { FileUploadUploadEvent } from 'primevue/fileupload'
-import type { PostDetail } from '@/types'
+import type { CreatePostType } from '@/types'
 
 const services = useServices()
 
@@ -75,9 +75,8 @@ interface UploadType {
   objectURL: string
 }
 
-const form = reactive<Partial<PostDetail>>({
-  coverImage: '',
-  code: '',
+const form = reactive<CreatePostType>({
+  coverImage: null,
   title: '',
   isDraft: false,
   description: {
@@ -97,17 +96,23 @@ const removeFile = () => {
 
 const onUpload = (event: FileUploadUploadEvent) => {
   const fileFm = Array.isArray(event.files) ? event.files[0] : event.files
-  file.value = {...fileFm, objectURL: (fileFm as any).objectURL}
+  form.coverImage = fileFm
 }
 
 const handleSubmit = async () => {
   try {
     loading.value = true
 
-    await services.post.createPost({...form})
+    await services.post.createPost({
+      title: form.title,
+      description: form.description,
+      coverImage: form.coverImage,
+      isDraft: form.isDraft
+    })
     
-    loading.value = false
+    await sleep(1000)
 
+    loading.value = false
     navigateTo('/posts')
   } catch (error) {
     console.log(error);
