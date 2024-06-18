@@ -20,8 +20,7 @@
 </template>
 
 <script lang="ts" setup>
-import HeaderAuthenticated from '@/modules/auth/components/Header.vue'
-
+import HeaderAuthenticated from '@/modules/auth/components/HeaderAuthenticated.vue'
 import {useSession} from '@/modules/auth/composables/useSession/useSession'
 import { useMyself } from '@/modules/users/composables/useMyself/useMyself'
 

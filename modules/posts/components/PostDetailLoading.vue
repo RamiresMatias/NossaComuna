@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full h-full mx-auto max-w-3xl bg-white rounded-md flex flex-col">
+  <div class="w-full h-full mx-auto bg-white rounded-md flex flex-col">
     <Skeleton width="100%" height="20rem"></Skeleton>
     <div class="w-full h-full flex flex-col max-w-[80%] mx-auto mt-8">
       <div class="flex w-full py-4 gap-2">

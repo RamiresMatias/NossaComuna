@@ -68,12 +68,24 @@
 <script setup lang="ts">
 import type { FileUploadUploadEvent } from 'primevue/fileupload'
 import type { CreatePostType } from '@/types'
+import { useMyself } from '@/modules/users/composables/useMyself/useMyself'
 
 const services = useServices()
+const route = useRoute()
+const {user, loading: loadingUser} = useMyself()
 
 interface UploadType {
   objectURL: string
 }
+
+const props = withDefaults(
+  defineProps<{
+    isEdit?: boolean
+  }>(),
+  {
+    isEdit: false
+  }
+)
 
 const form = reactive<CreatePostType>({
   coverImage: null,
@@ -89,6 +101,7 @@ const form = reactive<CreatePostType>({
 const file = ref<File & UploadType | null>()
 const preview = ref(false)
 const loading = ref(false)
+const postLoaded = ref(false)
 
 const removeFile = () => {
   file.value = null
@@ -115,10 +128,37 @@ const handleSubmit = async () => {
     loading.value = false
     navigateTo('/posts')
   } catch (error) {
+    loading.value = false
+  }
+}
+
+const getPostById = async () => {
+  const id = route.params.id as string
+
+  if (!id || !user.value?.id || loading.value || postLoaded.value) return
+
+  try {
+    loading.value = true
+    postLoaded.value = true
+    
+    const postFound = await services.post.getPostByIdAndAuthor({id, userId: user.value?.id})
+
+    loading.value = false
+  } catch (error) {
     console.log(error);
     loading.value = false
   }
 }
+
+watch(
+  () => user.value,
+  (nVal) => {
+    if (nVal && props.isEdit) {
+      getPostById()
+    }
+  },
+  {immediate: true, }
+)
 </script>
 
 <style scoped lang="scss">

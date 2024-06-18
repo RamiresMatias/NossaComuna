@@ -23,7 +23,7 @@ defineProps<{
   loading: boolean
 }>()
 
-const description = defineModel<string>('')
+const description = defineModel<string>()
 
 const emit = defineEmits<{
   (e: 'submit-comment'): void

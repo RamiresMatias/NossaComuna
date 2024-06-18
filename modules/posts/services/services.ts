@@ -87,5 +87,20 @@ export default (client: SupabaseClient<Database>) => ({
         post_id: postId,
         profile_id: user.value.id 
       })
+  },
+  async deleteComment (id: string) {
+    return client.from('comment').delete().match({id})
+  },
+  async getPostByIdAndAuthor ({id, userId}: {id: string; userId: string}) {
+    const {data} = await client
+      .from('post')
+      .select('*')
+      .eq('id', id)
+      .eq('profile_id', userId)
+      .limit(1)
+      .returns<{}>()
+      .single()
+
+    console.log(data);
   }
 })
