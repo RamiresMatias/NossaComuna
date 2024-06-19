@@ -1,4 +1,4 @@
-import type { PostDetail, PostType, ReadAllRow, ReadAllRowComments, ReadOneRow, CommentType } from "@/types"
+import type { PostDetail, PostType, ReadAllRow, ReadAllRowComments, ReadOneRow, CommentType, PostTable, CreatePostType, EditPostType } from "@/types"
 
 export function readAllAdapter(values: ReadAllRow[] | null): PostType[] | [] {
   if(!values) return []
@@ -54,4 +54,19 @@ export function readAllCommentsAdapter(values: ReadAllRowComments[] | null): Com
       avatarUrl: el.profiles.avatar_url
     }
   }))
+}
+
+export function getPostByIdAndAuthorAdapter(value: PostTable['Row']): EditPostType {
+  if (!value) return null
+
+  return {
+    id: value.id,
+    title: value.title,
+    isDraft: value.is_draft,
+    code: value.code,
+    createdAt: new Date(value.created_at),
+    coverImage: value.cover_image,
+    profileId:value.profile_id,
+    description: JSON.parse(value.description)
+  }
 }

@@ -2,7 +2,7 @@ import type { User } from "@/types/index"
 import {useSession} from '@/modules/auth/composables/useSession/useSession'
 import type { InjectionKey } from "vue"
 
-interface MyselfContextProvider {
+export interface MyselfContextProvider {
   user: Ref<User | undefined>
   loading: Ref<boolean>
 }
@@ -37,6 +37,7 @@ export function useMyself() {
 
   return {
     loading,
-    user
+    user,
+    fetchUser
   }
 }

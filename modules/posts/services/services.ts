@@ -5,22 +5,21 @@ import type { CreatePostType, ReadAllRow, ReadAllRowComments, ReadOneRow } from 
 import {useSession} from '@/modules/auth/composables/useSession/useSession'
 
 import {v4} from 'uuid'
-import { readAllAdapter, readAllCommentsAdapter, readOneAdapter } from "./adapter"
+import { getPostByIdAndAuthorAdapter, readAllAdapter, readAllCommentsAdapter, readOneAdapter } from "./adapter"
 
 export default (client: SupabaseClient<Database>) => ({
 
   async createPost (post: CreatePostType) {
-    const {user} = useSession()
     const runtimeConfig = useRuntimeConfig()
 
-    if (!user.value) throw new Error("É necessário estar logado para criar um post")
+    if (!post.profileId) throw new Error("É necessário estar logado para criar um post")
 
     const id = v4()
 
     let coverImageUrl = ''
 
     if (post.coverImage) {
-      const {data, error} = await this.uploadCoverImage({id, file: post.coverImage, userId: user.value.id})
+      const {data, error} = await this.uploadCoverImage({id, file: post.coverImage, userId: post.profileId})
       if (!error) coverImageUrl = `${runtimeConfig.public.supabaseUrl}/storage/v1/object/public/${data.fullPath}`
     }
 
@@ -34,8 +33,33 @@ export default (client: SupabaseClient<Database>) => ({
         created_at: new Date(),
         cover_image: coverImageUrl,
         code: removeAccents(transformCode(post.title)),
-        profile_id: user.value.id 
+        profile_id: post.profileId 
       })
+  },
+  async editPost (post: CreatePostType) {
+    const runtimeConfig = useRuntimeConfig()
+
+    if (!post.profileId) throw new Error("É necessário estar logado para criar um post")
+    if (!post.id) throw new Error("Informe o ID do post")
+
+    const id = v4()
+
+    let coverImageUrl = ''
+
+    if (post.coverImage && typeof post.coverImage !== 'string') {
+      const {data, error} = await this.updateCoverImage({id, file: post.coverImage, userId: post.profileId})
+      if (!error) coverImageUrl = `${runtimeConfig.public.supabaseUrl}/storage/v1/object/public/${data.fullPath}`
+    }
+
+    return client
+      .from('post')
+      .update({
+        title: post.title,
+        description: JSON.stringify(post.description),
+        cover_image: (coverImageUrl || post.coverImage),
+        profile_id: post.profileId 
+      })
+      .match({id: post.id})
   },
   async getAllPosts () {
     const {data} = await client
@@ -59,6 +83,13 @@ export default (client: SupabaseClient<Database>) => ({
     return readOneAdapter(data)
   },
   async uploadCoverImage ({id, file, userId}: {file: File, id: string; userId: string}) {
+    return client.storage
+      .from("cover_images")
+      .upload(`/${userId}/${id}`, file, {
+        upsert: true
+      })
+  },
+  async updateCoverImage ({id, file, userId}: {file: File, id: string; userId: string}) {
     return client.storage
       .from("cover_images")
       .upload(`/${userId}/${id}`, file, {
@@ -101,6 +132,6 @@ export default (client: SupabaseClient<Database>) => ({
       .returns<{}>()
       .single()
 
-    console.log(data);
+    return getPostByIdAndAuthorAdapter(data)
   }
 })

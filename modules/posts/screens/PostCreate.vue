@@ -3,18 +3,18 @@
     <div v-if="!preview" class="card-post">
       <div class="md:px-6 mb-4">
         <FileUpload 
-          v-if="!file"
+          v-if="!file && !fileLink"
           mode="basic" 
           name="demo[]" 
           url="/api/upload" 
           accept="image/png, image/jpeg" 
           :maxFileSize="2e+6" 
-          @upload="onUpload" 
+          @upload="onUpload"
           :auto="true"
           chooseLabel="Add Imagem de capa"
         />
         <div v-else class="flex items-center w-full gap-10">
-          <img :src="file?.objectURL" alt="Imagem de capa do post" class="rounded-md w-24 h-24 object-contain" />
+          <img :src="(file?.objectURL || fileLink)" alt="Imagem de capa do post" class="rounded-md w-24 h-24 object-contain" />
           <div>
             <Button 
               label="Remover"
@@ -22,6 +22,7 @@
               severity="danger"
               icon-pos="right"
               outlined
+              size="small"
               @click="removeFile"
             />
           </div>
@@ -37,7 +38,7 @@
       </div>
     </div>
     <div v-else class="card-post readonly">
-      <img v-if="file?.objectURL" :src="file?.objectURL" alt="Imagem de capa do post" class="w-full h-[300px] object-cover" />
+      <img v-if="file?.objectURL || fileLink" :src="file?.objectURL || fileLink" alt="Imagem de capa do post" class="w-full h-[300px] object-cover" />
       <div class="title-post">
         {{ form.title }}
       </div>
@@ -68,11 +69,13 @@
 <script setup lang="ts">
 import type { FileUploadUploadEvent } from 'primevue/fileupload'
 import type { CreatePostType } from '@/types'
-import { useMyself } from '@/modules/users/composables/useMyself/useMyself'
+import { myselfKey, type MyselfContextProvider } from '@/modules/users/composables/useMyself/useMyself'
+
+const { user } = inject(myselfKey) as MyselfContextProvider
 
 const services = useServices()
 const route = useRoute()
-const {user, loading: loadingUser} = useMyself()
+const toast = useToast()
 
 interface UploadType {
   objectURL: string
@@ -99,32 +102,51 @@ const form = reactive<CreatePostType>({
 })
 
 const file = ref<File & UploadType | null>()
+const fileLink = ref()
 const preview = ref(false)
 const loading = ref(false)
-const postLoaded = ref(false)
 
 const removeFile = () => {
   file.value = null
+  fileLink.value = null
 }
 
-const onUpload = (event: FileUploadUploadEvent) => {
+const onUpload = async (event: FileUploadUploadEvent) => {
   const fileFm = Array.isArray(event.files) ? event.files[0] : event.files
   form.coverImage = fileFm
+  const { link } = await customBase64Uploader(fileFm)
+  fileLink.value = link
 }
 
 const handleSubmit = async () => {
   try {
     loading.value = true
 
-    await services.post.createPost({
-      title: form.title,
-      description: form.description,
-      coverImage: form.coverImage,
-      isDraft: form.isDraft
-    })
+    props.isEdit
+      ? await services.post.editPost({
+        id: form.id,
+        title: form.title,
+        description: form.description,
+        coverImage: form.coverImage,
+        isDraft: form.isDraft,
+        profileId: user.value.id
+      }) 
+      : await services.post.createPost({
+        title: form.title,
+        description: form.description,
+        coverImage: form.coverImage,
+        isDraft: form.isDraft,
+        profileId: user.value.id
+      })
     
-    await sleep(1000)
+    toast.add({
+      severity: 'success',
+      summary: 'Sucesso!',
+      detail: props.isEdit ? 'Post atualizado com sucesso' : 'Post cadastrado com sucesso',
+      life: 2000
+    })
 
+    await sleep(1000)
     loading.value = false
     navigateTo('/posts')
   } catch (error) {
@@ -135,17 +157,28 @@ const handleSubmit = async () => {
 const getPostById = async () => {
   const id = route.params.id as string
 
-  if (!id || !user.value?.id || loading.value || postLoaded.value) return
+  if (!id || !user.value?.id || loading.value) return
 
   try {
     loading.value = true
-    postLoaded.value = true
     
     const postFound = await services.post.getPostByIdAndAuthor({id, userId: user.value?.id})
 
+    if (!postFound) {
+      return toast.add({
+        severity: 'warn',
+        summary: 'Ops!',
+        detail: 'Post não encontrado',
+        life: 2000
+      })
+    }
+
+    Object.assign(form, postFound)
+    fileLink.value = postFound.coverImage
+
+    await sleep(1000)
     loading.value = false
   } catch (error) {
-    console.log(error);
     loading.value = false
   }
 }
@@ -159,6 +192,17 @@ watch(
   },
   {immediate: true, }
 )
+
+onMounted(() => {
+  getPostById()
+})
+
+useSeoMeta({
+  title: route.params.id ? 'Editar post' : 'Criar post',
+  ogTitle: route.params.id ? 'Editar post' : 'Criar post',
+  description: 'Crie seu post para outras pessoas verem',
+  ogDescription: 'Crie seu post para outras pessoas verem',
+})
 </script>
 
 <style scoped lang="scss">

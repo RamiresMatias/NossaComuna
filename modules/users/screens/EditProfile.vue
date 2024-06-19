@@ -11,7 +11,7 @@
       <div class="flex flex-col gap-2 w-full">
         <label for="avatar">Avatar</label>
         <div class="w-full flex gap-4 items-center">
-          <FileUpload mode="basic" name="demo[]" url="/api/upload" accept="image/*" :auto="true" @upload="onUpload" chooseLabel="Escolha uma foto" />
+          <FileUpload mode="basic" name="userAvatar" url="/api/upload" accept="image/png, image/jpeg" :auto="true" @upload="onUpload" chooseLabel="Escolha uma foto" />
         </div>
       </div>
       <div class="flex flex-col gap-2 w-full">
@@ -46,7 +46,7 @@ import { useMyself } from '@/modules/users/composables/useMyself/useMyself'
 import type { FileUploadUploadEvent } from 'primevue/fileupload'
 import type { Profile } from '~/types'
 
-const { user } = useMyself()
+const { user, fetchUser } = useMyself()
 const services = useServices()
 
 const form = reactive<Profile>({
@@ -92,6 +92,8 @@ const handleUpdateProfile = async () => {
       avatarUrl: form.avatarUrl
     })
     
+    window.location.reload()
+
     toast.add({
       severity: 'success',
       summary: 'Sucesso!',

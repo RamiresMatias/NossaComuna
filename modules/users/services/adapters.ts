@@ -9,7 +9,7 @@ export function getMySelfAdapter(data: Row | null): User | null {
 
   return {
     id: data.id,
-    avatarUrl: data.avatar_url || undefined,
+    avatarUrl: (data.avatar_url + '?c=' + (Math.ceil(Math.random() * 10000))) || undefined,
     username: data.username || undefined,
     createdAt: new Date(data.created_at),
     bio: data.bio || undefined,

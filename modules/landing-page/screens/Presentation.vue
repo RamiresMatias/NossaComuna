@@ -4,8 +4,8 @@
       <template #header>
         <HeaderAuthenticated
           v-if="isLogged()"
-          :nickname="user?.username || 'Usuário'"
-          :profile-pic="user?.avatarUrl"
+          :nickname="myself?.user?.value.username || 'Usuário'"
+          :profile-pic="myself?.user?.value.avatarUrl"
           @logout="handleLogout"
           @navigate-to-edit-profile="handleNavigateEditProfile"
           @navigate-to-post-create="handleNavigateToCreatePost"
@@ -25,9 +25,10 @@ import Content from '@/modules/landing-page/components/Content.vue'
 import HeaderAuthenticated from '@/modules/auth/components/HeaderAuthenticated.vue'
 
 import {useSession} from '@/modules/auth/composables/useSession/useSession'
-import { useMyself } from '@/modules/users/composables/useMyself/useMyself'
+import { myselfKey, type MyselfContextProvider } from '@/modules/users/composables/useMyself/useMyself'
 
-const { user } = useMyself()
+const myself = inject(myselfKey) as MyselfContextProvider
+
 const { isLogged, logout } = useSession()
 const router = useRouter()
 

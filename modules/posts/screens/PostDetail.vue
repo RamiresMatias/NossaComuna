@@ -185,10 +185,10 @@ const navigateToEdit = () => {
 }
 
 useSeoMeta({
-  title: `${postServer.value.title} by ${postServer.value.profile.username}`,
-  ogTitle: `${postServer.value.title} by ${postServer.value.profile.username}`,
-  description: `Veja o post de ${postServer.value.profile.username} no NossaComuna`,
-  ogDescription: `Veja o post de ${postServer.value.profile.username} no NossaComuna`,
+  title: `${postServer.value?.title} by ${postServer.value?.profile?.username}`,
+  ogTitle: `${postServer.value?.title} by ${postServer.value?.profile?.username}`,
+  description: `Veja o post de ${postServer.value?.profile?.username} no NossaComuna`,
+  ogDescription: `Veja o post de ${postServer.value?.profile?.username} no NossaComuna`,
 })
 
 onMounted(() => getPost())

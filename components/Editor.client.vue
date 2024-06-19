@@ -41,10 +41,14 @@ onMounted(() => {
         emit("update:modelValue", data)
       })
     },
+    onReady: () => {
+      console.log(modelValue.value);
+      modelValue.value && editor.value?.render(modelValue.value)
+    }
   })
 })
 
-onUnmounted(() => editor.value?.destroy())
+onUnmounted(() => editor.value?.destroy?.())
 
 </script>
 

@@ -38,7 +38,10 @@ export default (client: SupabaseClient<Database>) => ({
     if (url && file) {
       return client.storage
         .from('avatars')
-        .update(fileName, file)
+        .update(fileName, file, {
+          cacheControl: '300',
+          upsert: true
+        })
     } else {
       return client.storage
         .from("avatars")

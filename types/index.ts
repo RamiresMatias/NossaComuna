@@ -69,8 +69,14 @@ export interface CreatePostType {
   id?: string
   description: OutputData
   title: string
-  coverImage: File
+  coverImage?: File
   isDraft?: boolean
+  profileId?: string
+  cover?: string
+}
+
+export interface EditPostType extends Omit<PostDetail, "profile"> {
+  profileId: string
 }
 
 export type ProfileTableRow = Database['public']['Tables']['profiles']

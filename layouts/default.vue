@@ -24,7 +24,7 @@ import HeaderAuthenticated from '@/modules/auth/components/HeaderAuthenticated.v
 import {useSession} from '@/modules/auth/composables/useSession/useSession'
 import { useMyself } from '@/modules/users/composables/useMyself/useMyself'
 
-const { loading, user } = useMyself()
+const { user } = useMyself()
 
 const session = useSession()
 const router = useRouter()
