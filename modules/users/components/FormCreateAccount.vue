@@ -4,7 +4,7 @@
       <label for="avatar">Avatar</label>
       <div class="w-full flex gap-4 items-center">
         <FileUpload mode="basic" name="demo[]" url="/api/upload" accept="image/*" :auto="true" @upload="onUpload" chooseLabel="Escolha uma foto" />
-        <Avatar v-if="fileLink" :image="fileLink" shape="circle" class="" />
+        <Avatar v-if="modelValue.avatar" :image="(modelValue.avatar as any)?.objectURL" shape="circle" class="" />
       </div>
     </div>
     <div class="flex flex-col gap-2 w-full">
@@ -30,14 +30,14 @@
 import type { FileUploadUploadEvent } from 'primevue/fileupload'
 
 const modelValue = defineModel<{
-  avatar: string
+  avatar: File
   email: string
   password: string
   confirmPassword: string
   username: string
 }>({
   default: {
-    avatar: '',
+    avatar: null,
     email: '',
     password: '',
     confirmPassword: '',
@@ -45,28 +45,13 @@ const modelValue = defineModel<{
   }
 })
 
-const fileName = ref()
 const fileLink = ref()
 
 const onUpload = async (file: FileUploadUploadEvent) => {
   const fileUp = Array.isArray(file.files) ? file.files[0] as File : undefined
-  await customBase64Uploader(fileUp)
+  modelValue.value.avatar = fileUp
 }
 
-const customBase64Uploader = async (file: any) => {
-  if (!file) return
-
-  fileName.value = (file as File).name
-
-  const reader = new FileReader()
-  const blob = await fetch(file.objectURL).then((r) => r.blob())
-
-  reader.readAsDataURL(blob)
-  reader.onloadend = function () {
-    modelValue.value.avatar = reader.result as string
-    fileLink.value = reader.result as string
-  }
-}
 
 const file = ref<File>()
 </script>

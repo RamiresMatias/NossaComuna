@@ -43,7 +43,7 @@ export interface PostDetail {
   title: string
   createdAt?: Date
   profile: Partial<Profile>
-  coverImage: string
+  coverImageUrl: string
   isDraft?: boolean
   totalComments?: number
   totalLikes?: number
@@ -72,7 +72,7 @@ export interface CreatePostType {
   coverImage?: File
   isDraft?: boolean
   profileId?: string
-  cover?: string
+  coverImageUrl?: string
 }
 
 export interface EditPostType extends Omit<PostDetail, "profile"> {

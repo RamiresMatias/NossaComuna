@@ -19,8 +19,7 @@ export default (client: SupabaseClient<Database>) => ({
     let coverImageUrl = ''
 
     if (post.coverImage) {
-      const {data, error} = await this.uploadCoverImage({id, file: post.coverImage, userId: post.profileId})
-      if (!error) coverImageUrl = `${runtimeConfig.public.supabaseUrl}/storage/v1/object/public/${data.fullPath}`
+      coverImageUrl = await this.uploadCoverImage({id: post.id, file: post.coverImage, userId: post.profileId})
     }
 
     return client
@@ -31,7 +30,7 @@ export default (client: SupabaseClient<Database>) => ({
         description: JSON.stringify(post.description),
         is_draft: post.isDraft,
         created_at: new Date(),
-        cover_image: coverImageUrl,
+        cover_image_url: coverImageUrl,
         code: removeAccents(transformCode(post.title)),
         profile_id: post.profileId 
       })
@@ -42,13 +41,10 @@ export default (client: SupabaseClient<Database>) => ({
     if (!post.profileId) throw new Error("É necessário estar logado para criar um post")
     if (!post.id) throw new Error("Informe o ID do post")
 
-    const id = v4()
-
     let coverImageUrl = ''
 
-    if (post.coverImage && typeof post.coverImage !== 'string') {
-      const {data, error} = await this.updateCoverImage({id, file: post.coverImage, userId: post.profileId})
-      if (!error) coverImageUrl = `${runtimeConfig.public.supabaseUrl}/storage/v1/object/public/${data.fullPath}`
+    if (post.coverImage) {
+      coverImageUrl = await this.updateCoverImage({id: post.id, file: post.coverImage, userId: post.profileId})
     }
 
     return client
@@ -56,15 +52,16 @@ export default (client: SupabaseClient<Database>) => ({
       .update({
         title: post.title,
         description: JSON.stringify(post.description),
-        cover_image: (coverImageUrl || post.coverImage),
-        profile_id: post.profileId 
+        cover_image_url: (coverImageUrl || post.coverImageUrl),
+        profile_id: post.profileId,
+        code: removeAccents(transformCode(post.title))
       })
       .match({id: post.id})
   },
   async getAllPosts () {
     const {data} = await client
       .from('post')
-      .select('id, title, is_draft, code, created_at, cover_image, profiles!inner(id, username, avatar_url)')
+      .select('id, title, is_draft, code, created_at, cover_image_url, profiles!inner(id, username, avatar_url)')
       .order('created_at', {ascending: true})
       .returns<ReadAllRow[]>()
 
@@ -83,18 +80,29 @@ export default (client: SupabaseClient<Database>) => ({
     return readOneAdapter(data)
   },
   async uploadCoverImage ({id, file, userId}: {file: File, id: string; userId: string}) {
-    return client.storage
+    const runtimeConfig = useRuntimeConfig()
+
+    const {data, error} = await client.storage
       .from("cover_images")
       .upload(`/${userId}/${id}`, file, {
         upsert: true
       })
+
+    if (error) return ''
+    else return `${runtimeConfig.public.supabaseUrl}/storage/v1/object/public/${data.fullPath}`
   },
   async updateCoverImage ({id, file, userId}: {file: File, id: string; userId: string}) {
-    return client.storage
+    const runtimeConfig = useRuntimeConfig()
+
+    const {data, error} = await client.storage
       .from("cover_images")
-      .upload(`/${userId}/${id}`, file, {
+      .update(`/${userId}/${id}`, file, {
+        cacheControl: '300',
         upsert: true
       })
+
+    if (error) return ''
+    else return `${runtimeConfig.public.supabaseUrl}/storage/v1/object/public/${data.fullPath}`
   },
   async getAllComments (postId: string) {
     const {data} = await client

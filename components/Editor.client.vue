@@ -42,7 +42,6 @@ onMounted(() => {
       })
     },
     onReady: () => {
-      console.log(modelValue.value);
       modelValue.value && editor.value?.render(modelValue.value)
     }
   })

@@ -29,13 +29,13 @@ const loading = ref(false)
 const state = ref<'buttons' | 'form'>('buttons')
 
 const form = reactive<{
-  avatar: string
+  avatar: File
   email: string
   password: string
   confirmPassword: string
   username: string
 }>({
-  avatar: '',
+  avatar: null,
   email: '',
   password: '',
   confirmPassword: '',

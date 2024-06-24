@@ -3,7 +3,7 @@
     <div v-if="!preview" class="card-post">
       <div class="md:px-6 mb-4">
         <FileUpload 
-          v-if="!file && !fileLink"
+          v-if="!form.coverImage && !form.coverImageUrl"
           mode="basic" 
           name="demo[]" 
           url="/api/upload" 
@@ -14,7 +14,7 @@
           chooseLabel="Add Imagem de capa"
         />
         <div v-else class="flex items-center w-full gap-10">
-          <img :src="(file?.objectURL || fileLink)" alt="Imagem de capa do post" class="rounded-md w-24 h-24 object-contain" />
+          <img :src="((form.coverImage as any)?.objectURL || form.coverImageUrl) + '?c='" alt="Imagem de capa do post" class="rounded-md w-24 h-24 object-contain" />
           <div>
             <Button 
               label="Remover"
@@ -31,14 +31,18 @@
       <div class="w-full flex flex-col gap-6">
         <Textarea v-model="form.title" autoResize rows="2" cols="30" class="title-post" placeholder="Insira o titulo aqui" />
         <div class="w-full bg-gray-100 h-0.5 rounded-md"></div>
-        <Editor 
+        <div v-if="loading && form.id" class="flex items-center justify-center p-10 gap-2">
+          Carregando informações <i class="pi pi-spin pi-spinner text-2xl"></i>
+        </div>
+        <Editor
+          v-if="!loading"
           v-model="form.description"
           placeholder="Descrição do post aqui"
         />
       </div>
     </div>
     <div v-else class="card-post readonly">
-      <img v-if="file?.objectURL || fileLink" :src="file?.objectURL || fileLink" alt="Imagem de capa do post" class="w-full h-[300px] object-cover" />
+      <img v-if="form.coverImage || form.coverImageUrl" :src="((form.coverImage as any)?.objectURL || form.coverImageUrl)" alt="Imagem de capa do post" class="w-full h-[300px] object-cover" />
       <div class="title-post">
         {{ form.title }}
       </div>
@@ -101,21 +105,17 @@ const form = reactive<CreatePostType>({
   }
 })
 
-const file = ref<File & UploadType | null>()
-const fileLink = ref()
 const preview = ref(false)
 const loading = ref(false)
 
 const removeFile = () => {
-  file.value = null
-  fileLink.value = null
+  form.coverImage = null
+  form.coverImageUrl = null
 }
 
 const onUpload = async (event: FileUploadUploadEvent) => {
   const fileFm = Array.isArray(event.files) ? event.files[0] : event.files
   form.coverImage = fileFm
-  const { link } = await customBase64Uploader(fileFm)
-  fileLink.value = link
 }
 
 const handleSubmit = async () => {
@@ -129,7 +129,8 @@ const handleSubmit = async () => {
         description: form.description,
         coverImage: form.coverImage,
         isDraft: form.isDraft,
-        profileId: user.value.id
+        profileId: user.value.id,
+        coverImageUrl: form.coverImageUrl
       }) 
       : await services.post.createPost({
         title: form.title,
@@ -174,7 +175,6 @@ const getPostById = async () => {
     }
 
     Object.assign(form, postFound)
-    fileLink.value = postFound.coverImage
 
     await sleep(1000)
     loading.value = false

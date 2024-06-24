@@ -1,6 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js"
 import type { Database } from '@/libs/supabase/schema'
-
 interface ServiceOptions {
   redirectUrl: string
 }
@@ -8,7 +7,7 @@ interface ServiceOptions {
 interface NewUserProps {
   email: string
   username?: string
-  avatar?: string
+  avatar?: File
   password: string
 }
 
@@ -24,14 +23,16 @@ export default (client: SupabaseClient<Database>, options: ServiceOptions) => ({
   },
 
   async signInWithEmail(email: string, password: string) {
-    const { error, data } = await client.auth.signInWithPassword({
+    const { error } = await client.auth.signInWithPassword({
       email: email,
       password: password,
     })
 
     if (!error) {
-      navigateTo('/auth/redirect')
+      return navigateTo('/auth/redirect')
     }
+
+    return error
   },
 
   async signOut() {
@@ -41,7 +42,8 @@ export default (client: SupabaseClient<Database>, options: ServiceOptions) => ({
   },
 
   async createUser(user: NewUserProps) {
-    return await client.auth.signUp({
+
+    const {data, error} = await client.auth.signUp({
       email: user.email,
       password: user.password,
       options: {
@@ -50,5 +52,33 @@ export default (client: SupabaseClient<Database>, options: ServiceOptions) => ({
         }
       }
     })
+
+    if (!error && user.avatar && data.user) {
+      await this.uploadAvatar({id: data.user.id, file: user.avatar})
+    }
+
+    if (!error) {
+      navigateTo('/posts')
+    }
+
+    return data
+  },
+  async uploadAvatar ({id, file}: {file: File, id: string}) {
+
+    const runtimeConfig = useRuntimeConfig()
+
+    const fileName = `/${id}/${id}`
+
+    const {data, error} = await client.storage
+      .from("avatars")
+      .upload(fileName, file, {
+        upsert: true
+      })
+
+    if (error) return
+
+    await client.from('profiles').update({
+      avatar_url: `${runtimeConfig.public.supabaseUrl}/storage/v1/object/public/${data.fullPath}`
+    }).eq('id', id)
   }
 })

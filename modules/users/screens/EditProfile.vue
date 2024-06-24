@@ -6,7 +6,7 @@
     @share="() => {}"
     class="my-10"
   />
-  <Widget title="Informações básicas">
+  <Widget title="Informações básicas" class="m-4">
     <form class="w-full flex flex-col gap-4">
       <div class="flex flex-col gap-2 w-full">
         <label for="avatar">Avatar</label>

@@ -1,6 +1,6 @@
 <template>
   <div class="grid grid-cols-12 w-full max-w-screen-xl">
-    <div v-if="isAuthorPost" class="col-span-1 flex flex-col items-center m-0 p-0">
+    <div v-if="isAuthorPost" class="col-span-1 hidden md:flex flex-col items-center m-0 p-0">
       <Button 
         icon="pi pi-pencil" 
         severity="contrast" 
@@ -12,9 +12,9 @@
       />
     </div>
     <PostDetailLoading v-if="loading || pending" class="col-span-11" />
-    <article v-else class="w-full h-full mx-auto bg-white rounded-md flex flex-col col-span-9">
-      <img v-if="post.coverImage" :src="post.coverImage" alt="Imagem de capa do post" class="w-full h-full max-h-[400px] object-cover rounded-t-md mb-8" />
-      <section class="w-full h-full flex flex-col max-w-[80%] mx-auto" :class="{'mt-8': !post.coverImage}">
+    <article v-else class="w-full h-full mx-auto bg-white rounded-md flex flex-col col-span-full md:col-span-9">
+      <img v-if="post.coverImageUrl" :src="post.coverImageUrl + '?c='" alt="Imagem de capa do post" class="w-full h-full max-h-[400px] object-cover rounded-t-md mb-8" />
+      <section class="w-full h-full flex flex-col max-w-[80%] mx-auto" :class="{'mt-8': !post.coverImageUrl}">
         <div class="flex w-full py-4 gap-2">
           <img :src="post.profile.avatarUrl" alt="Foto de perfil do usuário" class="rounded-full w-12 h-12" />
           <div class="w-full h-full flex flex-col flex-1 gap-1">
@@ -38,14 +38,14 @@
             </template>
           </Stat>
         </div>
-        <h1 class="text-4xl font-bold text-pretty tracking-wide font-[Inter]">
+        <h1 class="text-4xl font-bold text-pretty tracking-wide font-[Inter] mb-6">
           {{ post.title }}
         </h1>
         <Editor
           v-if="post.description"
           v-model="post.description"
           readonly
-          class="p-2 md:p-0"
+          class="editor-post"
         />
       </section>
       <div class="w-full h-[2px] bg-gray-200"></div>
@@ -93,7 +93,7 @@ const post = reactive<PostDetail>({
   id: '',
   title: '',
   description: null,
-  coverImage: '',
+  coverImageUrl: '',
   code: '',
   createdAt: new Date(),
   isDraft: false,
@@ -193,3 +193,14 @@ useSeoMeta({
 
 onMounted(() => getPost())
 </script>
+
+<style lang="scss">
+.editor-post {
+  @apply p-2 md:p-0;
+
+  div.ce-block__content {
+    @apply mx-0 my-0;
+  }
+
+}
+</style>

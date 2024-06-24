@@ -5,6 +5,10 @@
       v-for="item in 4"
       :key="item"
     />
+    <div v-else-if="!loading && !posts?.length" class="flex flex-col items-center justify-center gap-4">
+      <CharactersListEmpty class="w-[400px]" />
+      <h2 class="text-xl text-center font-[Inter]">Ops... Não há nenhum post criado. Crie um post agora mesmo e compartilhe seus pensamentos</h2>
+    </div>
     <Post
       v-else
       v-for="(item, i) in posts" 

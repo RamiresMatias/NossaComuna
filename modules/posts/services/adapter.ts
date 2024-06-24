@@ -9,7 +9,7 @@ export function readAllAdapter(values: ReadAllRow[] | null): PostType[] | [] {
     isDraft: el.is_draft,
     code: el.code,
     createdAt: new Date(el.created_at),
-    coverImage: el.cover_image,
+    coverImage: el.cover_image_url,
     totalComments: 0,
     totalLikes: 0,
     profile: {
@@ -29,7 +29,7 @@ export function readOneAdapter(value: ReadOneRow | null): PostDetail | null {
     isDraft: value.is_draft,
     code: value.code,
     createdAt: new Date(value.created_at),
-    coverImage: value.cover_image,
+    coverImageUrl: value.cover_image_url,
     totalComments: 0,
     totalLikes: 0,
     profile: {
@@ -65,7 +65,7 @@ export function getPostByIdAndAuthorAdapter(value: PostTable['Row']): EditPostTy
     isDraft: value.is_draft,
     code: value.code,
     createdAt: new Date(value.created_at),
-    coverImage: value.cover_image,
+    coverImageUrl: value.cover_image_url,
     profileId:value.profile_id,
     description: JSON.parse(value.description)
   }

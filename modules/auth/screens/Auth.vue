@@ -43,6 +43,7 @@ import Divider from 'primevue/divider'
 import FormLogin from '@/modules/auth/components/FormLogin.vue'
 
 const services = useServices()
+const toast = useToast()
 
 const loading = ref(false)
 
@@ -58,7 +59,17 @@ const form = reactive<{
 
 const authWithEmail = async () => {
   loading.value = true
-  await services.auth.signInWithEmail(form.email, form.password)
+  const response = await services.auth.signInWithEmail(form.email, form.password)
+
+  if (response.name === 'AuthApiError') {
+    toast.add({
+      severity: 'error',
+      summary: 'Login inválido',
+      detail: 'O E-mail/Senha está incorreto, tente novamente',
+      life: 4000
+    })
+  }
+
   loading.value = false
 }
 

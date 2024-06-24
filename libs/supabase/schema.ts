@@ -86,7 +86,7 @@ export type Database = {
       post: {
         Row: {
           code: string | null
-          cover_image: string | null
+          cover_image_url: string | null
           created_at: string | null
           description: string | null
           id: string
@@ -96,7 +96,7 @@ export type Database = {
         }
         Insert: {
           code?: string | null
-          cover_image?: string | null
+          cover_image_url?: string | null
           created_at?: string | null
           description?: string | null
           id: string
@@ -106,7 +106,7 @@ export type Database = {
         }
         Update: {
           code?: string | null
-          cover_image?: string | null
+          cover_image_url?: string | null
           created_at?: string | null
           description?: string | null
           id?: string
