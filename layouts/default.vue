@@ -2,15 +2,16 @@
   <div class="w-full h-full flex flex-col items-center">
     <MainContent>
       <template #header>
+        <HeaderLoading v-if="loading" />
         <HeaderAuthenticated
-          v-if="session.isLogged()"
+          v-if="session.isLogged() && !loading"
           :nickname="user?.username || 'Usuário'"
           :profile-pic="user?.avatarUrl"
           @logout="handleLogout"
           @navigate-to-edit-profile="handleNavigateEditProfile"
           @navigate-to-post-create="handleNavigateToCreatePost"
         /> 
-        <Header v-else @authenticate="handleAuth" @navigate-to-post-create="handlePostCreate" />
+        <Header v-if="!session.isLogged() && !loading" @authenticate="handleAuth" @navigate-to-post-create="handlePostCreate" />
       </template>
       <template #content>
         <slot></slot>
@@ -24,7 +25,7 @@ import HeaderAuthenticated from '@/modules/auth/components/HeaderAuthenticated.v
 import {useSession} from '@/modules/auth/composables/useSession/useSession'
 import { useMyself } from '@/modules/users/composables/useMyself/useMyself'
 
-const { user } = useMyself()
+const { user, loading } = useMyself()
 
 const session = useSession()
 const router = useRouter()

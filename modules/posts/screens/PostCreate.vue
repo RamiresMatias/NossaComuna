@@ -14,7 +14,7 @@
           chooseLabel="Add Imagem de capa"
         />
         <div v-else class="flex items-center w-full gap-10">
-          <img :src="((form.coverImage as any)?.objectURL || form.coverImageUrl) + '?c='" alt="Imagem de capa do post" class="rounded-md w-24 h-24 object-contain" />
+          <img :src="((form.coverImage as any)?.objectURL || (form.coverImageUrl + '?c='))" alt="Imagem de capa do post" class="rounded-md w-24 h-24 object-contain" />
           <div>
             <Button 
               label="Remover"
@@ -35,7 +35,7 @@
           Carregando informações <i class="pi pi-spin pi-spinner text-2xl"></i>
         </div>
         <Editor
-          v-if="!loading"
+          v-if="!loadingGetById"
           v-model="form.description"
           placeholder="Descrição do post aqui"
         />
@@ -107,6 +107,7 @@ const form = reactive<CreatePostType>({
 
 const preview = ref(false)
 const loading = ref(false)
+const loadingGetById = ref(false)
 
 const removeFile = () => {
   form.coverImage = null
@@ -158,10 +159,10 @@ const handleSubmit = async () => {
 const getPostById = async () => {
   const id = route.params.id as string
 
-  if (!id || !user.value?.id || loading.value) return
+  if (!id || !user.value?.id || loadingGetById.value) return
 
   try {
-    loading.value = true
+    loadingGetById.value = true
     
     const postFound = await services.post.getPostByIdAndAuthor({id, userId: user.value?.id})
 
@@ -177,9 +178,9 @@ const getPostById = async () => {
     Object.assign(form, postFound)
 
     await sleep(1000)
-    loading.value = false
+    loadingGetById.value = false
   } catch (error) {
-    loading.value = false
+    loadingGetById.value = false
   }
 }
 

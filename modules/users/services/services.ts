@@ -49,4 +49,12 @@ export default (client: SupabaseClient<Database>) => ({
         })
     }
   },
+  async getUserById (id: string) {
+    return this.getMySelf(id)
+  },
+  async getUserByUsername (username: string) {
+    const response = await client.from('profiles').select('*').eq('username', username).limit(1).single()
+    const user = getMySelfAdapter(response.data)
+    return user
+  }
 })

@@ -1,27 +1,27 @@
 <template>
-  <div class="grid grid-cols-12 w-full max-w-screen-xl">
-    <div v-if="isAuthorPost" class="col-span-1 hidden md:flex flex-col items-center m-0 p-0">
+  <div class="grid grid-cols-12 w-full max-w-[1380px] px-4 lg:px-0 gap-y-6">
+    <div v-if="isAuthorPost" class="col-span-1 hidden lg:flex flex-col items-center m-0 p-0">
       <Button 
         icon="pi pi-pencil" 
         severity="contrast" 
         text 
         rounded 
         aria-label="Editar" 
-        v-tooltip="{ value: 'Editar post', showDelay: 1000, hideDelay: 300 }" 
+        v-tooltip="{ value: 'Editar post', showDelay: 300, hideDelay: 300 }" 
         @click="navigateToEdit"
       />
     </div>
-    <PostDetailLoading v-if="loading || pending" class="col-span-11" />
-    <article v-else class="w-full h-full mx-auto bg-white rounded-md flex flex-col col-span-full md:col-span-9">
+    <PostDetailLoading v-if="loading || pending" class="col-span-8" />
+    <article v-else class="w-full h-full mx-auto bg-white rounded-md flex flex-col col-span-full lg:col-span-8 shadow-sm">
       <img v-if="post.coverImageUrl" :src="post.coverImageUrl + '?c='" alt="Imagem de capa do post" class="w-full h-full max-h-[400px] object-cover rounded-t-md mb-8" />
       <section class="w-full h-full flex flex-col max-w-[80%] mx-auto" :class="{'mt-8': !post.coverImageUrl}">
         <div class="flex w-full py-4 gap-2">
           <img :src="post.profile.avatarUrl" alt="Foto de perfil do usuário" class="rounded-full w-12 h-12" />
           <div class="w-full h-full flex flex-col flex-1 gap-1">
-            <p class=" text-base lg:text-lg text-[--title-color] font-[700] text-balance font-[Inter]">
+            <p class=" text-base lg:text-lg text-[--title-color] font-bold text-balance">
               {{ post.profile.username }}
             </p>
-            <p class="text-xs font-[Inter] font-regular text-gray-500">
+            <p class="text-xs font-regular text-gray-500">
               Postado em {{ new Date(post.createdAt).toLocaleDateString('pt-br') }}
             </p>
           </div>
@@ -38,7 +38,7 @@
             </template>
           </Stat>
         </div>
-        <h1 class="text-4xl font-bold text-pretty tracking-wide font-[Inter] mb-6">
+        <h1 class="text-4xl font-bold text-pretty tracking-wide mb-6">
           {{ post.title }}
         </h1>
         <Editor
@@ -50,7 +50,7 @@
       </section>
       <div class="w-full h-[2px] bg-gray-200"></div>
       <section class="w-full h-full flex flex-col max-w-[80%] mx-auto py-6 gap-10">
-        <h2 class="text-2xl font-semibold font-[Inter]">Comentários ({{ comments.length }})</h2>
+        <h2 class="text-2xl font-semibold">Comentários ({{ comments.length }})</h2>
         <CommentLoading v-if="loadingComments" v-for="item in 4" :key="item" />
         <CreateComment 
           v-if="!loadingComments" 
@@ -72,6 +72,18 @@
         ></Comment>
       </section>
     </article>
+    <div class="col-span-full lg:col-span-3 lg:ml-4">
+      <AuthorProfileLoading v-if="loadingProfile" />
+      <AuthorProfile
+        v-else 
+        :id="author.id"
+        :username="author.username"
+        :avatar-url="author.avatarUrl"
+        :bio="author.bio"
+        :created-at="author.createdAt"
+        :email="author.email"
+      />
+    </div>
   </div>
 </template>
 
@@ -80,10 +92,13 @@ import Stat from '@/modules/posts/components/Stat.vue'
 import Comment from '@/modules/posts/components/Comment.vue'
 import PostDetailLoading from '@/modules/posts/components/PostDetailLoading.vue'
 import CommentLoading from '@/modules/posts/components/CommentLoading.vue'
+import AuthorProfile from '@/modules/posts/components/AuthorProfile.vue'
+import AuthorProfileLoading from '@/modules/posts/components/AuthorProfileLoading.vue'
+
 import { useMyself } from '@/modules/users/composables/useMyself/useMyself'
 
 import { onMounted } from 'vue'
-import type { CommentType, PostDetail } from '@/types'
+import type { CommentType, PostDetail, Profile } from '@/types'
 
 const services = useServices()
 const { user } = useMyself()
@@ -102,11 +117,21 @@ const post = reactive<PostDetail>({
   profile: {}
 })
 
+const author = reactive<Profile>({
+  id: '',
+  createdAt: null,
+  email: '',
+  avatarUrl: '',
+  bio: '',
+  username: ''
+})
+
 const myComment = ref<string>('')
 const comments = reactive<CommentType[]>([])
 const loading = ref(true)
 const loadingComments = ref(false)
 const loadingCreateComment = ref(false)
+const loadingProfile = ref(true)
 
 const isAuthorPost = computed(() => post?.profile?.id === user.value?.id)
 
@@ -128,6 +153,7 @@ const getPost = async () => {
 
     await sleep(1000)
 
+    getProfileAuthor()
     getComments(data.id)
 
     loading.value = false
@@ -175,6 +201,22 @@ const handleDeleteComment = async (id: string) => {
     })
     getComments(post.id)
   } catch (error) {
+    console.log(error);
+  }
+}
+
+const getProfileAuthor = async () => {
+  if (!post?.profile?.id) return
+  try {
+    loadingProfile.value = true
+    const data = await services.users.getUserById(post.profile.id)
+    Object.assign(author, data)
+
+    await sleep(1000)
+
+    loadingProfile.value = false
+  } catch (error) {
+    loadingProfile.value = false
     console.log(error);
   }
 }
