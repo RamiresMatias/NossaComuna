@@ -17,14 +17,6 @@ export default defineNuxtConfig({
       from: path.resolve(__dirname, "./assets/presets/lara")
     }
   },
-  // googleFonts: {
-  //   base64: true,
-  //   fontsDir: "assets/fonts",
-  //   overwriting: true,
-  //   families: {
-  //     Inter: [300, 500, 800],
-  //   }
-  // },
   vite: {
     optimizeDeps: {
       include: ["@editorjs/editorjs"],
@@ -35,9 +27,7 @@ export default defineNuxtConfig({
   },
   imports: {
     dirs: [
-      // "./composables/useMarkdown", 
       "./composables/useServices",
-      // "./composables/useLogger"
     ]
   },
   runtimeConfig: {

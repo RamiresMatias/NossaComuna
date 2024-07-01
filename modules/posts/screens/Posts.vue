@@ -7,7 +7,7 @@
     />
     <div v-else-if="!loading && !posts?.length" class="flex flex-col items-center justify-center gap-4">
       <CharactersListEmpty class="w-[400px]" />
-      <h2 class="text-xl text-center font-[Inter]">Ops... Não há nenhum post criado. Crie um post agora mesmo e compartilhe seus pensamentos</h2>
+      <h2 class="text-xl text-center ">Ops... Não há nenhum post criado. Crie um post agora mesmo e compartilhe seus pensamentos</h2>
     </div>
     <Post
       v-else
@@ -50,6 +50,13 @@ const loadPosts = async () => {
     loading.value = false
   }
 }
+
+useSeoMeta({
+  title: `Posts`,
+  ogTitle: `Posts`,
+  description: `Leia, crie e compartilhe conhecimento em nossa comunidade`,
+  ogDescription: `Leia, crie e compartilhe conhecimento em nossa comunidade`
+})
 
 onMounted(() => loadPosts())
 </script>

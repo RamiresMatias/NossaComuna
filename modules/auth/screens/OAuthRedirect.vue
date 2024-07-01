@@ -1,5 +1,5 @@
 <template>
-  <p class="font-[Inter] text-gray-800 text-regular">Redirecionando...</p>
+  <p class=" text-gray-800 text-regular">Redirecionando...</p>
 </template>
 
 <script setup lang="ts">

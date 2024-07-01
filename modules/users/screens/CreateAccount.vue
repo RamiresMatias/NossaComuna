@@ -2,7 +2,7 @@
   <div class="w-full flex flex-col items-center max-w-screen-sm mx-auto">
     <div class="w-full flex flex-col items-center p-2 gap-2">
       <div class="w-full flex items-center justify-center mb-8">
-        <h1 class="font-[Inter] text-4xl font-bold">Crie sua conta</h1>
+        <h1 class=" text-4xl font-bold">Crie sua conta</h1>
       </div>
 
       <FormCreateAccount v-if="state === 'form'" v-model="form" />

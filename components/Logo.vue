@@ -6,7 +6,7 @@
       'text-5xl': size === 'xl'
     }">👨‍💻</span>
     <span 
-      class="font-[Inter] font-bold text-gray-700 text-lg md:text-xl"
+      class=" font-bold text-gray-700 text-lg md:text-xl"
       :class="{
         'md:text-lg': size === 'small',
         'md:text-xl': size === 'default',

@@ -7,6 +7,13 @@ import {useSession} from '@/modules/auth/composables/useSession/useSession'
 import {v4} from 'uuid'
 import { getPostByIdAndAuthorAdapter, readAllAdapter, readAllCommentsAdapter, readOneAdapter } from "./adapter"
 
+type ReplyCommentProps = {
+  description: string
+  postId: string
+  commentId: string
+  userId: string
+}
+
 export default (client: SupabaseClient<Database>) => ({
 
   async createPost (post: CreatePostType) {
@@ -107,9 +114,21 @@ export default (client: SupabaseClient<Database>) => ({
   async getAllComments (postId: string) {
     const {data} = await client
       .from('comment')
-      .select('id, description, created_at, profiles!inner(id, username, avatar_url)')
+      .select('id, description, created_at, profiles!inner(id, username, avatar_url), comment(id)')
       .eq('post_id', postId)
+      .is('comment_id', null)
       .order('created_at', {ascending: true})
+      .returns<ReadAllRowComments[]>()
+
+    return readAllCommentsAdapter(data)
+  },
+  async getReplies (commentId: string) {
+    const {data} = await client
+      .from('comment')
+      .select('id, description, created_at, comment_id, profiles!inner(id, username, avatar_url)')
+      .eq('comment_id', commentId)
+      .order('created_at', {ascending: true})
+      .range(0, 1)
       .returns<ReadAllRowComments[]>()
 
     return readAllCommentsAdapter(data)
@@ -141,5 +160,16 @@ export default (client: SupabaseClient<Database>) => ({
       .single()
 
     return getPostByIdAndAuthorAdapter(data)
+  },
+  async replyComment ({description, postId, commentId, userId}: ReplyCommentProps) {
+    return client
+      .from('comment')
+      .insert({
+        id: v4(),
+        description,
+        post_id: postId,
+        profile_id: userId,
+        comment_id: commentId
+      })
   }
 })

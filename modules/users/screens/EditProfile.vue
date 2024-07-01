@@ -1,5 +1,6 @@
 <template>
-  <HeadlineEdit 
+  <HeadlineEdit
+    :key="forceUpdateKey"
     :username="form.username!" 
     :avatar-url="linkNewFile|| form.avatarUrl || ''" 
     @navigate-to-profile="() => {}"
@@ -32,7 +33,7 @@
   <Button
     @click="handleUpdateProfile()"
     :loading="loading"
-    class="mt-5 w-full md:w-auto"
+    class="mt-5 w-full md:w-auto ml-4"
     label="Atualizar"
     icon="pi pi-pencil"
     icon-pos="right"
@@ -62,6 +63,7 @@ const loading = ref(false)
 const newFile = ref()
 const toast = useToast()
 const linkNewFile = ref()
+const forceUpdateKey = ref(1)
 
 watch(
   () => user.value,
@@ -91,8 +93,8 @@ const handleUpdateProfile = async () => {
       avatar: newFile.value,
       avatarUrl: form.avatarUrl
     })
-    
-    window.location.reload()
+
+    forceUpdateKey.value += 1
 
     toast.add({
       severity: 'success',

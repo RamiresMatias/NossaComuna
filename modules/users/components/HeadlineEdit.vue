@@ -5,7 +5,7 @@
       <!-- <Avatar v-else icon="pi pi-user" style="background-color: #dee9fc; color: #1a2551" shape="circle" /> -->
       <i v-else class="pi pi-user rounded-full bg-slate-300 text-5xl p-6"></i>
     </div>
-    <h1 class="font-[Inter] text-gray-700 font-bold text-2xl md:text-3xl">@{{ props.username }}</h1>
+    <h1 class=" text-gray-700 font-bold text-2xl md:text-3xl">@{{ props.username }}</h1>
     <div class="flex gap-2 mt-2 flex-wrap items-center justify-center">
       <Button 
         label="Ver perfil"

@@ -10,7 +10,7 @@
           <Skeleton width="6rem" height="1rem"></Skeleton>
         </div>
       </div>
-      <div class="w-full text-balance font-bold font-[Inter] text-xl lg:text-xl mb-2">
+      <div class="w-full text-balance font-bold  text-xl lg:text-xl mb-2">
         <Skeleton width="30rem" height="2rem"></Skeleton>
       </div>
       <div class="w-full flex gap-2">

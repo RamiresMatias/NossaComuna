@@ -56,7 +56,7 @@
           v-if="!loadingComments" 
           v-model="myComment" 
           :profile-pic="user.avatarUrl" 
-          :loading="false" 
+          :loading="loadingCreateComment" 
           @submit-comment="handleCreateComment" 
         />
         <Comment
@@ -68,7 +68,9 @@
           :created-at="comment.createdAt"
           :id="comment.id"
           :is-author="comment.profile.id === user.id"
+          :comments="comment.comments"
           @delete="handleDeleteComment"
+          @on-reply="handleOnReply"
         ></Comment>
       </section>
     </article>
@@ -95,13 +97,14 @@ import CommentLoading from '@/modules/posts/components/CommentLoading.vue'
 import AuthorProfile from '@/modules/posts/components/AuthorProfile.vue'
 import AuthorProfileLoading from '@/modules/posts/components/AuthorProfileLoading.vue'
 
-import { useMyself } from '@/modules/users/composables/useMyself/useMyself'
+import { myselfKey, type MyselfContextProvider } from '@/modules/users/composables/useMyself/useMyself'
+
+const { user } = inject(myselfKey) as MyselfContextProvider
 
 import { onMounted } from 'vue'
 import type { CommentType, PostDetail, Profile } from '@/types'
 
 const services = useServices()
-const { user } = useMyself()
 const toast = useToast()
 
 const post = reactive<PostDetail>({
@@ -170,6 +173,20 @@ const getComments = async (postId: string) => {
     const data = await services.post.getAllComments(postId)
     comments.splice(0, comments.length, ...data)
 
+    const commentsRepliedIds = data
+      .filter(el => el.totalReplies)
+      .map(el => el.id)
+    
+    if (commentsRepliedIds.length) {
+      Promise
+        .all(commentsRepliedIds.map(id => services.post.getReplies(id)))
+        .then(res => {
+          res.forEach((el, index) => {
+            comments[index].comments = el 
+          })
+        })
+    }
+
     loadingComments.value = false
   } catch (error) {
     loadingComments.value = false
@@ -219,6 +236,23 @@ const getProfileAuthor = async () => {
     loadingProfile.value = false
     console.log(error);
   }
+}
+
+const handleOnReply = async ({comment, commentId}: {comment: string, commentId: string}) => {
+  try {
+    loadingCreateComment.value = true
+    
+    await services.post.replyComment({description: comment, postId: post.id, commentId, userId: user.value.id})
+    getComments(post.id)
+    
+    loadingCreateComment.value = false
+  } catch (error) {
+    loadingCreateComment.value = false
+  }
+}
+
+const getReplies = async (commentId: string) => {
+
 }
 
 const navigateToEdit = () => {

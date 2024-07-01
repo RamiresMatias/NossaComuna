@@ -34,6 +34,9 @@ export interface CommentType {
   description: string
   profile: Partial<Profile>
   createdAt: Date
+  comments?: CommentType[]
+  totalReplies?: number
+  commentId?: string
 }
 
 export interface PostDetail {
@@ -94,4 +97,5 @@ export type ReadOneRow = PostTable['Row'] & {
 
 export type ReadAllRowComments = CommentTable['Row'] & {
   profiles: ProfileTableRow['Row'] | null
+  comment: Pick<CommentType, "id">[]
 }

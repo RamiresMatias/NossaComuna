@@ -4,7 +4,7 @@
       <Avatar :image="avatarUrl" shape="circle" size="large" />
       <span class="font-bold text-gray-700 text-lg hover:text-blue-900">{{ username }}</span>
     </NuxtLink>
-    <div class="font-[Inter] font-regular text-gray-500">
+    <div class=" font-regular text-gray-500">
       {{ bio }}
     </div>
     <div class="info">
@@ -37,7 +37,7 @@ withDefaults(
 
 <style scoped>
 .info {
-  @apply flex flex-col font-[Inter] text-sm;
+  @apply flex flex-col  text-sm;
 
   &__title {
     @apply font-semibold text-gray-600;

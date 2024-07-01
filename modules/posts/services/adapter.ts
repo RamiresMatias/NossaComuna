@@ -52,7 +52,9 @@ export function readAllCommentsAdapter(values: ReadAllRowComments[] | null): Com
       id: el.profiles.id,
       username: el.profiles.username,
       avatarUrl: el.profiles.avatar_url
-    }
+    },
+    totalReplies: el.comment?.length || 0,
+    commentId: el.comment_id
   }))
 }
 
