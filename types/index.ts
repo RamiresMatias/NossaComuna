@@ -25,7 +25,7 @@ export interface PostType {
   profile: Partial<Profile>
   coverImage: string
   isDraft?: boolean
-  totalLikes?: number
+  likes?: number
   totalComments?: number
 }
 
@@ -35,7 +35,6 @@ export interface CommentType {
   profile: Partial<Profile>
   createdAt: Date
   comments?: CommentType[]
-  totalReplies?: number
   commentId?: string
 }
 
@@ -49,7 +48,7 @@ export interface PostDetail {
   coverImageUrl: string
   isDraft?: boolean
   totalComments?: number
-  totalLikes?: number
+  likes?: number
 }
 
 export interface Likes {
@@ -93,9 +92,9 @@ export type ReadAllRow = PostTable['Row'] & {
 
 export type ReadOneRow = PostTable['Row'] & {
   profiles: ProfileTableRow['Row'] | null
+  likes: {count: number}[]
 }
 
 export type ReadAllRowComments = CommentTable['Row'] & {
   profiles: ProfileTableRow['Row'] | null
-  comment: Pick<CommentType, "id">[]
 }

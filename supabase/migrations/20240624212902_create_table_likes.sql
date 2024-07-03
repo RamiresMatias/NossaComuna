@@ -1,6 +1,5 @@
 CREATE TABLE likes(
   id uuid PRIMARY KEY,
-  description varchar not null,
   post_id uuid references public.post (id),
   profile_id uuid references public.profiles (id),
   comment_id uuid references public.comment (id),

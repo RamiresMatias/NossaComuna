@@ -19,7 +19,7 @@
           {{ title }}
         </div>
         <div class="w-full flex gap-4">
-          <Stat :count="totalLikes">
+          <Stat :count="likes">
             <template #icon>
               <i class="pi pi-heart-fill"></i>
             </template>
@@ -46,7 +46,7 @@ withDefaults(
     title: 'Nome da discussão que o klebin criou',
     id: '',
     coverImage: '',
-    totalLikes: 0,
+    likes: 0,
     totalComments: 0,
     profile: () => Object.create({username: 'Klebin', avatarUrl: 'https://i.ibb.co/VwpJcdH/1ca5d6cede414702a3fd2eeb12bb68b8.jpg'}),
     createdAt: () => new Date(),

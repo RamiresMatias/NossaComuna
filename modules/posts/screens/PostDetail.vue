@@ -1,14 +1,26 @@
 <template>
   <div class="grid grid-cols-12 w-full max-w-[1380px] px-4 lg:px-0 gap-y-6">
-    <div v-if="isAuthorPost" class="col-span-1 hidden lg:flex flex-col items-center m-0 p-0">
-      <Button 
+    <div class="col-span-1 hidden lg:flex flex-col items-center m-0 p-0 gap-4">
+      <Button
+        v-if="isAuthorPost" 
         icon="pi pi-pencil" 
         severity="contrast" 
         text 
         rounded 
         aria-label="Editar" 
-        v-tooltip="{ value: 'Editar post', showDelay: 300, hideDelay: 300 }" 
+        v-tooltip="{ value: 'Editar post', showDelay: 300, hideDelay: 300 }"
+        class="text-xl"
         @click="navigateToEdit"
+      />
+      <Button 
+        icon="pi pi-heart" 
+        severity="contrast" 
+        text 
+        rounded 
+        aria-label="Editar" 
+        v-tooltip="{ value: 'Curtir post', showDelay: 300, hideDelay: 300 }"
+        class="text-xl"
+        @click="like(null)"
       />
     </div>
     <PostDetailLoading v-if="loading || pending" class="col-span-8" />
@@ -26,13 +38,13 @@
             </p>
           </div>
         </div>
-        <div class="w-full flex gap-4 mb-10">
-          <Stat :count="post.totalLikes" class="text-lg">
+        <div class="w-full flex gap-4 mb-10 mt-4">
+          <Stat :count="post.likes" class="text-lg">
             <template #icon>
               <i class="pi pi-heart-fill text-lg"></i>
             </template>
           </Stat>
-          <Stat :count="post.totalComments" class="text-lg">
+          <Stat :count="comments.length" class="text-lg">
             <template #icon>
               <i class="pi pi-comments text-lg"></i>
             </template>
@@ -115,7 +127,7 @@ const post = reactive<PostDetail>({
   code: '',
   createdAt: new Date(),
   isDraft: false,
-  totalLikes: 0,
+  likes: 0,
   totalComments: 0,
   profile: {}
 })
@@ -165,7 +177,7 @@ const getPost = async () => {
   }
 }
 
-const getComments = async (postId: string) => {
+const getComments = async (postId: string | null) => {
   if (!postId) return
   try {
     loadingComments.value = true
@@ -173,19 +185,18 @@ const getComments = async (postId: string) => {
     const data = await services.post.getAllComments(postId)
     comments.splice(0, comments.length, ...data)
 
-    const commentsRepliedIds = data
-      .filter(el => el.totalReplies)
-      .map(el => el.id)
-    
-    if (commentsRepliedIds.length) {
-      Promise
-        .all(commentsRepliedIds.map(id => services.post.getReplies(id)))
-        .then(res => {
-          res.forEach((el, index) => {
-            comments[index].comments = el 
-          })
-        })
-    }
+    const replies = await services.post.getReplies({postId})
+    replies.forEach((el, _, self) => {
+      const commentParent = data.find(parent => parent.id === el.commentId)
+      const replyParent = self.find(rep => rep.id === el.commentId)
+
+      if (commentParent) {
+        commentParent.comments.push(el)
+      } 
+      if (replyParent) {
+        replyParent.comments.push(el)
+      }
+    })
 
     loadingComments.value = false
   } catch (error) {
@@ -251,8 +262,12 @@ const handleOnReply = async ({comment, commentId}: {comment: string, commentId: 
   }
 }
 
-const getReplies = async (commentId: string) => {
-
+const like = async (commentId: string) => {
+  try {
+    services.post.like({postId: post.id, userId: user.value.id, commentId})
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 const navigateToEdit = () => {

@@ -11,7 +11,7 @@ export function readAllAdapter(values: ReadAllRow[] | null): PostType[] | [] {
     createdAt: new Date(el.created_at),
     coverImage: el.cover_image_url,
     totalComments: 0,
-    totalLikes: 0,
+    likes: 0,
     profile: {
       id: el.profile_id,
       username: el.profiles.username,
@@ -30,14 +30,13 @@ export function readOneAdapter(value: ReadOneRow | null): PostDetail | null {
     code: value.code,
     createdAt: new Date(value.created_at),
     coverImageUrl: value.cover_image_url,
-    totalComments: 0,
-    totalLikes: 0,
     profile: {
       id: value.profile_id,
       username: value.profiles.username,
       avatarUrl: value.profiles.avatar_url
     },
-    description: JSON.parse(value.description)
+    description: JSON.parse(value.description),
+    likes: value.likes?.[0]?.count || 0
   }
 }
 
@@ -53,8 +52,8 @@ export function readAllCommentsAdapter(values: ReadAllRowComments[] | null): Com
       username: el.profiles.username,
       avatarUrl: el.profiles.avatar_url
     },
-    totalReplies: el.comment?.length || 0,
-    commentId: el.comment_id
+    commentId: el.comment_id,
+    comments: []
   }))
 }
 

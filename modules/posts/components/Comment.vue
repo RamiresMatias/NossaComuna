@@ -7,7 +7,7 @@
           <div class="flex gap-2 w-full items-center justify-start mb-4">
             <span class="text-base text-[#3d3d3d] ">{{ props.profile.username }}</span>
             <span class="text-xs text-gray-400 ">• {{ new Date(props.createdAt).toLocaleDateString('pt-br') }}</span>
-            <span class="ml-auto">
+            <span v-if="isAuthor"class="ml-auto">
               <i 
                 class="pi pi-ellipsis-h cursor-pointer text-neutral-500" 
                 @click="toggle"

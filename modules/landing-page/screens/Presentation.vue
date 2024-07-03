@@ -3,7 +3,7 @@
     <Content>
       <template #header>
         <HeaderAuthenticated
-          v-if="isLogged()"
+          v-if="isLogged() && myself?.user"
           :nickname="myself?.user?.value.username || 'Usuário'"
           :profile-pic="myself?.user?.value.avatarUrl"
           @logout="handleLogout"

@@ -77,7 +77,7 @@ export default (client: SupabaseClient<Database>) => ({
   async getPostByCode ({username, code}: {username: string; code: string}) {
     const {data} = await client
       .from('post')
-      .select('*, profiles!inner(id, username, avatar_url)')
+      .select('*, profiles!inner(id, username, avatar_url), likes(count)')
       .eq('code', code)
       .eq('profiles.username', username)
       .limit(1)
@@ -114,7 +114,7 @@ export default (client: SupabaseClient<Database>) => ({
   async getAllComments (postId: string) {
     const {data} = await client
       .from('comment')
-      .select('id, description, created_at, profiles!inner(id, username, avatar_url), comment(id)')
+      .select('id, description, created_at, profiles!inner(id, username, avatar_url)')
       .eq('post_id', postId)
       .is('comment_id', null)
       .order('created_at', {ascending: true})
@@ -122,13 +122,13 @@ export default (client: SupabaseClient<Database>) => ({
 
     return readAllCommentsAdapter(data)
   },
-  async getReplies (commentId: string) {
+  async getReplies ({postId}: {postId: string}) {
     const {data} = await client
       .from('comment')
       .select('id, description, created_at, comment_id, profiles!inner(id, username, avatar_url)')
-      .eq('comment_id', commentId)
+      .eq('post_id', postId)
+      .not('comment_id', 'is', null)
       .order('created_at', {ascending: true})
-      .range(0, 1)
       .returns<ReadAllRowComments[]>()
 
     return readAllCommentsAdapter(data)
@@ -170,6 +170,25 @@ export default (client: SupabaseClient<Database>) => ({
         post_id: postId,
         profile_id: userId,
         comment_id: commentId
+      })
+  },
+  async like ({postId, commentId, userId}: {commentId: string, postId: string, userId: string}) {
+    return client
+      .from('likes')
+      .insert({
+        id: v4(),
+        post_id: postId,
+        comment_id: commentId,
+        profile_id: userId
+      })
+  },
+  async wasLikedPost ({postId, userId}: {postId: string, userId: string}) {
+    return client
+      .from('likes')
+      .insert({
+        id: v4(),
+        post_id: postId,
+        profile_id: userId
       })
   }
 })

@@ -4,7 +4,7 @@
       <template #header>
         <HeaderLoading v-if="loading" />
         <HeaderAuthenticated
-          v-if="session.isLogged() && !loading"
+          v-if="session.isLogged() && !loading && user.id"
           :nickname="user?.username || 'Usuário'"
           :profile-pic="user?.avatarUrl"
           @logout="handleLogout"
