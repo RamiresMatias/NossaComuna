@@ -1,3 +1,5 @@
+import type { OutputData } from "@editorjs/editorjs"
+
 export type Json =
   | string
   | number
@@ -83,6 +85,52 @@ export type Database = {
           },
         ]
       }
+      likes: {
+        Row: {
+          comment_id: string | null
+          created_at: string
+          id: string
+          post_id: string | null
+          profile_id: string | null
+        }
+        Insert: {
+          comment_id?: string | null
+          created_at?: string
+          id: string
+          post_id?: string | null
+          profile_id?: string | null
+        }
+        Update: {
+          comment_id?: string | null
+          created_at?: string
+          id?: string
+          post_id?: string | null
+          profile_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "likes_comment_id_fkey"
+            columns: ["comment_id"]
+            isOneToOne: false
+            referencedRelation: "comment"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "likes_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "post"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "likes_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       post: {
         Row: {
           code: string | null
@@ -98,7 +146,7 @@ export type Database = {
           code?: string | null
           cover_image_url?: string | null
           created_at?: string | null
-          description?: string | null
+          description?: Json | null
           id: string
           is_draft: boolean
           profile_id?: string | null
@@ -108,7 +156,7 @@ export type Database = {
           code?: string | null
           cover_image_url?: string | null
           created_at?: string | null
-          description?: string | null
+          description?: Json | null
           id?: string
           is_draft?: boolean
           profile_id?: string | null
@@ -159,18 +207,120 @@ export type Database = {
           },
         ]
       }
+      tag: {
+        Row: {
+          description: string
+          id: string
+        }
+        Insert: {
+          description: string
+          id: string
+        }
+        Update: {
+          description?: string
+          id?: string
+        }
+        Relationships: []
+      }
+      tag_x_post: {
+        Row: {
+          id: string
+          post_id: string | null
+          tag_id: string | null
+        }
+        Insert: {
+          id: string
+          post_id?: string | null
+          tag_id?: string | null
+        }
+        Update: {
+          id?: string
+          post_id?: string | null
+          tag_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tag_x_post_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "post"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tag_x_post_tag_id_fkey"
+            columns: ["tag_id"]
+            isOneToOne: false
+            referencedRelation: "tag"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_post_by_code: {
+        Args: {
+          user_id: string
+          user_name: string
+          post_code: string
+        }
+        Returns: {
+          id: string
+          code: string
+          description: string
+          title: string
+          profile_id: string
+          cover_image_url: string
+          is_draft: boolean
+          created_at: string
+          likes: number
+          username: string
+          avatar_url: string
+          liked: boolean
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never
     }
     CompositeTypes: {
-      [_ in never]: never
+      return_type: {
+        id: string | null
+        code: string | null
+        description: Json | null
+        title: string | null
+        profile_id: string | null
+        cover_image_url: string | null
+        is_draft: boolean | null
+        created_at: string | null
+        likes: number | null
+        liked: boolean | null
+      }
+      return_type2: {
+        id: string | null
+        code: string | null
+        description: Json | null
+        title: string | null
+        profile_id: string | null
+        cover_image_url: string | null
+        is_draft: boolean | null
+        created_at: string | null
+        likes: number | null
+        liked: boolean | null
+      }
+      return_type3: {
+        id: string | null
+        code: string | null
+        description: Json | null
+        title: string | null
+        profile_id: string | null
+        cover_image_url: string | null
+        is_draft: boolean | null
+        likes: number | null
+        liked: boolean | null
+      }
     }
   }
   storage: {

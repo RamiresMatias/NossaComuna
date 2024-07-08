@@ -3,7 +3,7 @@
     <article 
       class="w-full p-4 bg-white flex gap-2 border-b border-solid justify-center border-b-gray-200 last:border-b-0 cursor-pointer rounded-md shadow-sm"
     >
-      <img :src="profile?.avatarUrl" alt="Foto de perfil do usuário" class="w-10 h-10 rounded-full mt-1" />
+      <Avatar :image="profile.avatarUrl" shape="circle" size="large" />
       <div class="w-full h-full flex flex-col gap-3">
         <div class="flex w-full justify-between items-center gap-4">
           <div class="w-full h-full flex flex-col flex-1">

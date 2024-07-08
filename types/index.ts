@@ -48,7 +48,8 @@ export interface PostDetail {
   coverImageUrl: string
   isDraft?: boolean
   totalComments?: number
-  likes?: number
+  likes: number
+  liked: boolean
 }
 
 export interface Likes {
@@ -77,11 +78,11 @@ export interface CreatePostType {
   coverImageUrl?: string
 }
 
-export interface EditPostType extends Omit<PostDetail, "profile"> {
+export interface EditPostType extends Omit<PostDetail, "profile" | "likes" | "liked"> {
   profileId: string
 }
 
-export type ProfileTableRow = Database['public']['Tables']['profiles']
+export type ProfileTableRow = Database['public']['Tables']['profiles'] 
 
 export type PostTable = Database['public']['Tables']['post']
 export type CommentTable = Database['public']['Tables']['comment']
@@ -98,3 +99,5 @@ export type ReadOneRow = PostTable['Row'] & {
 export type ReadAllRowComments = CommentTable['Row'] & {
   profiles: ProfileTableRow['Row'] | null
 }
+
+export type ReadOnePostRow = Database['public']['Functions']['get_post_by_code']['Returns']

@@ -1,4 +1,4 @@
-import type { PostDetail, PostType, ReadAllRow, ReadAllRowComments, ReadOneRow, CommentType, PostTable, CreatePostType, EditPostType } from "@/types"
+import type { PostDetail, PostType, ReadAllRow, ReadAllRowComments, ReadOneRow, CommentType, PostTable, CreatePostType, EditPostType, ReadOnePostRow } from "@/types"
 
 export function readAllAdapter(values: ReadAllRow[] | null): PostType[] | [] {
   if(!values) return []
@@ -20,6 +20,27 @@ export function readAllAdapter(values: ReadAllRow[] | null): PostType[] | [] {
   }))
 }
 
+export function readOneAdapterRpc(value: ReadOnePostRow | null): PostDetail | null {
+  if(!value[0]) return null
+
+  return {
+    id: value[0].id,
+    title: value[0].title,
+    isDraft: value[0].is_draft,
+    code: value[0].code,
+    createdAt: new Date(value[0].created_at),
+    coverImageUrl: value[0].cover_image_url,
+    profile: {
+      id: value[0].profile_id,
+      username: value[0].username,
+      avatarUrl: value[0].avatar_url
+    },
+    description: JSON.parse(value[0].description),
+    likes: value[0].likes,
+    liked: value[0].liked
+  }
+}
+
 export function readOneAdapter(value: ReadOneRow | null): PostDetail | null {
   if(!value) return null
 
@@ -36,7 +57,8 @@ export function readOneAdapter(value: ReadOneRow | null): PostDetail | null {
       avatarUrl: value.profiles.avatar_url
     },
     description: JSON.parse(value.description),
-    likes: value.likes?.[0]?.count || 0
+    likes: value.likes?.[0]?.count || 0,
+    liked: false
   }
 }
 
@@ -67,7 +89,7 @@ export function getPostByIdAndAuthorAdapter(value: PostTable['Row']): EditPostTy
     code: value.code,
     createdAt: new Date(value.created_at),
     coverImageUrl: value.cover_image_url,
-    profileId:value.profile_id,
+    profileId: value.profile_id,
     description: JSON.parse(value.description)
   }
 }

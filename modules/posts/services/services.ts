@@ -5,7 +5,7 @@ import type { CreatePostType, ReadAllRow, ReadAllRowComments, ReadOneRow } from 
 import {useSession} from '@/modules/auth/composables/useSession/useSession'
 
 import {v4} from 'uuid'
-import { getPostByIdAndAuthorAdapter, readAllAdapter, readAllCommentsAdapter, readOneAdapter } from "./adapter"
+import { getPostByIdAndAuthorAdapter, readAllAdapter, readAllCommentsAdapter, readOneAdapter, readOneAdapterRpc } from "./adapter"
 
 type ReplyCommentProps = {
   description: string
@@ -17,7 +17,6 @@ type ReplyCommentProps = {
 export default (client: SupabaseClient<Database>) => ({
 
   async createPost (post: CreatePostType) {
-    const runtimeConfig = useRuntimeConfig()
 
     if (!post.profileId) throw new Error("É necessário estar logado para criar um post")
 
@@ -43,7 +42,6 @@ export default (client: SupabaseClient<Database>) => ({
       })
   },
   async editPost (post: CreatePostType) {
-    const runtimeConfig = useRuntimeConfig()
 
     if (!post.profileId) throw new Error("É necessário estar logado para criar um post")
     if (!post.id) throw new Error("Informe o ID do post")
@@ -85,6 +83,10 @@ export default (client: SupabaseClient<Database>) => ({
       .single()
 
     return readOneAdapter(data)
+  },
+  async getRpcPostByCode ({username, code, userId}: {username: string; code: string, userId: string}) {
+    const {data} = await client.rpc('get_post_by_code', {user_id: userId, user_name: username, post_code: code})
+    return readOneAdapterRpc(data)
   },
   async uploadCoverImage ({id, file, userId}: {file: File, id: string; userId: string}) {
     const runtimeConfig = useRuntimeConfig()

@@ -1,6 +1,6 @@
 <template>
   <div class="grid grid-cols-12 w-full max-w-[1380px] px-4 lg:px-0 gap-y-6">
-    <div class="col-span-1 hidden lg:flex flex-col items-center m-0 p-0 gap-4">
+    <div v-if="!loading" class="col-span-1 hidden lg:flex flex-col items-center m-0 p-0 gap-4">
       <Button
         v-if="isAuthorPost" 
         icon="pi pi-pencil" 
@@ -13,13 +13,14 @@
         @click="navigateToEdit"
       />
       <Button 
-        icon="pi pi-heart" 
+        v-if="!isAuthorPost"
+        :icon="post.liked ? 'pi pi-heart-fill' : 'pi pi-heart'" 
         severity="contrast" 
         text 
         rounded 
         aria-label="Editar" 
         v-tooltip="{ value: 'Curtir post', showDelay: 300, hideDelay: 300 }"
-        class="text-xl"
+        class="text-xl text-primary-300"
         @click="like(null)"
       />
     </div>
@@ -28,7 +29,7 @@
       <img v-if="post.coverImageUrl" :src="post.coverImageUrl + '?c='" alt="Imagem de capa do post" class="w-full h-full max-h-[400px] object-cover rounded-t-md mb-8" />
       <section class="w-full h-full flex flex-col max-w-[80%] mx-auto" :class="{'mt-8': !post.coverImageUrl}">
         <div class="flex w-full py-4 gap-2">
-          <img :src="post.profile.avatarUrl" alt="Foto de perfil do usuário" class="rounded-full w-12 h-12" />
+          <Avatar :image="post.profile.avatarUrl" shape="circle" size="large" />
           <div class="w-full h-full flex flex-col flex-1 gap-1">
             <p class=" text-base lg:text-lg text-[--title-color] font-bold text-balance">
               {{ post.profile.username }}
@@ -67,7 +68,7 @@
         <CreateComment 
           v-if="!loadingComments" 
           v-model="myComment" 
-          :profile-pic="user.avatarUrl" 
+          :profile-pic="user?.avatarUrl" 
           :loading="loadingCreateComment" 
           @submit-comment="handleCreateComment" 
         />
@@ -128,8 +129,8 @@ const post = reactive<PostDetail>({
   createdAt: new Date(),
   isDraft: false,
   likes: 0,
-  totalComments: 0,
-  profile: {}
+  profile: {},
+  liked: false,
 })
 
 const author = reactive<Profile>({
@@ -163,10 +164,11 @@ const getPost = async () => {
   try {
     loading.value = true
 
-    const data = await services.post.getPostByCode({username, code})
-    Object.assign(post, data)
+    await sleep(500)
 
-    await sleep(1000)
+    const data = await services.post.getRpcPostByCode({username, code, userId: user.value.id})
+
+    Object.assign(post, data)
 
     getProfileAuthor()
     getComments(data.id)
@@ -186,9 +188,9 @@ const getComments = async (postId: string | null) => {
     comments.splice(0, comments.length, ...data)
 
     const replies = await services.post.getReplies({postId})
-    replies.forEach((el, _, self) => {
-      const commentParent = data.find(parent => parent.id === el.commentId)
-      const replyParent = self.find(rep => rep.id === el.commentId)
+    replies.forEach((el: CommentType, _, self: CommentType[]) => {
+      const commentParent = data.find((parent: CommentType) => parent.id === el.commentId)
+      const replyParent = self.find((rep: CommentType) => rep.id === el.commentId)
 
       if (commentParent) {
         commentParent.comments.push(el)
@@ -240,8 +242,6 @@ const getProfileAuthor = async () => {
     const data = await services.users.getUserById(post.profile.id)
     Object.assign(author, data)
 
-    await sleep(1000)
-
     loadingProfile.value = false
   } catch (error) {
     loadingProfile.value = false
@@ -264,6 +264,7 @@ const handleOnReply = async ({comment, commentId}: {comment: string, commentId: 
 
 const like = async (commentId: string) => {
   try {
+    post.liked = !post.liked 
     services.post.like({postId: post.id, userId: user.value.id, commentId})
   } catch (error) {
     console.log(error);
