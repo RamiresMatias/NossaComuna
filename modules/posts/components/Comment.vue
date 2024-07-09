@@ -28,7 +28,8 @@
             everity="secondary" 
             text 
             size="small" 
-            class="text-xs" 
+            class="text-xs"
+            @click="emit('on-like', props.id)"
           />
           <Button 
             label="Responder" 
@@ -69,6 +70,7 @@
         :level="1"
         @delete="(id) => emit('delete', id)"
         @on-reply="(reply) => emit('on-reply', reply)"
+        @on-like="(id) => emit('on-like', id)"
       ></Comment>
     </div>
   </div>
@@ -102,7 +104,8 @@ const props = withDefaults(
 
 const emit = defineEmits<{
   (e: 'delete', id: string): void,
-  (e: 'on-reply', {comment, commentId}: {comment: string, commentId: string}): void
+  (e: 'on-reply', {comment, commentId}: {comment: string, commentId: string}): void,
+  (e: 'on-like', id: string): void
 }>()
 
 const reply = ref()

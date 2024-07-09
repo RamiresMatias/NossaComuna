@@ -174,23 +174,36 @@ export default (client: SupabaseClient<Database>) => ({
         comment_id: commentId
       })
   },
-  async like ({postId, commentId, userId}: {commentId: string, postId: string, userId: string}) {
+  async like ({postId, userId}: {postId: string, userId: string}) {
     return client
       .from('likes')
       .insert({
         id: v4(),
         post_id: postId,
+        profile_id: userId
+      })
+  },
+  async deslikePost ({postId, userId}: {postId: string, userId: string}) {
+    return client
+      .from('likes')
+      .delete()
+      .eq('post_id', postId)
+      .eq('profile_id', userId)
+  },
+  async likeComment ({commentId, userId}: {commentId: string, userId: string}) {
+    return client
+      .from('likes')
+      .insert({
+        id: v4(),
         comment_id: commentId,
         profile_id: userId
       })
   },
-  async wasLikedPost ({postId, userId}: {postId: string, userId: string}) {
+  async deslikeComment ({commentId, userId}: {commentId: string, userId: string}) {
     return client
       .from('likes')
-      .insert({
-        id: v4(),
-        post_id: postId,
-        profile_id: userId
-      })
-  }
+      .delete()
+      .eq('comment_id', commentId)
+      .eq('profile_id', userId)
+  },
 })

@@ -21,7 +21,7 @@
         aria-label="Editar" 
         v-tooltip="{ value: 'Curtir post', showDelay: 300, hideDelay: 300 }"
         class="text-xl text-primary-300"
-        @click="like(null)"
+        @click="post.liked ? deslikePost() : likePost()"
       />
     </div>
     <PostDetailLoading v-if="loading || pending" class="col-span-8" />
@@ -84,6 +84,7 @@
           :comments="comment.comments"
           @delete="handleDeleteComment"
           @on-reply="handleOnReply"
+          @on-like="likeComment(comment.id)"
         ></Comment>
       </section>
     </article>
@@ -262,10 +263,41 @@ const handleOnReply = async ({comment, commentId}: {comment: string, commentId: 
   }
 }
 
-const like = async (commentId: string) => {
+const likePost = async () => {
   try {
-    post.liked = !post.liked 
-    services.post.like({postId: post.id, userId: user.value.id, commentId})
+    await services.post.like({postId: post.id, userId: user.value.id})
+
+    post.liked = !post.liked
+    post.likes += 1
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+const deslikePost = async () => {
+  try {
+    await services.post.deslikePost({postId: post.id, userId: user.value.id})
+
+    post.liked = !post.liked
+    post.likes -= 1
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+const likeComment = async (commentId: string) => {
+  try {
+    await services.post.likeComment({commentId, userId: user.value.id})
+
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+const deslikeComment = async (commentId: string) => {
+  try {
+    await services.post.deslikeComment({commentId, userId: user.value.id})
+
   } catch (error) {
     console.log(error);
   }
