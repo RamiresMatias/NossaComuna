@@ -36,6 +36,8 @@ export interface CommentType {
   createdAt: Date
   comments?: CommentType[]
   commentId?: string
+  likes: number
+  liked: boolean
 }
 
 export interface PostDetail {
@@ -101,3 +103,4 @@ export type ReadAllRowComments = CommentTable['Row'] & {
 }
 
 export type ReadOnePostRow = Database['public']['Functions']['get_post_by_code']['Returns']
+export type ReadAllComments = Database['public']['Functions']['get_all_comments']['Returns']

@@ -113,14 +113,8 @@ export default (client: SupabaseClient<Database>) => ({
     if (error) return ''
     else return `${runtimeConfig.public.supabaseUrl}/storage/v1/object/public/${data.fullPath}`
   },
-  async getAllComments (postId: string) {
-    const {data} = await client
-      .from('comment')
-      .select('id, description, created_at, profiles!inner(id, username, avatar_url)')
-      .eq('post_id', postId)
-      .is('comment_id', null)
-      .order('created_at', {ascending: true})
-      .returns<ReadAllRowComments[]>()
+  async getAllComments ({postId, userId}: {postId: string, userId: string}) {
+    const {data} = await client.rpc('get_all_comments', {user_id: userId, postid: postId})
 
     return readAllCommentsAdapter(data)
   },

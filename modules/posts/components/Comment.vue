@@ -22,7 +22,7 @@
         </section>
         <div class="flex items-center gap-2 justify-start py-2 flex-wrap">
           <Button 
-            label="Curtidas" 
+            :label="`${likes} Curtidas`" 
             icon="pi pi-thumbs-up" 
             icon-pos="left" 
             everity="secondary" 
@@ -68,6 +68,8 @@
         :comments="reply.comments"
         class="mt-4"
         :level="1"
+        :liked="reply.liked"
+        :likes="reply.likes"
         @delete="(id) => emit('delete', id)"
         @on-reply="(reply) => emit('on-reply', reply)"
         @on-like="(id) => emit('on-like', id)"

@@ -1,4 +1,4 @@
-import type { PostDetail, PostType, ReadAllRow, ReadAllRowComments, ReadOneRow, CommentType, PostTable, CreatePostType, EditPostType, ReadOnePostRow } from "@/types"
+import type { PostDetail, PostType, ReadAllRow, ReadAllRowComments, ReadOneRow, CommentType, PostTable, CreatePostType, EditPostType, ReadOnePostRow, ReadAllComments } from "@/types"
 
 export function readAllAdapter(values: ReadAllRow[] | null): PostType[] | [] {
   if(!values) return []
@@ -62,7 +62,7 @@ export function readOneAdapter(value: ReadOneRow | null): PostDetail | null {
   }
 }
 
-export function readAllCommentsAdapter(values: ReadAllRowComments[] | null): CommentType[] | [] {
+export function readAllCommentsAdapter(values: ReadAllComments | null): CommentType[] | [] {
   if(!values) return []
 
   return values.map(el => ({
@@ -70,12 +70,14 @@ export function readAllCommentsAdapter(values: ReadAllRowComments[] | null): Com
     description: el.description,
     createdAt: new Date(el.created_at),
     profile: {
-      id: el.profiles.id,
-      username: el.profiles.username,
-      avatarUrl: el.profiles.avatar_url
+      id: el.profile_id,
+      username: el.username,
+      avatarUrl: el.avatar_url
     },
     commentId: el.comment_id,
-    comments: []
+    comments: [],
+    liked: el.liked,
+    likes: el.likes
   }))
 }
 

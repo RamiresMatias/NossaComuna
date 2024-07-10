@@ -1,5 +1,3 @@
-import type { OutputData } from "@editorjs/editorjs"
-
 export type Json =
   | string
   | number
@@ -260,6 +258,24 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_all_comments: {
+        Args: {
+          user_id: string
+          postid: string
+        }
+        Returns: {
+          id: string
+          description: string
+          post_id: string
+          profile_id: string
+          comment_id: string
+          created_at: string
+          likes: number
+          username: string
+          avatar_url: string
+          liked: boolean
+        }[]
+      }
       get_post_by_code: {
         Args: {
           user_id: string
@@ -286,41 +302,7 @@ export type Database = {
       [_ in never]: never
     }
     CompositeTypes: {
-      return_type: {
-        id: string | null
-        code: string | null
-        description: Json | null
-        title: string | null
-        profile_id: string | null
-        cover_image_url: string | null
-        is_draft: boolean | null
-        created_at: string | null
-        likes: number | null
-        liked: boolean | null
-      }
-      return_type2: {
-        id: string | null
-        code: string | null
-        description: Json | null
-        title: string | null
-        profile_id: string | null
-        cover_image_url: string | null
-        is_draft: boolean | null
-        created_at: string | null
-        likes: number | null
-        liked: boolean | null
-      }
-      return_type3: {
-        id: string | null
-        code: string | null
-        description: Json | null
-        title: string | null
-        profile_id: string | null
-        cover_image_url: string | null
-        is_draft: boolean | null
-        likes: number | null
-        liked: boolean | null
-      }
+      [_ in never]: never
     }
   }
   storage: {

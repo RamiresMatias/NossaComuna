@@ -82,9 +82,11 @@
           :id="comment.id"
           :is-author="comment.profile.id === user.id"
           :comments="comment.comments"
+          :liked="comment.liked"
+          :likes="comment.likes"
           @delete="handleDeleteComment"
           @on-reply="handleOnReply"
-          @on-like="likeComment(comment.id)"
+          @on-like="likeComment"
         ></Comment>
       </section>
     </article>
@@ -185,21 +187,14 @@ const getComments = async (postId: string | null) => {
   try {
     loadingComments.value = true
 
-    const data = await services.post.getAllComments(postId)
-    comments.splice(0, comments.length, ...data)
-
-    const replies = await services.post.getReplies({postId})
-    replies.forEach((el: CommentType, _, self: CommentType[]) => {
-      const commentParent = data.find((parent: CommentType) => parent.id === el.commentId)
-      const replyParent = self.find((rep: CommentType) => rep.id === el.commentId)
-
-      if (commentParent) {
-        commentParent.comments.push(el)
-      } 
-      if (replyParent) {
-        replyParent.comments.push(el)
-      }
+    const data = await services.post.getAllComments({postId, userId: user.value.id})
+    const result = []
+    data.forEach((el, _, self) => {
+      const parent = data.find(parent => parent.id === el.commentId)
+      if (parent) parent.comments.push(el)
+      else result.push(el)
     })
+    comments.splice(0, comments.length, ...result)
 
     loadingComments.value = false
   } catch (error) {
@@ -287,20 +282,27 @@ const deslikePost = async () => {
 
 const likeComment = async (commentId: string) => {
   try {
-    await services.post.likeComment({commentId, userId: user.value.id})
+    const comment = findComment(comments, commentId)
+    comment.liked 
+      ? await services.post.deslikeComment({commentId, userId: user.value.id})
+      : await services.post.likeComment({commentId, userId: user.value.id})
 
+    comment.liked = !comment.liked
+    comment.likes = comment.liked ? (comment.likes + 1) : (comment.likes - 1) 
   } catch (error) {
     console.log(error);
   }
 }
 
-const deslikeComment = async (commentId: string) => {
-  try {
-    await services.post.deslikeComment({commentId, userId: user.value.id})
-
-  } catch (error) {
-    console.log(error);
+const findComment = (arrTree: any[], id: string): CommentType => {
+  let elementFound = arrTree.find(el => el.id === id)
+  if (elementFound) return elementFound 
+  else {
+    arrTree.forEach(row => {
+      if (row.comments.length > 0 && !elementFound) elementFound = findComment(row.comments, id)
+    })
   }
+  return elementFound
 }
 
 const navigateToEdit = () => {
