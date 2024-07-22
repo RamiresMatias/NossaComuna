@@ -118,17 +118,6 @@ export default (client: SupabaseClient<Database>) => ({
 
     return readAllCommentsAdapter(data)
   },
-  async getReplies ({postId}: {postId: string}) {
-    const {data} = await client
-      .from('comment')
-      .select('id, description, created_at, comment_id, profiles!inner(id, username, avatar_url)')
-      .eq('post_id', postId)
-      .not('comment_id', 'is', null)
-      .order('created_at', {ascending: true})
-      .returns<ReadAllRowComments[]>()
-
-    return readAllCommentsAdapter(data)
-  },
   async createComment ({description, postId}: {description: string; postId: string}) {
 
     const {user} = useSession()

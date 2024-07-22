@@ -1,75 +1,14 @@
-# Nuxt 3 Minimal Starter
+# Descrição
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Aplicação criada para práticas e estudos de Nuxt. Onde é possível o usuário: 
 
-## Setup
+- Ler posts criados por outros usuários
+- Criar um usuário 
+- Criar postagens para outros usuários lerem
+- Curtir e comentar nos posts
+- Curtir e responder comentários
+- Verificar os perfis de outros usuários
 
-Make sure to install the dependencies:
+### Observações
 
-```bash
-# npm
-npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
-```
-
-## Development Server
-
-Start the development server on `http://localhost:3000`:
-
-```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm run dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm run build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm run preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+O app ainda está em desenvolvimento 👨🏼‍🏭

@@ -189,8 +189,8 @@ const getComments = async (postId: string | null) => {
 
     const data = await services.post.getAllComments({postId, userId: user.value.id})
     const result = []
-    data.forEach((el, _, self) => {
-      const parent = data.find(parent => parent.id === el.commentId)
+    data.forEach((el: CommentType, _, self) => {
+      const parent = data.find((parent: CommentType) => parent.id === el.commentId)
       if (parent) parent.comments.push(el)
       else result.push(el)
     })

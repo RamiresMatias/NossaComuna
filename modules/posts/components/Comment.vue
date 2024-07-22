@@ -116,7 +116,8 @@ const menu = ref()
 const items = [
   {
     label: 'Deletar',
-    command: () => emit('delete', props.id)
+    command: () => emit('delete', props.id),
+    disabled: props.comments.length > 0
   }
 ]
 
