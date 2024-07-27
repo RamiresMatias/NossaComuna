@@ -1,6 +1,6 @@
 # Descrição
 
-Aplicação criada para práticas e estudos de Nuxt. Onde é possível o usuário: 
+Aplicação criada para práticas e estudos de Nuxt 3. Onde é possível o usuário: 
 
 - Ler posts criados por outros usuários
 - Criar um usuário 

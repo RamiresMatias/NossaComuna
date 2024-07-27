@@ -1,6 +1,14 @@
 <template>
-  <div>
-    teste
+  <div class="grid grid-cols-12 gap-x-2">
+    <div class="lg:col-span-4 bg-white rounded-md p-4 shadow-md">
+      profile
+    </div>
+    <div class="lg:col-span-8 bg-white rounded-md p-4 shadow-md">
+
+    </div>
+    <div class="lg:col-span-4 bg-white rounded-md p-4 shadow-md">
+
+    </div>
   </div>
 </template>
 
