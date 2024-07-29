@@ -146,6 +146,16 @@ export default (client: SupabaseClient<Database>) => ({
 
     return getPostByIdAndAuthorAdapter(data)
   },
+  async getPostsByUsername ({username}: {username: string}) {
+    const {data} = await client
+      .from('post')
+      .select('id, title, is_draft, code, created_at, cover_image_url, profiles!inner(id, username, avatar_url)')
+      .eq('profiles.username', username)
+      .order('created_at', {ascending: true})
+      .returns<ReadAllRow[]>()
+
+    return readAllAdapter(data)
+  },
   async replyComment ({description, postId, commentId, userId}: ReplyCommentProps) {
     return client
       .from('comment')
