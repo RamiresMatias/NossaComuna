@@ -4,7 +4,7 @@
       <div class="flex justify-between items-center mx-auto max-w-[1380px]">
         <div class="flex items-center">
           <NuxtLink to="/posts">
-            <Logo />
+            <Logo size="default" />
           </NuxtLink>
         </div>
         <div class="flex items-center gap-4">

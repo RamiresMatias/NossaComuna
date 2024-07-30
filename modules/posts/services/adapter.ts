@@ -1,4 +1,4 @@
-import type { PostDetail, PostType, ReadAllRow, ReadAllRowComments, ReadOneRow, CommentType, PostTable, CreatePostType, EditPostType, ReadOnePostRow, ReadAllComments } from "@/types"
+import type { PostDetail, PostType, ReadAllRow, ReadOneRow, CommentType, PostTable, CreatePostType, EditPostType, ReadOnePostRow, ReadAllComments } from "@/types"
 
 export function readAllAdapter(values: ReadAllRow[] | null): PostType[] | [] {
   if(!values) return []
@@ -10,8 +10,8 @@ export function readAllAdapter(values: ReadAllRow[] | null): PostType[] | [] {
     code: el.code,
     createdAt: new Date(el.created_at),
     coverImage: el.cover_image_url,
-    totalComments: 0,
-    likes: 0,
+    totalComments: el.comment?.[0]?.count || 0,
+    likes: el.likes?.[0]?.count || 0,
     profile: {
       id: el.profile_id,
       username: el.profiles.username,

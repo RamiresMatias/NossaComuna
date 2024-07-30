@@ -4,7 +4,7 @@
       <Avatar :image="avatarUrl" shape="circle" size="large" />
       <span class="font-bold text-gray-700 text-lg hover:text-blue-900">{{ username }}</span>
     </NuxtLink>
-    <div class=" font-regular text-gray-500">
+    <div class="font-medium text-slate-500">
       {{ bio }}
     </div>
     <div class="info">
@@ -40,11 +40,11 @@ withDefaults(
   @apply flex flex-col  text-sm;
 
   &__title {
-    @apply font-semibold text-gray-600;
+    @apply font-semibold text-neutral-800;
   }
 
   &__description {
-    @apply text-neutral-500;
+    @apply text-slate-500 font-medium;
   }
 }
 </style>

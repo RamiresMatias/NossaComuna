@@ -3,7 +3,7 @@
     :key="forceUpdateKey"
     :username="form.username!" 
     :avatar-url="linkNewFile|| form.avatarUrl || ''" 
-    @navigate-to-profile="() => {}"
+    @navigate-to-profile="handleNavigationToProfile"
     @share="() => {}"
     class="my-10"
   />
@@ -47,7 +47,7 @@ import { useMyself } from '@/modules/users/composables/useMyself/useMyself'
 import type { FileUploadUploadEvent } from 'primevue/fileupload'
 import type { Profile } from '~/types'
 
-const { user, fetchUser } = useMyself()
+const { user } = useMyself()
 const services = useServices()
 
 const form = reactive<Profile>({
@@ -112,5 +112,9 @@ const handleUpdateProfile = async () => {
   } finally {
     loading.value = false
   }
+}
+
+const handleNavigationToProfile = () => {
+  navigateTo(`/${form.username}`)
 }
 </script>

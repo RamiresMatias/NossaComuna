@@ -20,8 +20,8 @@
       :is-draft="item.isDraft"
       :title="item.title"
       :profile="item.profile"
-      :total-comments="0"
-      :total-likes="0"
+      :total-comments="item.totalComments"
+      :likes="item.likes"
     />
   </div>
 </template>

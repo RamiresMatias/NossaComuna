@@ -19,8 +19,8 @@
         :is-draft="item.isDraft"
         :title="item.title"
         :profile="item.profile"
-        :total-comments="0"
-        :total-likes="0"
+        :total-comments="item.totalComments"
+        :likes="item.likes"
         class="shadow-none"
       />
       <AboutDetails 
@@ -28,6 +28,7 @@
         :bio="profile.bio"
         :followers="5"
         :following="[]"
+        :created-at="profile.createdAt"
       />
     </div>
   </section>

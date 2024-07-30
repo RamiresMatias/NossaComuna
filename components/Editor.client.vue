@@ -11,6 +11,7 @@ import List from '@editorjs/list'
 import Quote from '@editorjs/quote'
 import Raw from '@editorjs/raw'
 import Checklist from '@editorjs/checklist'
+import Table from '@editorjs/table'
 
 const props = defineProps<{
   placeholder?: string
@@ -19,7 +20,7 @@ const props = defineProps<{
 
 const emit = defineEmits(['update:modelValue'])
 
-const modelValue = defineModel<OutputData>()
+const modelValue = defineModel<OutputData | null>()
 
 const editor = ref<EditorJS>()
 
@@ -32,6 +33,7 @@ onMounted(() => {
       Checklist,
       Quote,
       Raw,
+      Table
     },
     placeholder: props.placeholder || 'Descreva o post aqui',
     data: modelValue.value,

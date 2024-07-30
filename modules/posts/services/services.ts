@@ -66,7 +66,12 @@ export default (client: SupabaseClient<Database>) => ({
   async getAllPosts () {
     const {data} = await client
       .from('post')
-      .select('id, title, is_draft, code, created_at, cover_image_url, profiles!inner(id, username, avatar_url)')
+      .select(`
+        id, title, is_draft, code, created_at, cover_image_url, 
+        profiles!inner(id, username, avatar_url),
+        likes(count),
+        comment(count)
+      `)
       .order('created_at', {ascending: true})
       .returns<ReadAllRow[]>()
 
@@ -149,7 +154,12 @@ export default (client: SupabaseClient<Database>) => ({
   async getPostsByUsername ({username}: {username: string}) {
     const {data} = await client
       .from('post')
-      .select('id, title, is_draft, code, created_at, cover_image_url, profiles!inner(id, username, avatar_url)')
+      .select(`
+        id, title, is_draft, code, created_at, cover_image_url, 
+        profiles!inner(id, username, avatar_url),
+        likes(count),
+        comment(count)
+      `)
       .eq('profiles.username', username)
       .order('created_at', {ascending: true})
       .returns<ReadAllRow[]>()

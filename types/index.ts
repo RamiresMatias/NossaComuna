@@ -91,6 +91,8 @@ export type CommentTable = Database['public']['Tables']['comment']
 
 export type ReadAllRow = PostTable['Row'] & {
   profiles: ProfileTableRow['Row'] | null
+  likes?: {count: number}[]
+  comment?: {count: number}[]
 }
 
 export type ReadOneRow = PostTable['Row'] & {

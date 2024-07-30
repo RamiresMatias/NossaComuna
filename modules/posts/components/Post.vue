@@ -10,7 +10,7 @@
             <p class=" text-base lg:text-lg text-gray-700 font-medium text-balance ">
               {{ profile?.username || profile?.name }}
             </p>
-            <p class="text-sm  font-regular text-gray-400">
+            <p class="text-sm font-medium text-slate-400">
               {{ new Date(createdAt).toLocaleDateString('pt-br') }}
             </p>
           </div>
