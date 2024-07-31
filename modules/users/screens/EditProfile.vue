@@ -1,6 +1,5 @@
 <template>
   <HeadlineEdit
-    :key="forceUpdateKey"
     :username="form.username!" 
     :avatar-url="linkNewFile|| form.avatarUrl || ''" 
     @navigate-to-profile="handleNavigationToProfile"
@@ -31,7 +30,7 @@
   </Widget>
 
   <Button
-    @click="handleUpdateProfile()"
+    @click="update"
     :loading="loading"
     class="mt-5 w-full md:w-auto ml-4"
     label="Atualizar"
@@ -43,75 +42,24 @@
 <script setup lang="ts">
 import HeadlineEdit from '@/modules/users/components/HeadlineEdit.vue'
 
-import { useMyself } from '@/modules/users/composables/useMyself/useMyself'
 import type { FileUploadUploadEvent } from 'primevue/fileupload'
-import type { Profile } from '~/types'
 
-const { user } = useMyself()
-const services = useServices()
+import { useUser } from '@/modules/users/composables/useUser/useUser'
+import { useUserUpdate } from '@/modules/users/composables/useUserUpdate/useUserUpdate'
+import { useSession } from '@/modules/auth/composables/useSession/useSession'
 
-const form = reactive<Profile>({
-  id: '',
-  avatarUrl: '',
-  email: '',
-  username: '',
-  bio: '',
-  createdAt: new Date()
-})
+const session = useSession()
 
-const loading = ref(false)
-const newFile = ref()
-const toast = useToast()
+const { user, loading } = useUser(session.user.value.id)
+const { form, update } = useUserUpdate({user})
+
 const linkNewFile = ref()
-const forceUpdateKey = ref(1)
-
-watch(
-  () => user.value,
-  () => {
-    loadUserInfo()
-  }
-)
-
-const loadUserInfo = () => {
-  Object.assign(form, user.value)
-}
 
 const onUpload = async (file: FileUploadUploadEvent) => {
   const fileUp = Array.isArray(file.files) ? file.files[0] as File : undefined
-  newFile.value = fileUp
+  form.avatar = fileUp
   const { link } = await customBase64Uploader(fileUp)
   linkNewFile.value = link
-}
-
-const handleUpdateProfile = async () => {
-  try {
-    if (!form.id) return
-    loading.value = true
-    await services.users.update(form.id, {
-      username: form.username || '',
-      bio: form.bio,
-      avatar: newFile.value,
-      avatarUrl: form.avatarUrl
-    })
-
-    forceUpdateKey.value += 1
-
-    toast.add({
-      severity: 'success',
-      summary: 'Sucesso!',
-      detail: 'Perfil atualizado com sucesso!',
-      life: 2000
-    })
-  } catch (error) {
-    toast.add({
-      severity: 'error',
-      summary: 'Ops!',
-      detail: 'Ocorreu um erro ao tentar atualizar o perfil!',
-      life: 2000
-    })
-  } finally {
-    loading.value = false
-  }
 }
 
 const handleNavigationToProfile = () => {

@@ -1,12 +1,14 @@
 <template>
-  <section class="grid grid-cols-12 gap-x-2">
-    <div class="lg:col-span-3 bg-white rounded-md p-4 shadow-md flex flex-col items-center gap-2">
-      <Avatar :image="profile.avatarUrl" shape="circle" size="xlarge" class="w-28 h-28" />
-      <span class="text-lg font-semibold">{{ profile.username }}</span>
-      <span class="font-medium text-slate-500 text-lg mb-4">0 seguidores</span>
-      <span class="font-medium text-slate-500 text-sm">{{ profile.bio }}</span>
+  <section class="grid grid-cols-12 gap-x-2 px-4">
+    <div class="lg:col-span-3 col-span-full">
+      <div class="flex flex-col items-center gap-2 bg-white lg:rounded-md rounded-t-md p-4 shadow-md w-full">
+        <Avatar :image="profile.avatarUrl" shape="circle" size="xlarge" class="w-28 h-28" />
+        <span class="text-lg font-semibold">{{ profile.username }}</span>
+        <span class="font-medium text-slate-500 text-lg mb-4">0 seguidores</span>
+        <span class="font-medium text-slate-500 text-sm">{{ profile.bio }}</span>
+      </div>
     </div>
-    <div class="lg:col-span-8 bg-white rounded-md shadow-md flex flex-col gap-2 p-1">
+    <div class="lg:col-span-9 col-span-full bg-white lg:rounded-md rounded-b-md shadow-md flex flex-col gap-2 p-1">
       <TabMenu :model="items" v-model:activeIndex="activeSelect" />
       <Post
         v-if="activeSelect === 0"

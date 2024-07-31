@@ -13,6 +13,7 @@ export interface Profile {
   username?: string
   bio?: string
   avatarUrl?: string
+  avatar?: File
 }
 
 export interface User extends Profile {}
