@@ -1,9 +1,9 @@
 <template>
-  <PostCreate is-edit />
+  <PostEdit />
 </template>
 
 <script setup lang="ts">
-import PostCreate from '@/modules/posts/screens/PostCreate.vue'
+import PostEdit from '@/modules/posts/screens/PostEdit.vue'
 
 definePageMeta({
   middleware: ['auth']

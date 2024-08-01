@@ -57,7 +57,7 @@
         icon="pi pi-plus"
         icon-pos="left"
         :loading="loading"
-        @click="create"
+        @click="update"
       />
       <Button 
         :label="preview ? 'Voltar' : 'Pré-visualizar'" 
@@ -74,9 +74,11 @@ import Editor from '@/components/Editor.client.vue'
 
 import type { FileUploadUploadEvent } from 'primevue/fileupload'
 
-import { usePostCreate } from '@/modules/posts/composables/usePostCreate/usePostCreate'
+import { usePostEdit } from '@/modules/posts/composables/usePostEdit/usePostEdit'
 
-const { create, form, loading } = usePostCreate()
+const route = useRoute()
+
+const { update, form, loading } = usePostEdit((route.params.id as string))
 
 const preview = ref(false)
 
@@ -91,8 +93,8 @@ const onUpload = async (event: FileUploadUploadEvent) => {
 }
 
 useSeoMeta({
-  title: 'Criar post',
-  ogTitle: 'Criar post',
+  title: 'Editar post',
+  ogTitle: 'Editar post',
   description: 'Crie seu post para outras pessoas verem',
   ogDescription: 'Crie seu post para outras pessoas verem',
 })

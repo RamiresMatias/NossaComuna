@@ -82,7 +82,8 @@ export interface CreatePostType {
 }
 
 export interface EditPostType extends Omit<PostDetail, "profile" | "likes" | "liked"> {
-  profileId: string
+  profileId?: string
+  coverImage?: File
 }
 
 export type ProfileTableRow = Database['public']['Tables']['profiles'] 

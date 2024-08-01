@@ -106,6 +106,7 @@
 </template>
 
 <script setup lang="ts">
+import Editor from '@/components/Editor.client.vue'
 import Stat from '@/modules/posts/components/Stat.vue'
 import Comment from '@/modules/posts/components/Comment.vue'
 import PostDetailLoading from '@/modules/posts/components/PostDetailLoading.vue'

@@ -7,10 +7,10 @@
       <div class="w-full h-full flex flex-col gap-3">
         <div class="flex w-full justify-between items-center gap-4">
           <div class="w-full h-full flex flex-col flex-1">
-            <p class=" text-base lg:text-lg text-gray-700 font-medium text-balance ">
+            <p class=" text-base text-neutral-800 text-balance ">
               {{ profile?.username || profile?.name }}
             </p>
-            <p class="text-sm font-medium text-slate-400">
+            <p class="text-xs text-slate-500">
               {{ new Date(createdAt).toLocaleDateString('pt-br') }}
             </p>
           </div>

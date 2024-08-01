@@ -27,7 +27,7 @@ export default (client: SupabaseClient<Database>) => ({
     if (post.coverImage) {
       coverImageUrl = await this.uploadCoverImage({id: post.id, file: post.coverImage, userId: post.profileId})
     }
-
+    
     return client
       .from('post')
       .insert({
@@ -42,14 +42,13 @@ export default (client: SupabaseClient<Database>) => ({
       })
   },
   async editPost (post: CreatePostType) {
-
-    if (!post.profileId) throw new Error("É necessário estar logado para criar um post")
-    if (!post.id) throw new Error("Informe o ID do post")
-
     let coverImageUrl = ''
 
-    if (post.coverImage) {
+    if (post.coverImage && post.coverImageUrl) {
       coverImageUrl = await this.updateCoverImage({id: post.id, file: post.coverImage, userId: post.profileId})
+    }
+    if (post.coverImage && !post.coverImageUrl) {
+      coverImageUrl = await this.uploadCoverImage({id: post.id, file: post.coverImage, userId: post.profileId})
     }
 
     return client

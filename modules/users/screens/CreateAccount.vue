@@ -21,7 +21,6 @@
 import FormCreateAccount from '@/modules/users/components/FormCreateAccount.vue'
 import ButtonsGroup from '@/modules/users/components/ButtonsGroup.vue'
 
-
 const route = useRoute()
 const services = useServices()
 
