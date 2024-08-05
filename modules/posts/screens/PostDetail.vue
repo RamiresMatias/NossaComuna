@@ -69,8 +69,8 @@
           v-if="!loadingComments" 
           v-model="myComment" 
           :profile-pic="user?.avatarUrl" 
-          :loading="loadingCreateComment" 
-          @submit-comment="handleCreateComment" 
+          :loading="loadingComments" 
+          @submit-comment="() => createComment(myComment)" 
         />
         <Comment
           v-if="!loadingComments"
@@ -84,9 +84,9 @@
           :comments="comment.comments"
           :liked="comment.liked"
           :likes="comment.likes"
-          @delete="handleDeleteComment"
-          @on-reply="handleOnReply"
-          @on-like="likeComment"
+          @delete="(id) => deleteComment(id)"
+          @on-reply="({comment, commentId}) => onReply({comment, commentId})"
+          @on-like="(commentId) => likeComment({comments, commentId})"
         ></Comment>
       </section>
     </article>
@@ -106,7 +106,6 @@
 </template>
 
 <script setup lang="ts">
-import Editor from '@/components/Editor.client.vue'
 import Stat from '@/modules/posts/components/Stat.vue'
 import Comment from '@/modules/posts/components/Comment.vue'
 import PostDetailLoading from '@/modules/posts/components/PostDetailLoading.vue'
@@ -114,197 +113,43 @@ import CommentLoading from '@/modules/posts/components/CommentLoading.vue'
 import AuthorProfile from '@/modules/posts/components/AuthorProfile.vue'
 import AuthorProfileLoading from '@/modules/posts/components/AuthorProfileLoading.vue'
 
+import { usePostDetail } from '@/modules/posts/composables/usePostDetail/usePostDetail'
+import { useComment } from '@/modules/posts/composables/useComment/useComment'
+import { useAuthor } from '@/modules/posts/composables/useAuthor/useAuthor'
+import { useLike } from '@/modules/posts/composables/useLike/useLike'
+
 import { myselfKey, type MyselfContextProvider } from '@/modules/users/composables/useMyself/useMyself'
 
 const { user } = inject(myselfKey) as MyselfContextProvider
 
-import { onMounted } from 'vue'
-import type { CommentType, PostDetail, Profile } from '@/types'
-
 const services = useServices()
-const toast = useToast()
+const route = useRoute()
 
-const post = reactive<PostDetail>({
-  id: '',
-  title: '',
-  description: null,
-  coverImageUrl: '',
-  code: '',
-  createdAt: new Date(),
-  isDraft: false,
-  likes: 0,
-  profile: {},
-  liked: false,
+const { loading, post } = usePostDetail({
+  username: (route.params.username as string),
+  code: (route.params.code as string),
 })
 
-const author = reactive<Profile>({
-  id: '',
-  createdAt: null,
-  email: '',
-  avatarUrl: '',
-  bio: '',
-  username: ''
-})
+const { 
+  comments, 
+  loading: loadingComments, 
+  createComment,
+  deleteComment,
+  onReply
+} = useComment(post)
+
+const { author, loading: loadingProfile } = useAuthor(post)
+
+const { likePost, deslikePost, likeComment } = useLike(post)
 
 const myComment = ref<string>('')
-const comments = reactive<CommentType[]>([])
-const loading = ref(true)
-const loadingComments = ref(false)
-const loadingCreateComment = ref(false)
-const loadingProfile = ref(true)
 
 const isAuthorPost = computed(() => post?.profile?.id === user.value?.id)
-
-const route = useRoute()
 
 const {data: postServer, pending} = await useAsyncData('post-details', () => {
   const { username, code } = route.params as {username: string, code: string}
   return services.post.getPostByCode({username, code})
 })
-
-const getPost = async () => {
-  const { username, code } = route.params as {username: string, code: string}
-
-  try {
-    loading.value = true
-
-    await sleep(500)
-
-    const data = await services.post.getRpcPostByCode({username, code, userId: user.value.id})
-
-    Object.assign(post, data)
-
-    getProfileAuthor()
-    getComments(data.id)
-
-    loading.value = false
-  } catch (error) {
-    loading.value = false    
-  }
-}
-
-const getComments = async (postId: string | null) => {
-  if (!postId) return
-  try {
-    loadingComments.value = true
-
-    const data = await services.post.getAllComments({postId, userId: user.value.id})
-    const result = []
-    data.forEach((el: CommentType, _, self) => {
-      const parent = data.find((parent: CommentType) => parent.id === el.commentId)
-      if (parent) parent.comments.push(el)
-      else result.push(el)
-    })
-    comments.splice(0, comments.length, ...result)
-
-    loadingComments.value = false
-  } catch (error) {
-    loadingComments.value = false
-  }
-}
-
-const handleCreateComment = async () => {
-  try {
-    loadingCreateComment.value = true
-    
-    await services.post.createComment({description: myComment.value, postId: post.id})
-    myComment.value = ''
-    getComments(post.id)
-    
-    loadingCreateComment.value = false
-  } catch (error) {
-    loadingCreateComment.value = false
-  }
-}
-
-const handleDeleteComment = async (id: string) => {
-  try {
-    await services.post.deleteComment(id)
-    toast.add({
-      severity: 'success',
-      summary: 'Sucesso!',
-      detail: 'Comentário deletado com sucesso!',
-      life: 2000
-    })
-    getComments(post.id)
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-const getProfileAuthor = async () => {
-  if (!post?.profile?.id) return
-  try {
-    loadingProfile.value = true
-    const data = await services.users.getUserById(post.profile.id)
-    Object.assign(author, data)
-
-    loadingProfile.value = false
-  } catch (error) {
-    loadingProfile.value = false
-    console.log(error);
-  }
-}
-
-const handleOnReply = async ({comment, commentId}: {comment: string, commentId: string}) => {
-  try {
-    loadingCreateComment.value = true
-    
-    await services.post.replyComment({description: comment, postId: post.id, commentId, userId: user.value.id})
-    getComments(post.id)
-    
-    loadingCreateComment.value = false
-  } catch (error) {
-    loadingCreateComment.value = false
-  }
-}
-
-const likePost = async () => {
-  try {
-    await services.post.like({postId: post.id, userId: user.value.id})
-
-    post.liked = !post.liked
-    post.likes += 1
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-const deslikePost = async () => {
-  try {
-    await services.post.deslikePost({postId: post.id, userId: user.value.id})
-
-    post.liked = !post.liked
-    post.likes -= 1
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-const likeComment = async (commentId: string) => {
-  try {
-    const comment = findComment(comments, commentId)
-    comment.liked 
-      ? await services.post.deslikeComment({commentId, userId: user.value.id})
-      : await services.post.likeComment({commentId, userId: user.value.id})
-
-    comment.liked = !comment.liked
-    comment.likes = comment.liked ? (comment.likes + 1) : (comment.likes - 1) 
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-const findComment = (arrTree: any[], id: string): CommentType => {
-  let elementFound = arrTree.find(el => el.id === id)
-  if (elementFound) return elementFound 
-  else {
-    arrTree.forEach(row => {
-      if (row.comments.length > 0 && !elementFound) elementFound = findComment(row.comments, id)
-    })
-  }
-  return elementFound
-}
 
 const navigateToEdit = () => {
   if (!post.id) return
@@ -318,7 +163,6 @@ useSeoMeta({
   ogDescription: `Veja o post de ${postServer.value?.profile?.username} no NossaComuna`,
 })
 
-onMounted(() => getPost())
 </script>
 
 <style lang="scss">

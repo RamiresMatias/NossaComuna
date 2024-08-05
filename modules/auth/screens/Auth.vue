@@ -17,7 +17,7 @@
       <p>Entre com sua conta</p>
       <div class="flex gap-4 w-full items-center justify-center">
         <Button 
-          label="Entrar com Gmail" 
+          label="Entrar com G-mail" 
           severity="danger"
           outlined
           icon="pi pi-google"
@@ -42,35 +42,8 @@
 import Divider from 'primevue/divider'
 import FormLogin from '@/modules/auth/components/FormLogin.vue'
 
-const services = useServices()
-const toast = useToast()
+import { useAuthentication } from '@/modules/auth/composables/useAuthentication/useAuthentication'
 
-const loading = ref(false)
-
-const form = reactive<{
-  email: string
-  password: string
-}>({
-  email: '',
-  password: ''
-})
-
-
-
-const authWithEmail = async () => {
-  loading.value = true
-  const response = await services.auth.signInWithEmail(form.email, form.password)
-
-  if (response.name === 'AuthApiError') {
-    toast.add({
-      severity: 'error',
-      summary: 'Login inválido',
-      detail: 'O E-mail/Senha está incorreto, tente novamente',
-      life: 4000
-    })
-  }
-
-  loading.value = false
-}
+const { form, loading, authWithEmail } = useAuthentication()
 
 </script>

@@ -21,37 +21,16 @@
 import FormCreateAccount from '@/modules/users/components/FormCreateAccount.vue'
 import ButtonsGroup from '@/modules/users/components/ButtonsGroup.vue'
 
-const route = useRoute()
-const services = useServices()
+import { useCreateAccount } from '@/modules/users/composables/useCreateAccount/useCreateAccount'
 
-const loading = ref(false)
+const route = useRoute()
+
+const { form, createUser, loading } = useCreateAccount()
+
 const state = ref<'buttons' | 'form'>('buttons')
 
-const form = reactive<{
-  avatar: File
-  email: string
-  password: string
-  confirmPassword: string
-  username: string
-}>({
-  avatar: null,
-  email: '',
-  password: '',
-  confirmPassword: '',
-  username: ''
-})
-
 const onSubmit = async () => {
-  if (state.value === 'form') {
-    loading.value = true
-    await services.auth.createUser({
-      email: form.email, 
-      password: form.password,
-      username: form.username,
-      avatar: form.avatar
-    })
-    loading.value = false
-  }
+  if (state.value === 'form') createUser()
 }
 
 const checkState = () => {

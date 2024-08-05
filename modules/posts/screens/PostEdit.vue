@@ -70,7 +70,7 @@
 </template>
 
 <script setup lang="ts">
-import Editor from '@/components/Editor.client.vue'
+
 
 import type { FileUploadUploadEvent } from 'primevue/fileupload'
 

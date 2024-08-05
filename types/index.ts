@@ -81,6 +81,14 @@ export interface CreatePostType {
   coverImageUrl?: string
 }
 
+export interface CreateUserType {
+  avatar: File
+  email: string
+  password: string
+  confirmPassword: string
+  username: string
+}
+
 export interface EditPostType extends Omit<PostDetail, "profile" | "likes" | "liked"> {
   profileId?: string
   coverImage?: File

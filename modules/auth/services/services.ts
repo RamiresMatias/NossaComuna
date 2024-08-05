@@ -57,10 +57,6 @@ export default (client: SupabaseClient<Database>, options: ServiceOptions) => ({
       await this.uploadAvatar({id: data.user.id, file: user.avatar})
     }
 
-    if (!error) {
-      navigateTo('/posts')
-    }
-
     return data
   },
   async uploadAvatar ({id, file}: {file: File, id: string}) {
