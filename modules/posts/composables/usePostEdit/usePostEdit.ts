@@ -14,11 +14,7 @@ export function usePostEdit(id: string) {
     coverImage: null,
     title: '',
     isDraft: false,
-    description: {
-      blocks: [],
-      time: 0,
-      version: ''
-    },
+    description: '',
     coverImageUrl: ''
   })
 

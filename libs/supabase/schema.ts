@@ -144,7 +144,7 @@ export type Database = {
           code?: string | null
           cover_image_url?: string | null
           created_at?: string | null
-          description?: Json | null
+          description?: string | null
           id: string
           is_draft: boolean
           profile_id?: string | null
@@ -154,7 +154,7 @@ export type Database = {
           code?: string | null
           cover_image_url?: string | null
           created_at?: string | null
-          description?: Json | null
+          description?: string | null
           id?: string
           is_draft?: boolean
           profile_id?: string | null
@@ -285,7 +285,7 @@ export type Database = {
         Returns: {
           id: string
           code: string
-          description: string
+          description: Json
           title: string
           profile_id: string
           cover_image_url: string

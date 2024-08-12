@@ -2,7 +2,7 @@ create or replace function get_post_by_code(user_id uuid, user_name text, post_c
   returns table (
     id uuid,
     code varchar,
-    description jsonb,
+    description varchar,
     title varchar,
     profile_id uuid,
     cover_image_url varchar,

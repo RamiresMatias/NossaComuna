@@ -1,52 +1,6 @@
 <template>
-  <ClientOnly>
-  <div class="card-post">
-    <div class="px-8">
-      <FileUpload 
-        v-if="!form.coverImage && !form.coverImageUrl"
-        mode="basic" 
-        name="demo[]" 
-        url="/api/upload" 
-        accept="image/png, image/jpeg" 
-        :maxFileSize="2e+6" 
-        @upload="onUpload"
-        :auto="true"
-        chooseLabel="Add Imagem de capa"
-      />
-      <div v-else class="flex items-center w-full gap-10">
-        <img :src="((form.coverImage as any)?.objectURL || (form.coverImageUrl + '?c='))" alt="Imagem de capa do post" class="rounded-md w-24 h-24 object-contain" />
-        <div>
-          <Button 
-            label="Remover"
-            icon="pi pi-trash"
-            severity="danger"
-            icon-pos="right"
-            outlined
-            size="small"
-            @click="removeFile"
-          />
-        </div>
-      </div>
-    </div>
-    <Textarea 
-      v-model="form.title" 
-      auto-resize
-      rows="2" 
-      cols="30" 
-      placeholder="Insira o titulo aqui"
-      class="title-post"
-    />
-    <div class="bg-neutral-100 w-full h-20 flex items-center gap-2 px-8 mb-2 mt-6">
-      <Button label="H" severity="secondary" text class="text-xl text-neutral-900" />
-      <Button label="B" severity="secondary" text class="text-xl text-neutral-900" />
-      <Button label="I" severity="secondary" text class="text-xl text-neutral-900" />
-      <Button severity="secondary" text class="text-xl text-neutral-900" icon="pi pi-link" />
-      <Button severity="secondary" text class="text-xl text-neutral-900" icon="pi pi-list" />
-      <Button severity="secondary" text class="text-xl text-neutral-900" icon="pi pi-list" />
-      <Button severity="secondary" text class="text-xl text-neutral-900" icon="pi pi-code" />
-    </div>
-    <EditorContent :editor="editor" class="h-full" />
-  </div>
+  <ClientOnly> 
+    <EditorContent :editor="editor" v-model="modelValue" class="h-full" :class="{'readonly': readonly}" />
   </ClientOnly>
 </template>
 
@@ -56,8 +10,20 @@ import {StarterKit} from '@tiptap/starter-kit'
 import Placeholder from '@tiptap/extension-placeholder'
 import Link from '@tiptap/extension-link'
 
-import type { FileUploadUploadEvent } from 'primevue/fileupload'
+const modelValue = defineModel<string | null>()
 
+const emit = defineEmits<{
+  (e: 'update:modelValue', description: string): void
+}>()
+
+const props = withDefaults(
+  defineProps<{
+    readonly?: boolean
+  }>(),
+  {
+    readonly: false
+  }
+)
 
 const editor = useEditor({
   extensions: [
@@ -68,64 +34,46 @@ const editor = useEditor({
       emptyEditorClass: 'editor-empty',
     })
   ],
+  content: modelValue.value,
+  editable: !props.readonly,
   editorProps: {
     attributes: {
       class: 'prose prose-sm sm:prose-base lg:prose-lg xl:prose-2xl focus:outline-none',
     },
   },
+  onUpdate: ({editor}) => {
+    emit('update:modelValue', editor.getHTML())
+  },
+  onCreate({ editor }) {
+    // editor.chain().setContent(modelValue.value)
+  },
 })
 
-import { usePostCreate } from '@/modules/posts/composables/usePostCreate/usePostCreate'
 
-const { create, form, loading } = usePostCreate()
+onUnmounted(() => {
+  editor.value.destroy()
+})
 
-const preview = ref(false)
-
-const removeFile = () => {
-  form.coverImage = null
-  form.coverImageUrl = null
-}
-
-const onUpload = async (event: FileUploadUploadEvent) => {
-  const fileFm = Array.isArray(event.files) ? event.files[0] : event.files
-  form.coverImage = fileFm
-}
-
-useSeoMeta({
-  title: 'Criar post',
-  ogTitle: 'Criar post',
-  description: 'Crie seu post para outras pessoas verem',
-  ogDescription: 'Crie seu post para outras pessoas verem',
+defineExpose({
+  editor
 })
 </script>
 <style lang="scss">
+
 .tiptap p.is-empty:first-child::before {
   content: attr(data-placeholder);
   
   @apply text-gray-400 text-lg;
 }
 
-.card-post {
-  height: calc(100vh - 180px);
-
-  @apply w-full h-full bg-white flex flex-col gap-6 rounded-md mb-4 overflow-y-auto box-border relative py-8;
-  
-  &.readonly {
-    @apply gap-0 p-0;
-
-    .title-post {
-      @apply pt-8 px-2 md:px-14;
-    }
-  }
-
-  .title-post {
-    @apply px-8 w-full font-bold text-3xl md:text-5xl text-neutral-900 border-none outline-none rounded-md
-    focus:ring-0;
-  }
+.ProseMirror {
+  @apply bg-white text-neutral-900 text-lg p-3 px-8;
 }
 
-.ProseMirror {
-  @apply bg-white text-neutral-900 p-3 text-lg px-8;
+.readonly {
+  .ProseMirror {
+    @apply p-0;
+  }
 }
 
 .tiptap {
@@ -134,11 +82,23 @@ useSeoMeta({
   }
 
   /* List styles */
+
+  a {
+    @apply cursor-pointer text-blue-600 hover:text-blue-800 underline;
+  }
+
+  ul {
+    list-style: disc;
+  }
+
+  ol {
+    list-style: decimal;
+  }
+
   ul,
   ol {
     padding: 0 1rem;
-    margin: 1.25rem 1rem 1.25rem 0.4rem;
-    list-style: disc;
+    margin: 1.25rem 1rem 1.25rem 0.4rem;    
 
     li p {
       margin-top: 0.25em;
@@ -174,7 +134,7 @@ useSeoMeta({
   h4,
   h5,
   h6 {
-    font-size: 1rem;
+    @apply text-lg;
   }
 
   /* Code and preformatted text styles */

@@ -1,7 +1,7 @@
 CREATE TABLE post(
   id uuid PRIMARY KEY NOT NULL,
   code varchar,
-  description jsonb,
+  description varchar,
   title varchar not null,
   profile_id uuid references public.profiles (id),
   cover_image_url varchar,

@@ -1,5 +1,6 @@
 import type { CreatePostType, User } from "@/types/index"
 import { myselfKey, type MyselfContextProvider } from '@/modules/users/composables/useMyself/useMyself'
+import { v4 } from "uuid"
 
 export function usePostCreate() {
 
@@ -12,18 +13,17 @@ export function usePostCreate() {
     coverImage: null,
     title: '',
     isDraft: false,
-    description: {
-      blocks: [],
-      time: 0,
-      version: ''
-    }
+    description: ''
   })
 
   const create = async () => {
     try {
-      loading.value = true
+      loading.value = false
+
+      const id = v4()
   
       await services.post.createPost({
+        id,
         title: form.title,
         description: form.description,
         coverImage: form.coverImage,

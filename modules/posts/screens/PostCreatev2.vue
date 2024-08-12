@@ -56,7 +56,7 @@
         icon="pi pi-plus"
         icon-pos="left"
         :loading="loading"
-        @click="update"
+        @click="create"
       />
     </div>
   </div>
@@ -65,11 +65,9 @@
 <script setup lang="ts">
 import type { FileUploadUploadEvent } from 'primevue/fileupload'
 
-import { usePostEdit } from '@/modules/posts/composables/usePostEdit/usePostEdit'
+import { usePostCreate } from '@/modules/posts/composables/usePostCreate/usePostCreate'
 
-const route = useRoute()
-
-const { update, form, loading } = usePostEdit((route.params.id as string))
+const { create, form, loading } = usePostCreate()
 
 const tiptapRef = ref()
 
@@ -129,8 +127,8 @@ const setCode = () => {
 }
 
 useSeoMeta({
-  title: 'Editar post',
-  ogTitle: 'Editar post',
+  title: 'Criar post',
+  ogTitle: 'Criar post',
   description: 'Crie seu post para outras pessoas verem',
   ogDescription: 'Crie seu post para outras pessoas verem',
 })

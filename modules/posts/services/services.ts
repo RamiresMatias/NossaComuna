@@ -1,11 +1,11 @@
 import type { SupabaseClient } from "@supabase/supabase-js"
 import type { Database } from '@/libs/supabase/schema'
-import type { CreatePostType, ReadAllRow, ReadAllRowComments, ReadOneRow } from "@/types"
+import type { CreatePostType, ReadAllRow, ReadOneRow } from "@/types"
 
 import {useSession} from '@/modules/auth/composables/useSession/useSession'
+import { getPostByIdAndAuthorAdapter, readAllAdapter, readAllCommentsAdapter, readOneAdapter, readOneAdapterRpc } from "./adapter"
 
 import {v4} from 'uuid'
-import { getPostByIdAndAuthorAdapter, readAllAdapter, readAllCommentsAdapter, readOneAdapter, readOneAdapterRpc } from "./adapter"
 
 type ReplyCommentProps = {
   description: string
@@ -20,8 +20,6 @@ export default (client: SupabaseClient<Database>) => ({
 
     if (!post.profileId) throw new Error("É necessário estar logado para criar um post")
 
-    const id = v4()
-
     let coverImageUrl = ''
 
     if (post.coverImage) {
@@ -31,7 +29,7 @@ export default (client: SupabaseClient<Database>) => ({
     return client
       .from('post')
       .insert({
-        id,
+        id: post.id,
         title: post.title,
         description: JSON.stringify(post.description),
         is_draft: post.isDraft,
@@ -93,6 +91,7 @@ export default (client: SupabaseClient<Database>) => ({
     return readOneAdapterRpc(data)
   },
   async uploadCoverImage ({id, file, userId}: {file: File, id: string; userId: string}) {
+    console.log({id, userId});
     const runtimeConfig = useRuntimeConfig()
 
     const {data, error} = await client.storage

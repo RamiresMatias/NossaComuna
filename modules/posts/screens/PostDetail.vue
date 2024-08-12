@@ -51,17 +51,12 @@
             </template>
           </Stat>
         </div>
-        <h1 class="text-4xl font-bold text-pretty tracking-wide mb-6">
+        <h1 class="text-5xl font-bold text-pretty tracking-wide mb-6">
           {{ post.title }}
         </h1>
-        <Editor
-          v-if="post.description"
-          v-model="post.description"
-          readonly
-          class="editor-post"
-        />
+        <TiptapEditor ref="tiptapRef" v-model="post.description" readonly></TiptapEditor>
       </section>
-      <div class="w-full h-[2px] bg-gray-200"></div>
+      <div class="w-full h-[2px] bg-gray-200 mt-6"></div>
       <section class="w-full h-full flex flex-col max-w-[80%] mx-auto py-6 gap-10">
         <h2 class="text-2xl font-semibold">Comentários ({{ comments.length }})</h2>
         <CommentLoading v-if="loadingComments" v-for="item in 4" :key="item" />

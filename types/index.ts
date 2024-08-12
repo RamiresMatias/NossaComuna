@@ -1,4 +1,3 @@
-import type { OutputData } from "@editorjs/editorjs"
 import type { Database } from "@/libs/supabase/schema"
 
 export interface Tag {
@@ -44,7 +43,7 @@ export interface CommentType {
 export interface PostDetail {
   id: string
   code: string
-  description: OutputData
+  description: string
   title: string
   createdAt?: Date
   profile: Partial<Profile>
@@ -73,7 +72,7 @@ export interface FormEditUser {
 
 export interface CreatePostType {
   id?: string
-  description: OutputData
+  description: string
   title: string
   coverImage?: File
   isDraft?: boolean

@@ -11,13 +11,6 @@
     "db:generate-types": "supabase gen types typescript --local > ./libs/supabase/schema.ts"
   },
   "dependencies": {
-    "@editorjs/checklist": "^1.6.0",
-    "@editorjs/editorjs": "^2.30.2",
-    "@editorjs/header": "^2.8.1",
-    "@editorjs/list": "^1.9.0",
-    "@editorjs/quote": "^2.6.0",
-    "@editorjs/raw": "^2.5.0",
-    "@editorjs/table": "^2.3.0",
     "@nuxtjs/google-fonts": "^3.2.0",
     "@nuxtjs/supabase": "^1.2.2",
     "@nuxtjs/tailwindcss": "^6.11.4",
