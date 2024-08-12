@@ -48,7 +48,10 @@
         <Button severity="secondary" text class="text-xl text-neutral-900" icon="pi pi-list" @click="setList" />
         <Button severity="secondary" text class="text-xl text-neutral-900" icon="pi pi-code" @click="setCode" />
       </div>
-      <TiptapEditor ref="tiptapRef" v-model="form.description" :readonly="false"></TiptapEditor>
+      <TiptapEditor v-if="!loading" ref="tiptapRef" v-model="form.description" :readonly="false"></TiptapEditor>
+      <div v-else class="flex items-center justify-center p-10 gap-2">
+        Carregando conteúdo <i class="pi pi-spin pi-spinner text-2xl"></i>
+      </div>
     </div>
     <div class="flex gap-4 w-full justify-between">
       <Button 

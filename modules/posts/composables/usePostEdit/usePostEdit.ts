@@ -7,7 +7,7 @@ export function usePostEdit(id: string) {
 
   const services = useServices()
   const toast = useToast()
-  const loading = ref<boolean>(false)
+  const loading = ref<boolean>(true)
   const form = reactive<EditPostType>({
     id: '',
     code: '',
@@ -53,7 +53,7 @@ export function usePostEdit(id: string) {
 
   const getPostById = async () => {
 
-    if (!id || !user.value?.id || loading.value) return
+    if (!id || !user.value?.id) return
 
     try {
       loading.value = true

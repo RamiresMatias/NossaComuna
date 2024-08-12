@@ -43,10 +43,7 @@ const editor = useEditor({
   },
   onUpdate: ({editor}) => {
     emit('update:modelValue', editor.getHTML())
-  },
-  onCreate({ editor }) {
-    // editor.chain().setContent(modelValue.value)
-  },
+  }
 })
 
 
