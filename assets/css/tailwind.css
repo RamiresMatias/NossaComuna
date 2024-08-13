@@ -36,6 +36,10 @@ body,
   @apply w-full h-full scroll-smooth;
 }
 
+.error {
+  @apply text-red-500;
+}
+
 body,p, h1, ul, li, blockquote {
   padding: 0;
   margin: 0;

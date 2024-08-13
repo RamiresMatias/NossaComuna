@@ -26,8 +26,8 @@
     </div>
     <PostDetailLoading v-if="loading || pending" class="col-span-8" />
     <article v-else class="w-full h-full mx-auto bg-white rounded-md flex flex-col col-span-full lg:col-span-8 shadow-sm">
-      <img v-if="post.coverImageUrl" :src="post.coverImageUrl + '?c='" alt="Imagem de capa do post" class="w-full h-full max-h-[400px] object-cover rounded-t-md mb-8" />
-      <section class="w-full h-full flex flex-col max-w-[80%] mx-auto" :class="{'mt-8': !post.coverImageUrl}">
+      <img v-if="post.coverImageUrl" :src="post.coverImageUrl + '?c=' + new Date()" alt="Imagem de capa do post" class="w-full h-full max-h-[400px] object-cover rounded-t-md mb-8" />
+      <section class="w-full h-full flex flex-col max-w-[90%] mx-auto" :class="{'mt-8': !post.coverImageUrl}">
         <div class="flex w-full py-4 gap-2">
           <Avatar :image="post.profile.avatarUrl" shape="circle" size="large" />
           <div class="w-full h-full flex flex-col flex-1 gap-1">
@@ -40,12 +40,12 @@
           </div>
         </div>
         <div class="w-full flex gap-4 mb-10 mt-4">
-          <Stat :count="post.likes" class="text-lg">
+          <Stat :count="post.likes" class="text-lg text-primary-400">
             <template #icon>
               <i class="pi pi-heart-fill text-lg"></i>
             </template>
           </Stat>
-          <Stat :count="comments.length" class="text-lg">
+          <Stat :count="comments.length" class="text-lg text-primary-400">
             <template #icon>
               <i class="pi pi-comments text-lg"></i>
             </template>
@@ -57,7 +57,7 @@
         <TiptapEditor ref="tiptapRef" v-model="post.description" readonly></TiptapEditor>
       </section>
       <div class="w-full h-[2px] bg-gray-200 mt-6"></div>
-      <section class="w-full h-full flex flex-col max-w-[80%] mx-auto py-6 gap-10">
+      <section class="w-full h-full flex flex-col max-w-[90%] mx-auto py-6 gap-10">
         <h2 class="text-2xl font-semibold">Comentários ({{ comments.length }})</h2>
         <CommentLoading v-if="loadingComments" v-for="item in 4" :key="item" />
         <CreateComment 

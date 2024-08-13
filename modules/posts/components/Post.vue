@@ -19,12 +19,12 @@
           {{ title }}
         </div>
         <div class="w-full flex gap-4">
-          <Stat :count="likes">
+          <Stat class="text-primary-400" :count="likes">
             <template #icon>
               <i class="pi pi-heart-fill"></i>
             </template>
           </Stat>
-          <Stat :count="totalComments">
+          <Stat class="text-primary-400" :count="totalComments">
             <template #icon>
               <i class="pi pi-comments"></i>
             </template>

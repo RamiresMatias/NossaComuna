@@ -3,12 +3,13 @@
     <NuxtLink to="/posts" class="mb-10 hover:bg-gray-100 p-4 transition-all rounded-md">
       <Logo size="xl" />
     </NuxtLink>
-    <FormLogin v-model="form" />
+    <FormLogin v-model="form" :errors="errors" @on-enter="handleAuthentication" />
     <Button 
       label="Entrar"
       class="w-full mt-4"
       :loading="loading"
-      @click="authWithEmail"
+      @click="handleAuthentication"
+      @keyup.enter="handleAuthentication"
     />
     <Divider align="center" class="my-8">
       <span>OU</span>
@@ -44,6 +45,12 @@ import FormLogin from '@/modules/auth/components/FormLogin.vue'
 
 import { useAuthentication } from '@/modules/auth/composables/useAuthentication/useAuthentication'
 
-const { form, loading, authWithEmail } = useAuthentication()
+const { form, loading, authWithEmail, errors, validateForm } = useAuthentication()
+
+const handleAuthentication = async () => {
+  if(!validateForm().success) return
+
+  authWithEmail()
+}
 
 </script>

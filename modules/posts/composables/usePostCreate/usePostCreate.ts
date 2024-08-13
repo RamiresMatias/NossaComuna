@@ -1,6 +1,13 @@
-import type { CreatePostType, User } from "@/types/index"
+import type { CreatePostType } from "@/types/index"
 import { myselfKey, type MyselfContextProvider } from '@/modules/users/composables/useMyself/useMyself'
 import { v4 } from "uuid"
+
+import {z, type ZodFormattedError} from 'zod'
+
+const schema = z.object({
+  title: z.string().min(2, 'Título é obrigatório'),
+  description: z.string().min(10, 'A descrição é obrigatória'),
+})
 
 export function usePostCreate() {
 
@@ -9,12 +16,22 @@ export function usePostCreate() {
   const services = useServices()
   const toast = useToast()
   const loading = ref<boolean>(false)
+  const errors = ref<ZodFormattedError<CreatePostType>>()
   const form = reactive<CreatePostType>({
     coverImage: null,
     title: '',
     isDraft: false,
     description: ''
   })
+
+  const validateForm = () => {
+    const result = schema.safeParse({...form})
+    if(!result.success) {
+      errors.value = result.error.format()
+    }
+
+    return result
+  }
 
   const create = async () => {
     try {
@@ -49,6 +66,8 @@ export function usePostCreate() {
   return {
     loading,
     form,
+    errors,
     create,
+    validateForm,
   }
 }

@@ -91,7 +91,6 @@ export default (client: SupabaseClient<Database>) => ({
     return readOneAdapterRpc(data)
   },
   async uploadCoverImage ({id, file, userId}: {file: File, id: string; userId: string}) {
-    console.log({id, userId});
     const runtimeConfig = useRuntimeConfig()
 
     const {data, error} = await client.storage

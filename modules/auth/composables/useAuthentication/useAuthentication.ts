@@ -1,8 +1,23 @@
+import {z, type ZodFormattedError} from 'zod'
+
+const schema = z.object({
+  email: z.string().min(1, 'Informe um e-mail').email('Insira um e-mail válido'),
+  password: z.string().min(1, 'Informe uma senha'),
+})
+
+
 export function useAuthentication() {
 
   const toast = useToast()
   const services = useServices()
   const loading = ref<boolean>(false)
+
+  const errors = ref<ZodFormattedError<{
+    email: string
+    password: string
+  }>>()
+
+
   const form = reactive<{
     email: string
     password: string
@@ -10,6 +25,15 @@ export function useAuthentication() {
     email: '',
     password: ''
   })
+
+  const validateForm = () => {
+    const result = schema.safeParse({...form})
+    if(!result.success) {
+      errors.value = result.error.format()
+    }
+
+    return result
+  }
 
   const authWithEmail = async () => {
     try {
@@ -34,6 +58,8 @@ export function useAuthentication() {
   return {
     form,
     loading,
-    authWithEmail
+    errors,
+    authWithEmail,
+    validateForm
   }
 }

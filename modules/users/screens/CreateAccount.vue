@@ -5,10 +5,10 @@
         <h1 class=" text-4xl font-bold">Crie sua conta</h1>
       </div>
 
-      <FormCreateAccount v-if="state === 'form'" v-model="form" />
+      <FormCreateAccount v-if="state === 'form'" v-model="form" :errors />
       <ButtonsGroup v-else-if="state === 'buttons'" @on-create-email="state = 'form'" />
 
-      <Button label="Criar" class="w-full mt-4" @click="onSubmit" :loading="loading" />
+      <Button v-if="state === 'form'" label="Criar" class="w-full mt-4" @click="onSubmit" :loading="loading" />
       <Divider />
       <div class="w-full text-center">
         Já possui uma conta? <NuxtLink to="/auth" class="hover:text-blue-400">Logar</NuxtLink>
@@ -25,12 +25,15 @@ import { useCreateAccount } from '@/modules/users/composables/useCreateAccount/u
 
 const route = useRoute()
 
-const { form, createUser, loading } = useCreateAccount()
+const { form, createUser, loading, errors, validateForm } = useCreateAccount()
 
 const state = ref<'buttons' | 'form'>('buttons')
 
 const onSubmit = async () => {
-  if (state.value === 'form') createUser()
+
+  if (!validateForm().success) return
+
+  // if (state.value === 'form') createUser()
 }
 
 const checkState = () => {

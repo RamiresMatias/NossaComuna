@@ -13,7 +13,7 @@ export function useAuthor(post: PostDetail) {
     bio: '',
     username: ''
   })
-  
+ 
   const getProfileAuthor = async () => {
     if (!post?.profile?.id) return
     try {

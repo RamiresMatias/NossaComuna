@@ -1,6 +1,13 @@
 import type { EditPostType } from "@/types/index"
 import { myselfKey, type MyselfContextProvider } from '@/modules/users/composables/useMyself/useMyself'
 
+import {z, type ZodFormattedError} from 'zod'
+
+const schema = z.object({
+  title: z.string().min(2, 'Título é obrigatório'),
+  description: z.string().min(10, 'A descrição é obrigatória'),
+})
+
 export function usePostEdit(id: string) {
 
   const { user } = inject(myselfKey) as MyselfContextProvider
@@ -8,6 +15,7 @@ export function usePostEdit(id: string) {
   const services = useServices()
   const toast = useToast()
   const loading = ref<boolean>(true)
+  const errors = ref<ZodFormattedError<EditPostType>>()
   const form = reactive<EditPostType>({
     id: '',
     code: '',
@@ -17,6 +25,16 @@ export function usePostEdit(id: string) {
     description: '',
     coverImageUrl: ''
   })
+
+  const validateForm = () => {
+    const result = schema.safeParse({...form})
+    if(!result.success) {
+      errors.value = result.error.format()
+    }
+
+    return result
+  }
+
 
   const update = async () => {
     try {
@@ -93,6 +111,8 @@ export function usePostEdit(id: string) {
   return {
     loading,
     form,
+    errors,
     update,
+    validateForm
   }
 }

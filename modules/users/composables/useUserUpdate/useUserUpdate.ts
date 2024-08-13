@@ -1,14 +1,24 @@
 import type { Profile, User } from "@/types/index"
+import {z, type ZodFormattedError} from 'zod'
 
 interface UseUserUpdateOptions {
   user: Ref<User | undefined>
 }
 
+
+const schema = z.object({
+  email: z.string().email('O e-mail é obrigatório'),
+  username: z.string().min(4, 'O username precisa de no mínimo 4 caracteres').regex(/^[A-Za-z0-9]+(?:[ _-][A-Za-z0-9]+)*$/, 'Digite um username válido'),
+})
+
+
 export function useUserUpdate({user}: UseUserUpdateOptions) {
 
   const services = useServices()
   const toast = useToast()
-  const loading = ref<boolean>(true)
+  const loading = ref<boolean>(false)
+  const errors = ref<ZodFormattedError<Profile>>()
+
   const form = reactive<Profile>({
     id: '',
     avatarUrl: '',
@@ -18,6 +28,15 @@ export function useUserUpdate({user}: UseUserUpdateOptions) {
     createdAt: new Date(),
     avatar: null
   })
+
+  const validateForm = () => {
+    const result = schema.safeParse({...form})
+    if(!result.success) {
+      errors.value = result.error.format()
+    }
+
+    return result
+  }
 
   const update = async () => {
     try {
@@ -30,6 +49,8 @@ export function useUserUpdate({user}: UseUserUpdateOptions) {
         avatar: form.avatar,
         avatarUrl: form.avatarUrl
       })
+
+      await sleep(1000)
     
       toast.add({
         severity: 'success',
@@ -58,6 +79,8 @@ export function useUserUpdate({user}: UseUserUpdateOptions) {
   return {
     loading,
     form,
+    errors,
     update,
+    validateForm
   }
 }

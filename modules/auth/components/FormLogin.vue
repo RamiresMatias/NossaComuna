@@ -1,22 +1,36 @@
 <template>
-  <form class="w-full flex flex-col gap-4">
+  <form class="w-full flex flex-col gap-4" @keyup.enter="emit('onEnter')">
     <div class="flex flex-col gap-2 w-full">
       <label for="email">E-mail</label>
       <InputText id="email" type="email" placeholder="" v-model="modelValue.email"></InputText>
+      <small v-if="errors?.email" class="error">{{ errors?.email._errors[0] }}</small>
     </div>
     <div class="flex flex-col gap-2 w-full">
       <label for="password">Senha</label>
       <InputText id="password" type="password" placeholder="" v-model="modelValue.password"></InputText>
+      <small v-if="errors?.password" class="error">{{ errors?.password._errors[0] }}</small>
     </div>
   </form>
 </template>
 
 <script setup lang="ts">
+import type { ZodFormattedError } from 'zod';
 
-const modelValue = defineModel<{
+
+interface AuthProps {
   email: string
   password: string
-}>({
+}
+
+const emit = defineEmits<{
+  (e: 'onEnter'): void
+}>()
+
+defineProps<{
+  errors?: ZodFormattedError<AuthProps>
+}>()
+
+const modelValue = defineModel<AuthProps>({
   default: {
     email: '',
     password: ''
