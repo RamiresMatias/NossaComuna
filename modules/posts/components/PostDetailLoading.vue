@@ -14,7 +14,7 @@
         <Skeleton shape="circle" size="1rem"></Skeleton>
       </div>
       <Skeleton width="30rem" height="2rem" class="mb-8"></Skeleton>
-      <Skeleton width="100%" height="50rem"></Skeleton>
+      <Skeleton width="100%" height="20rem"></Skeleton>
     </div>
   </div>
 </template>

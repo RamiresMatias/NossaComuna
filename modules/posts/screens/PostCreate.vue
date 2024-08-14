@@ -37,23 +37,3 @@ useSeoMeta({
   ogDescription: 'Crie seu post para outras pessoas verem',
 })
 </script>
-
-<style scoped lang="scss">
-
-.card-post {
-  @apply w-full h-full bg-white flex flex-col gap-6 rounded-md mb-4 overflow-y-auto py-8;
-  
-  &.readonly {
-    @apply gap-0 p-0;
-
-    .title-post {
-      @apply pt-8 px-2 md:px-14;
-    }
-  }
-
-  .title-post {
-    @apply px-8 w-full font-bold text-3xl md:text-5xl text-neutral-900 border-none outline-none rounded-md
-    focus:ring-0;
-  }
-}
-</style>

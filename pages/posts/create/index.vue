@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import PostCreate from '@/modules/posts/screens/PostCreatev2.vue'
+import PostCreate from '~/modules/posts/screens/PostCreate.vue'
 
 definePageMeta({
   middleware: ['auth']

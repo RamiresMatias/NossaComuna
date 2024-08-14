@@ -9,6 +9,7 @@ export function useComment(post: PostDetail) {
   const loading = ref<boolean>(false)
   const comments = reactive<CommentType[]>([])
   const toast = useToast()
+  const myComment = ref<string>('')
 
 
   const getComments = async () => {
@@ -37,6 +38,7 @@ export function useComment(post: PostDetail) {
       
       await services.post.createComment({description, postId: post.id})
       getComments()
+      myComment.value = ''
       
       loading.value = false
     } catch (error) {
@@ -84,9 +86,10 @@ export function useComment(post: PostDetail) {
   return {
     loading,
     comments,
+    myComment,
     getComments,
     createComment,
     deleteComment,
-    onReply
+    onReply,
   }
 }

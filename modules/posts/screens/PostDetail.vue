@@ -127,7 +127,8 @@ const { loading, post } = usePostDetail({
 
 const { 
   comments, 
-  loading: loadingComments, 
+  loading: loadingComments,
+  myComment,
   createComment,
   deleteComment,
   onReply
@@ -136,8 +137,6 @@ const {
 const { author, loading: loadingProfile } = useAuthor(post)
 
 const { likePost, deslikePost, likeComment } = useLike(post)
-
-const myComment = ref<string>('')
 
 const isAuthorPost = computed(() => post?.profile?.id === user.value?.id)
 
