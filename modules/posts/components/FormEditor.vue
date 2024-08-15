@@ -40,7 +40,7 @@
         <ul class="select-tag__list">
           <li v-for="(tag, i) in tagsSelected" :key="`${i}-${tag}`" class="select-tag__item">
             <Tag class="flex gap-2 items-center bg-neutral-100" severity="secondary">
-              <span class="text-gray-600 text-base">{{ tag }}</span>
+              <span class="text-gray-600 text-base">{{ tag.description }}</span>
               <i
                 class="pi pi-times cursor-pointer text-neutral-900 hover:text-red-400 flex items-center justify-center rounded-full
                 transition-all text-base"
@@ -52,16 +52,30 @@
             <input 
               type="text" 
               placeholder="Adicione 4 tags"
-              v-model="modelTag" 
+              v-model="search" 
+              :disabled="loadingTags"
+              @focus="openDropdown"
               @keyup.prevent.enter="handleEnterTag"
             />
-            <div class="select-tag__options">
-              <div class="w-full border-b border-b-solid border-b-neutral-300 p-3">
-                <h3 class="font-normal text-lg">Selecione uma tag</h3>
+            <div v-if="showDropdown" class="select-tag__options">
+              <div class="w-full border-b border-b-solid border-b-neutral-200 p-3 flex items-center justify-between">
+                <h3 class="font-bold text-lg">Selecione uma tag</h3>
+                <i
+                  class="pi pi-times cursor-pointer text-neutral-900 hover:text-red-400 flex items-center justify-center rounded-full
+                  transition-all text-base"
+                  @click="showDropdown = false"
+                ></i>
               </div>
-              <div class="flex flex-col">
-
-              </div>
+              <ul class="flex flex-col items-start justify-start w-full" >
+                <li 
+                  v-for="item in filteredList" 
+                  :key="item.id" 
+                  class="select-tag__options__tag"
+                  @click="selectTag(item)"
+                >
+                  {{ item.description }}
+                </li>
+              </ul>
             </div>
           </li>
         </ul>
@@ -87,9 +101,12 @@
 </template>
 
 <script setup lang="ts">
-import type { FileUploadUploadEvent } from 'primevue/fileupload';
+import type { FileUploadUploadEvent } from 'primevue/fileupload'
 import type { ZodFormattedError } from 'zod'
-import type { CreatePostType, EditPostType } from '~/types'
+import type { CreatePostType, EditPostType, Tag } from '~/types'
+
+import { useTag } from '@/modules/tag/composables/useTag/useTag'
+import { usePostTag } from '@/modules/tag/composables/usePostTag/usePostTag'
 
 type FormEditorProps = CreatePostType | EditPostType
 
@@ -100,10 +117,13 @@ defineProps<{
 
 
 const form = defineModel<CreatePostType | EditPostType>()
-const modelTag = ref<string>()
-const tagsSelected = ref<string[]>([])
 
+const { filteredList, search, create, loading: loadingTags } = useTag()
+const { postTags } = usePostTag()
+
+const tagsSelected = ref<Tag[]>([])
 const tiptapRef = ref()
+const showDropdown = ref(false)
 
 const removeFile = () => {
   form.value.coverImage = null
@@ -160,19 +180,30 @@ const setCode = () => {
   tiptapRef.value.editor?.chain().focus().toggleCodeBlock().run()
 }
 
-const handleEnterTag = () => {
-  const exists = tagsSelected.value.some((el: string) => el.toLowerCase() === modelTag.value.trim().toLowerCase()) 
-  if (!modelTag.value.trim() || exists) return
-  tagsSelected.value.push(modelTag.value)
-  modelTag.value = ''
+const handleEnterTag = async () => {
+  const tagFound = filteredList.value.find((el) => el.description.toLowerCase() === search.value.trim().toLowerCase())
+  if (tagFound) return selectTag(tagFound)
+  
+  const newTag = await create(search.value.trim())
+
+  if (newTag) tagsSelected.value.push(newTag)
+
+}
+
+const selectTag = (tag: Tag) => {
+  const hasSelected = tagsSelected.value.some(el => el.id === tag.id)
+  if (hasSelected) return
+  tagsSelected.value.push(tag)
+  showDropdown.value = false
+  search.value = ''
 }
 
 const removeTag = (index: number) => {
   tagsSelected.value.splice(index, 1)
 }
 
-const onSearch = (...args) => {
-  console.log(args);
+const openDropdown = () => {
+  showDropdown.value = true
 }
 
 </script>
@@ -198,23 +229,26 @@ const onSearch = (...args) => {
     @apply w-full px-8;
 
     &__list {
-      @apply w-full flex flex-wrap items-center gap-2 list-none;
+      @apply w-full flex flex-wrap items-center gap-2 list-none relative;
     }
 
     &__input {
-      @apply relative;
       input {
         @apply outline-none border-none p-2;
       }
     }
 
     &__input:focus-within .select-tag__options {
-      @apply flex opacity-100 transition-all flex-col items-center justify-start;
+      @apply opacity-100 transition-all flex-col items-center justify-start;
     }
 
     &__options {
-      @apply transition-all opacity-0 delay-500 hidden absolute top-10 left-0 h-[200px] border border-solid border-red-500 z-10
-      w-[400px] rounded-md bg-neutral-50;
+      @apply transition-all delay-500 absolute top-10 left-0 h-[200px] z-10
+      w-[400px] rounded-md bg-white overflow-y-auto shadow-md border border-solid border-neutral-200;
+
+      &__tag {
+        @apply transition-all w-full hover:bg-neutral-100 cursor-pointer p-3;
+      }
     }
     
   }

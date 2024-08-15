@@ -207,14 +207,17 @@ export type Database = {
       }
       tag: {
         Row: {
+          created_at: string
           description: string
           id: string
         }
         Insert: {
+          created_at?: string
           description: string
           id: string
         }
         Update: {
+          created_at?: string
           description?: string
           id?: string
         }
@@ -222,16 +225,19 @@ export type Database = {
       }
       tag_x_post: {
         Row: {
+          created_at: string
           id: string
           post_id: string | null
           tag_id: string | null
         }
         Insert: {
+          created_at?: string
           id: string
           post_id?: string | null
           tag_id?: string | null
         }
         Update: {
+          created_at?: string
           id?: string
           post_id?: string | null
           tag_id?: string | null
@@ -285,7 +291,7 @@ export type Database = {
         Returns: {
           id: string
           code: string
-          description: Json
+          description: string
           title: string
           profile_id: string
           cover_image_url: string

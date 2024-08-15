@@ -3,6 +3,7 @@ import type { Database } from "@/libs/supabase/schema"
 export interface Tag {
   id: string
   description: string
+  createdAt: string
 }
 
 export interface Profile {
@@ -94,9 +95,9 @@ export interface EditPostType extends Omit<PostDetail, "profile" | "likes" | "li
 }
 
 export type ProfileTableRow = Database['public']['Tables']['profiles'] 
-
 export type PostTable = Database['public']['Tables']['post']
 export type CommentTable = Database['public']['Tables']['comment']
+export type TagTable = Database['public']['Tables']['tag']
 
 export type ReadAllRow = PostTable['Row'] & {
   profiles: ProfileTableRow['Row'] | null
@@ -115,3 +116,10 @@ export type ReadAllRowComments = CommentTable['Row'] & {
 
 export type ReadOnePostRow = Database['public']['Functions']['get_post_by_code']['Returns']
 export type ReadAllComments = Database['public']['Functions']['get_all_comments']['Returns']
+
+export type ReadAllTags = TagTable['Row']
+
+export interface BindTagProps {
+  postId: string
+  tags: Tag[]
+}

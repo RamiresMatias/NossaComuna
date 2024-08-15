@@ -1,6 +1,6 @@
 <template>
   <header class="w-full shadow">
-    <nav class="bg-white px-4 lg:px-6 py-2.5">
+    <nav class="bg-white px-4 lg:px-6 py-3.5">
       <div class="flex justify-between items-center mx-auto max-w-[1380px]">
         <div class="flex items-center">
           <NuxtLink to="/posts">

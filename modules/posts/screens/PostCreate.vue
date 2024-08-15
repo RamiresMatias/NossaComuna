@@ -15,10 +15,12 @@
 
 <script setup lang="ts">
 import { usePostCreate } from '@/modules/posts/composables/usePostCreate/usePostCreate'
+import { useTag } from '@/modules/tag/composables/useTag/useTag'
 
 import FormEditor from '@/modules/posts/components/FormEditor.vue' 
 
 const { create, form, loading, errors, validateForm } = usePostCreate()
+const { } = useTag()
 
 
 const handleCreate = async () => {
