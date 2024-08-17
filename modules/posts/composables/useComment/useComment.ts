@@ -80,7 +80,7 @@ export function useComment(post: PostDetail) {
   }
 
   watchEffect(() => {
-    if (post.id) getComments()
+    if (post?.id) getComments()
   })
 
   return {

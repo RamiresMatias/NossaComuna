@@ -11,7 +11,7 @@ export function usePostDetail({ username, code }: UsePostDetailProps) {
   const { user } = inject(myselfKey) as MyselfContextProvider
 
   const services = useServices()
-  const loading = ref<boolean>(false)
+  const loading = ref<boolean>(true)
   const post = reactive<PostDetail>({
     id: '',
     title: '',
@@ -29,7 +29,7 @@ export function usePostDetail({ username, code }: UsePostDetailProps) {
     try {
       loading.value = true
   
-      await sleep(500)
+      await sleep(1000)
   
       const data = await services.post.getRpcPostByCode({username, code, userId: user.value.id})
   
@@ -41,9 +41,6 @@ export function usePostDetail({ username, code }: UsePostDetailProps) {
     }
   }
 
-  onMounted(() => {
-    getPost()
-  })
 
   return {
     loading,

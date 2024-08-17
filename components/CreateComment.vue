@@ -28,7 +28,7 @@
 <script setup lang="ts">
 
 defineProps<{
-  profilePic: string
+  profilePic?: string
   loading: boolean
   placeholder?: string
   showCancel?: boolean

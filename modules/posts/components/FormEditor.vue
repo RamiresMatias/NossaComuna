@@ -36,50 +36,7 @@
         placeholder="Insira o titulo aqui"
         class="title-post"
       />
-      <div class="select-tag">
-        <ul class="select-tag__list">
-          <li v-for="(tag, i) in tagsSelected" :key="`${i}-${tag}`" class="select-tag__item">
-            <Tag class="flex gap-2 items-center bg-neutral-100" severity="secondary">
-              <span class="text-gray-600 text-base">{{ tag.description }}</span>
-              <i
-                class="pi pi-times cursor-pointer text-neutral-900 hover:text-red-400 flex items-center justify-center rounded-full
-                transition-all text-base"
-                @click="removeTag(i)"
-              ></i>
-            </Tag>
-          </li>
-          <li v-if="tagsSelected.length < 4" class="select-tag__input">
-            <input 
-              type="text" 
-              placeholder="Adicione 4 tags"
-              v-model="search" 
-              :disabled="loadingTags"
-              @focus="openDropdown"
-              @keyup.prevent.enter="handleEnterTag"
-            />
-            <div v-if="showDropdown" class="select-tag__options">
-              <div class="w-full border-b border-b-solid border-b-neutral-200 p-3 flex items-center justify-between">
-                <h3 class="font-bold text-lg">Selecione uma tag</h3>
-                <i
-                  class="pi pi-times cursor-pointer text-neutral-900 hover:text-red-400 flex items-center justify-center rounded-full
-                  transition-all text-base"
-                  @click="showDropdown = false"
-                ></i>
-              </div>
-              <ul class="flex flex-col items-start justify-start w-full" >
-                <li 
-                  v-for="item in filteredList" 
-                  :key="item.id" 
-                  class="select-tag__options__tag"
-                  @click="selectTag(item)"
-                >
-                  {{ item.description }}
-                </li>
-              </ul>
-            </div>
-          </li>
-        </ul>
-      </div>
+      <InputTag v-model="form.tags" />
       <small v-if="errors?.title" class="error ml-8">{{ errors?.title._errors[0] }}</small>
     </div>
     <div class="bg-neutral-100 w-full h-20 flex items-center gap-2 px-8 mb-2 mt-6 py-2">
@@ -105,8 +62,7 @@ import type { FileUploadUploadEvent } from 'primevue/fileupload'
 import type { ZodFormattedError } from 'zod'
 import type { CreatePostType, EditPostType, Tag } from '~/types'
 
-import { useTag } from '@/modules/tag/composables/useTag/useTag'
-import { usePostTag } from '@/modules/tag/composables/usePostTag/usePostTag'
+import InputTag from '@/modules/posts/components/InputTag.vue'
 
 type FormEditorProps = CreatePostType | EditPostType
 
@@ -115,15 +71,9 @@ defineProps<{
   loading?: boolean
 }>()
 
-
 const form = defineModel<CreatePostType | EditPostType>()
 
-const { filteredList, search, create, loading: loadingTags } = useTag()
-const { postTags } = usePostTag()
-
-const tagsSelected = ref<Tag[]>([])
 const tiptapRef = ref()
-const showDropdown = ref(false)
 
 const removeFile = () => {
   form.value.coverImage = null
@@ -178,32 +128,6 @@ const setList = () => {
 
 const setCode = () => {
   tiptapRef.value.editor?.chain().focus().toggleCodeBlock().run()
-}
-
-const handleEnterTag = async () => {
-  const tagFound = filteredList.value.find((el) => el.description.toLowerCase() === search.value.trim().toLowerCase())
-  if (tagFound) return selectTag(tagFound)
-  
-  const newTag = await create(search.value.trim())
-
-  if (newTag) tagsSelected.value.push(newTag)
-
-}
-
-const selectTag = (tag: Tag) => {
-  const hasSelected = tagsSelected.value.some(el => el.id === tag.id)
-  if (hasSelected) return
-  tagsSelected.value.push(tag)
-  showDropdown.value = false
-  search.value = ''
-}
-
-const removeTag = (index: number) => {
-  tagsSelected.value.splice(index, 1)
-}
-
-const openDropdown = () => {
-  showDropdown.value = true
 }
 
 </script>

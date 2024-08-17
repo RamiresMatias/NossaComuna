@@ -6,10 +6,13 @@ export function usePostTag() {
   const loading = ref<boolean>(false)
   const postTags = ref<Tag[]>([])
 
-  const getTagsFromPost = async () => {
+  const getTagsFromPost = async (postId: string) => {
     try {
       loading.value = true
-      
+
+      const data = await services.tag.getPostTags(postId)
+      postTags.value = data 
+
       loading.value = false
     } catch (error) {
       loading.value = false
@@ -21,8 +24,8 @@ export function usePostTag() {
     try {
       loading.value = true
 
-      const success = await services.tag.removeBindTagsFromPost(postId) 
-      if (success) await services.tag.bindTags({postId, tags})
+      await services.tag.removeBindTagsFromPost(postId)
+      await services.tag.bindTags({postId, tags})
 
       loading.value = false
     } catch (error) {

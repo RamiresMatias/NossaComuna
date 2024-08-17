@@ -1,6 +1,7 @@
 <template>
-  <div class="grid grid-cols-12 w-full max-w-[1380px] px-4 lg:px-0 gap-y-6">
-    <div v-if="!loading" class="col-span-1 hidden lg:flex flex-col items-center m-0 p-0 gap-4">
+  <PostDetailLoading v-if="isBusy || !currentPost?.id" />
+  <div v-else class="grid grid-cols-12 w-full max-w-[1380px] px-4 lg:px-0 gap-y-6">
+    <div v-if="!pending" class="col-span-1 hidden lg:flex flex-col items-center m-0 p-0 gap-4">
       <Button
         v-if="isAuthorPost" 
         icon="pi pi-pencil" 
@@ -24,11 +25,17 @@
         @click="post.liked ? deslikePost() : likePost()"
       />
     </div>
-    <PostDetailLoading v-if="loading || pending" class="col-span-8" />
-    <article v-else class="w-full h-full mx-auto bg-white rounded-md flex flex-col col-span-full lg:col-span-8 shadow-sm">
-      <img v-if="post.coverImageUrl" :src="post.coverImageUrl + '?c=' + new Date()" alt="Imagem de capa do post" class="w-full h-full max-h-[400px] object-cover rounded-t-md mb-8" />
-      <section class="w-full h-full flex flex-col max-w-[90%] mx-auto" :class="{'mt-8': !post.coverImageUrl}">
-        <div class="flex w-full py-4 gap-2">
+    <article class="w-full h-full mx-auto bg-white rounded-md flex flex-col col-span-full lg:col-span-8 shadow-sm">
+      <NuxtImg 
+        v-if="post.coverImageUrl"
+        :src="post.coverImageUrl + '?c=' + new Date()"
+        alt="Imagem de capa do post"
+        class="w-full h-full max-h-[400px] object-cover rounded-t-md mb-8"
+        loading="lazy"
+        decoding="auto"
+      />
+      <section class="w-full h-full flex flex-col max-w-[880px] px-4 mx-auto" :class="{'mt-8': !post.coverImageUrl}">
+        <div class="flex w-full gap-2 flex-col min-[300px]:flex-row">
           <Avatar :image="post.profile.avatarUrl" shape="circle" size="large" />
           <div class="w-full h-full flex flex-col flex-1 gap-1">
             <p class=" text-base lg:text-lg text-[--title-color] font-bold text-balance">
@@ -51,13 +58,23 @@
             </template>
           </Stat>
         </div>
+        <div class="mb-4 flex items-center gap-2 flex-wrap">
+          <Tag 
+            v-for="tag in postTags" 
+            :key="tag.id" 
+            class="flex gap-2 items-center bg-neutral-100" 
+            severity="secondary"
+          >
+            <span class="text-gray-600 text-sm">{{ tag.description }}</span>
+          </Tag>
+        </div>
         <h1 class="text-5xl font-bold text-pretty tracking-wide mb-6">
           {{ post.title }}
         </h1>
         <TiptapEditor ref="tiptapRef" v-model="post.description" readonly></TiptapEditor>
       </section>
       <div class="w-full h-[2px] bg-gray-200 mt-6"></div>
-      <section class="w-full h-full flex flex-col max-w-[90%] mx-auto py-6 gap-10">
+      <section class="w-full h-full flex flex-col max-w-[880px] px-4 mx-auto py-6 gap-10">
         <h2 class="text-2xl font-semibold">Comentários ({{ comments.length }})</h2>
         <CommentLoading v-if="loadingComments" v-for="item in 4" :key="item" />
         <CreateComment 
@@ -85,7 +102,7 @@
         ></Comment>
       </section>
     </article>
-    <div class="col-span-full lg:col-span-3 lg:ml-4">
+    <section class="col-span-full lg:col-span-3 lg:ml-4">
       <AuthorProfileLoading v-if="loadingProfile" />
       <AuthorProfile
         v-else 
@@ -96,7 +113,7 @@
         :created-at="author.createdAt"
         :email="author.email"
       />
-    </div>
+    </section>
   </div>
 </template>
 
@@ -108,22 +125,25 @@ import CommentLoading from '@/modules/posts/components/CommentLoading.vue'
 import AuthorProfile from '@/modules/posts/components/AuthorProfile.vue'
 import AuthorProfileLoading from '@/modules/posts/components/AuthorProfileLoading.vue'
 
-import { usePostDetail } from '@/modules/posts/composables/usePostDetail/usePostDetail'
 import { useComment } from '@/modules/posts/composables/useComment/useComment'
 import { useAuthor } from '@/modules/posts/composables/useAuthor/useAuthor'
 import { useLike } from '@/modules/posts/composables/useLike/useLike'
 
 import { myselfKey, type MyselfContextProvider } from '@/modules/users/composables/useMyself/useMyself'
+import { usePostTag } from '@/modules/tag/composables/usePostTag/usePostTag'
 
 const { user } = inject(myselfKey) as MyselfContextProvider
 
-const services = useServices()
 const route = useRoute()
 
-const { loading, post } = usePostDetail({
-  username: (route.params.username as string),
-  code: (route.params.code as string),
+const services = useServices()
+
+const { pending, data } = await useLazyAsyncData('post-details', () => {
+  const { username, code } = route.params as {username: string, code: string}
+  return services.post.getPostByCode({username, code})
 })
+
+const post = computed(() => data.value)
 
 const { 
   comments, 
@@ -132,29 +152,34 @@ const {
   createComment,
   deleteComment,
   onReply
-} = useComment(post)
+} = useComment(post.value)
 
-const { author, loading: loadingProfile } = useAuthor(post)
+const { author, loading: loadingProfile } = useAuthor(post.value)
 
-const { likePost, deslikePost, likeComment } = useLike(post)
+const { likePost, deslikePost, likeComment } = useLike(post.value)
 
-const isAuthorPost = computed(() => post?.profile?.id === user.value?.id)
+const { getTagsFromPost, postTags } = usePostTag()
 
-const {data: postServer, pending} = await useAsyncData('post-details', () => {
-  const { username, code } = route.params as {username: string, code: string}
-  return services.post.getPostByCode({username, code})
+watch(data, (newPost, oldPost) => {
+  if (newPost?.id && !oldPost) getTagsFromPost(newPost.id)
+}, {
+  immediate: true
 })
 
+const isAuthorPost = computed(() => post.value?.profile?.id === user.value?.id)
+const isBusy = computed(() => pending.value)
+const currentPost = computed(() => post.value)
+
 const navigateToEdit = () => {
-  if (!post.id) return
-  navigateTo(`/posts/edit/${post.id}`)
+  if (!post.value?.id) return
+  navigateTo(`/posts/edit/${post.value.id}`)
 }
 
 useSeoMeta({
-  title: `${postServer.value?.title} by ${postServer.value?.profile?.username}`,
-  ogTitle: `${postServer.value?.title} by ${postServer.value?.profile?.username}`,
-  description: `Veja o post de ${postServer.value?.profile?.username} no NossaComuna`,
-  ogDescription: `Veja o post de ${postServer.value?.profile?.username} no NossaComuna`,
+  title: () => `${post.value?.title} by ${post.value?.profile?.username}`,
+  ogTitle: () => `${post.value?.title} by ${post.value?.profile?.username}`,
+  description: () => `Veja o post de ${post.value?.profile?.username} no NossaComuna`,
+  ogDescription: () => `Veja o post de ${post.value?.profile?.username} no NossaComuna`,
 })
 
 </script>

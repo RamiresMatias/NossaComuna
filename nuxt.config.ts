@@ -4,10 +4,11 @@ import path from 'path'
 export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: [
-    '@nuxtjs/tailwindcss', 
-    'nuxt-primevue', 
-    '@nuxtjs/google-fonts', 
+    '@nuxtjs/tailwindcss',
+    'nuxt-primevue',
+    '@nuxtjs/google-fonts',
     '@nuxtjs/supabase',
+    "@nuxt/image"
   ],
   css: ['primeicons/primeicons.css'],
   primevue: {

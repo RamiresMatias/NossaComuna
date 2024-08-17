@@ -30,33 +30,17 @@
 import Post from '@/modules/posts/components/Post.vue'
 import PostSkeleton from '@/modules/posts/components/PostSkeleton.vue'
 
-import type { PostType } from '@/types'
-
 const services = useServices()
 
-const loading = ref(false)
-const posts = ref<PostType[]>()
-
-const loadPosts = async () => {
-  try {
-    loading.value = true
-
-    posts.value = await services.post.getAllPosts()
-
-    setTimeout(() => {
-      loading.value = false
-    }, 1000)
-  } catch (error) {
-    loading.value = false
-  }
-}
-
-useSeoMeta({
-  title: `Posts`,
-  ogTitle: `Posts`,
-  description: `Leia, crie e compartilhe conhecimento em nossa comunidade`,
-  ogDescription: `Leia, crie e compartilhe conhecimento em nossa comunidade`
+const { pending: loading, data: posts } = await useLazyAsyncData('posts', () => {
+  return services.post.getAllPosts()
 })
 
-onMounted(() => loadPosts())
+useSeoMeta({
+  title: 'Posts',
+  ogTitle: 'Posts',
+  description: 'Leia, crie e compartilhe conhecimento em nossa comunidade',
+  ogDescription: 'Leia, crie e compartilhe conhecimento em nossa comunidade'
+})
+
 </script>

@@ -1,8 +1,11 @@
 import type { CreatePostType } from "@/types/index"
-import { myselfKey, type MyselfContextProvider } from '@/modules/users/composables/useMyself/useMyself'
 import { v4 } from "uuid"
-
 import {z, type ZodFormattedError} from 'zod'
+
+import { myselfKey, type MyselfContextProvider } from '@/modules/users/composables/useMyself/useMyself'
+
+import { usePostTag } from '@/modules/tag/composables/usePostTag/usePostTag'
+
 
 const schema = z.object({
   title: z.string().min(2, 'Título é obrigatório'),
@@ -21,8 +24,11 @@ export function usePostCreate() {
     coverImage: null,
     title: '',
     isDraft: false,
-    description: ''
+    description: '',
+    tags: []
   })
+
+  const { bindTagsInPost } = usePostTag()
 
   const validateForm = () => {
     const result = schema.safeParse({...form})
@@ -39,7 +45,7 @@ export function usePostCreate() {
 
       const id = v4()
   
-      await services.post.createPost({
+      const { error } = await services.post.createPost({
         id,
         title: form.title,
         description: form.description,
@@ -47,6 +53,10 @@ export function usePostCreate() {
         isDraft: form.isDraft,
         profileId: user.value.id
       })
+
+      if (!error) {
+        await bindTagsInPost({ postId: id, tags: form.tags })
+      }
 
       toast.add({
         severity: 'success',

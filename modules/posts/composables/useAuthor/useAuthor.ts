@@ -29,7 +29,7 @@ export function useAuthor(post: PostDetail) {
   }
 
   watchEffect(() => {
-    if (post.id) getProfileAuthor()
+    if (post?.id) getProfileAuthor()
   })
 
   return {
