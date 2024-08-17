@@ -103,7 +103,7 @@
       </section>
     </article>
     <section class="col-span-full lg:col-span-3 lg:ml-4">
-      <AuthorProfileLoading v-if="loadingProfile" />
+      <AuthorProfileLoading v-if="isBusy || loadingProfile" />
       <AuthorProfile
         v-else 
         :id="author.id"

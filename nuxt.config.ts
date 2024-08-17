@@ -3,6 +3,7 @@ import path from 'path'
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
+
   modules: [
     '@nuxtjs/tailwindcss',
     'nuxt-primevue',
@@ -10,7 +11,9 @@ export default defineNuxtConfig({
     '@nuxtjs/supabase',
     "@nuxt/image"
   ],
+
   css: ['primeicons/primeicons.css'],
+
   primevue: {
     options: { unstyled: true },
     importPT: {
@@ -18,19 +21,23 @@ export default defineNuxtConfig({
       from: path.resolve(__dirname, "./assets/presets/lara")
     }
   },
+
   vite: {
     optimizeDeps: {
       include: ["@editorjs/editorjs"],
     },
   },
+
   supabase: {
     redirect: false
   },
+
   imports: {
     dirs: [
       "./composables/useServices",
     ]
   },
+
   runtimeConfig: {
     public: {
       siteUrl: process.env.SITE_URL,
@@ -39,7 +46,10 @@ export default defineNuxtConfig({
       supabaseKey: process.env.SUPABASE_KEY
     }
   },
+
   typescript: {
     strict: false
-  }
+  },
+
+  compatibilityDate: '2024-08-17'
 })
