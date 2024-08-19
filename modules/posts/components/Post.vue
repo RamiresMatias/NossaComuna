@@ -15,18 +15,34 @@
             </p>
           </div>
         </div>
-        <div class="w-full text-balance font-bold  text-xl lg:text-xl mb-2">
+        <div class="w-full text-balance font-bold  text-xl lg:text-xl">
           {{ title }}
+        </div>
+        <div class="w-full flex flex-wrap gap-2 items-center">
+          <Tag 
+            v-for="tag in tags" 
+            :key="tag.id" 
+            class="flex gap-2 items-center bg-neutral-100" 
+            severity="secondary"
+          >
+            <span class="text-gray-600 text-xs">{{ tag.description }}</span>
+          </Tag>
         </div>
         <div class="w-full flex gap-4">
           <Stat class="text-primary-400" :count="likes">
-            <template #icon>
+            <template #preffix>
               <i class="pi pi-heart-fill"></i>
+            </template>
+            <template #suffix>
+              {{ likes === 1 ? 'Curtida' : 'Curtidas' }}
             </template>
           </Stat>
           <Stat class="text-primary-400" :count="totalComments">
-            <template #icon>
+            <template #preffix>
               <i class="pi pi-comments"></i>
+            </template>
+            <template #suffix>
+              {{ totalComments === 1 ? 'Comentário' : 'Comentários' }}
             </template>
           </Stat>
         </div>

@@ -16,7 +16,8 @@ export function readAllAdapter(values: ReadAllRow[] | null): PostType[] | [] {
       id: el.profile_id,
       username: el.profiles.username,
       avatarUrl: el.profiles.avatar_url ? (el.profiles.avatar_url + '?lastMod=' + new Date()) : ''
-    }
+    },
+    tags: el.tag_x_post.map(el => el.tag)
   }))
 }
 

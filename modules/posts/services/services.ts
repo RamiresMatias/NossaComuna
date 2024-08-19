@@ -7,11 +7,16 @@ import { getPostByIdAndAuthorAdapter, readAllAdapter, readAllCommentsAdapter, re
 
 import {v4} from 'uuid'
 
-type ReplyCommentProps = {
+interface ReplyCommentProps {
   description: string
   postId: string
   commentId: string
   userId: string
+}
+
+interface GetAllPosts {
+  from: number,
+  to: number
 }
 
 export default (client: SupabaseClient<Database>) => ({
@@ -31,12 +36,12 @@ export default (client: SupabaseClient<Database>) => ({
       .insert({
         id: post.id,
         title: post.title,
-        description: JSON.stringify(post.description),
+        description: post.description,
         is_draft: post.isDraft,
         created_at: new Date(),
         cover_image_url: coverImageUrl,
         code: removeAccents(transformCode(post.title)),
-        profile_id: post.profileId 
+        profile_id: post.profileId,
       })
   },
   async editPost (post: CreatePostType) {
@@ -60,16 +65,18 @@ export default (client: SupabaseClient<Database>) => ({
       })
       .match({id: post.id})
   },
-  async getAllPosts () {
+  async getAllPosts ({to, from}: GetAllPosts) {
     const {data} = await client
       .from('post')
       .select(`
         id, title, is_draft, code, created_at, cover_image_url, 
         profiles!inner(id, username, avatar_url),
         likes(count),
-        comment(count)
+        comment(count),
+        tag_x_post(tag(id, description))
       `)
       .order('created_at', {ascending: true})
+      .range(from, to)
       .returns<ReadAllRow[]>()
 
     return readAllAdapter(data)

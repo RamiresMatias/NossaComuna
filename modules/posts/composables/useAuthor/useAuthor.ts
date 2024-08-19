@@ -1,6 +1,6 @@
 import type { PostDetail, Profile } from "@/types"
 
-export function useAuthor(post: PostDetail) {
+export function useAuthor(post: Ref<PostDetail>) {
 
   const services = useServices()
   const loading = ref<boolean>(false)
@@ -15,10 +15,10 @@ export function useAuthor(post: PostDetail) {
   })
  
   const getProfileAuthor = async () => {
-    if (!post?.profile?.id) return
+    if (!post.value?.profile?.id) return
     try {
       loading.value = true
-      const data = await services.users.getUserById(post.profile.id)
+      const data = await services.users.getUserById(post.value.profile.id)
       Object.assign(author, data)
   
       loading.value = false
@@ -29,7 +29,7 @@ export function useAuthor(post: PostDetail) {
   }
 
   watchEffect(() => {
-    if (post?.id) getProfileAuthor()
+    if (post.value?.id) getProfileAuthor()
   })
 
   return {

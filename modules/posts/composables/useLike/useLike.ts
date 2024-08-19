@@ -1,7 +1,7 @@
 import type { CommentType, PostDetail } from "@/types/index"
 import { myselfKey, type MyselfContextProvider } from '@/modules/users/composables/useMyself/useMyself'
 
-export function useLike(post: PostDetail) {
+export function useLike(post: Ref<PostDetail>) {
 
   const { user } = inject(myselfKey) as MyselfContextProvider
 
@@ -10,10 +10,10 @@ export function useLike(post: PostDetail) {
 
   const likePost = async () => {
     try {
-      await services.post.like({postId: post.id, userId: user.value.id})
+      await services.post.like({postId: post.value.id, userId: user.value.id})
   
-      post.liked = !post.liked
-      post.likes += 1
+      post.value.liked = !post.value.liked
+      post.value.likes += 1
     } catch (error) {
       console.log(error);
     }
@@ -21,10 +21,10 @@ export function useLike(post: PostDetail) {
 
   const deslikePost = async () => {
     try {
-      await services.post.deslikePost({postId: post.id, userId: user.value.id})
+      await services.post.deslikePost({postId: post.value.id, userId: user.value.id})
   
-      post.liked = !post.liked
-      post.likes -= 1
+      post.value.liked = !post.value.liked
+      post.value.likes -= 1
     } catch (error) {
       console.log(error);
     }

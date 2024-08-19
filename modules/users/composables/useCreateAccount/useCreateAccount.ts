@@ -5,7 +5,7 @@ const schema = z.object({
   email: z.string().min(1, 'Informe um e-mail').email('Insira um e-mail válido'),
   password: z.string().min(1, 'Informe uma senha'),
   confirmPassword: z.string().min(1, 'Informe a confirmação da senha'),
-  username: z.string().min(4, 'O username precisa de no mínimo 4 caracteres').regex(/^[A-Za-z0-9]+(?:[ _-][A-Za-z0-9]+)*$/, 'Digite um username válido'),
+  username: z.string().min(4, 'O username precisa de no mínimo 4 caracteres').regex(/^(?=.*[A-Za-z0-9]).{3,30}$/, 'Digite um username válido'),
 }).refine((data) => data.password === data.confirmPassword, {
   message: 'As senhas precisam ser iguais',
   path: ['confirmPassword']
@@ -15,6 +15,7 @@ export function useCreateAccount() {
 
   const services = useServices()
   const loading = ref<boolean>(false)
+  const toast = useToast()
 
   const errors = ref<ZodFormattedError<CreateUserType>>()
 
@@ -44,13 +45,27 @@ export function useCreateAccount() {
         username: form.username,
         avatar: form.avatar
       })
-
       await sleep(1000)
 
       loading.value = false
       navigateTo('/posts')
     } catch (error) {
-      console.log(error);
+      console.log({...error});
+      if (error.status === 422) {
+        toast.add({
+          severity: 'error',
+          summary: 'Erro ao tentar criar usuário',
+          detail: 'O usuário informado já existe',
+          life: 4000
+        })
+      }
+      else {
+        toast.add({
+          severity: 'error',
+          summary: 'Erro ao tentar criar usuário',
+          life: 4000
+        })
+      }
       loading.value = false
     }
   }

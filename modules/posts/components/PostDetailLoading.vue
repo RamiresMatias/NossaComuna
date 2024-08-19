@@ -22,33 +22,6 @@
         <Skeleton animation="wave" width="100%" height="12rem"></Skeleton>
       </section>
       <div class="w-full h-[2px] bg-gray-200 mt-6"></div>
-      <!-- <section class="w-full h-full flex flex-col max-w-[90%] mx-auto py-6 gap-10">
-        <h2 class="text-2xl font-semibold">Comentários ({{ comments.length }})</h2>
-        <CommentLoading v-if="loadingComments" v-for="item in 4" :key="item" />
-        <CreateComment 
-          v-if="!loadingComments" 
-          v-model="myComment" 
-          :profile-pic="user?.avatarUrl" 
-          :loading="loadingComments" 
-          @submit-comment="() => createComment(myComment)" 
-        />
-        <Comment
-          v-if="!loadingComments"
-          v-for="comment in comments" 
-          :key="comment.id"
-          :description="comment.description"
-          :profile="comment.profile"
-          :created-at="comment.createdAt"
-          :id="comment.id"
-          :is-author="comment.profile.id === user.id"
-          :comments="comment.comments"
-          :liked="comment.liked"
-          :likes="comment.likes"
-          @delete="(id) => deleteComment(id)"
-          @on-reply="({comment, commentId}) => onReply({comment, commentId})"
-          @on-like="(commentId) => likeComment({comments, commentId})"
-        ></Comment>
-      </section> -->
     </article>
     <div class="col-span-full lg:col-span-3 lg:ml-4">
       <Skeleton animation="wave" width="100%" height="18rem"></Skeleton>

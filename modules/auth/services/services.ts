@@ -53,6 +53,8 @@ export default (client: SupabaseClient<Database>, options: ServiceOptions) => ({
       }
     })
 
+    if (error) throw error
+
     if (!error && user.avatar && data.user) {
       await this.uploadAvatar({id: data.user.id, file: user.avatar})
     }

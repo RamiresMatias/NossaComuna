@@ -27,7 +27,8 @@ export interface PostType {
   coverImage: string
   isDraft?: boolean
   likes?: number
-  totalComments?: number
+  totalComments?: number,
+  tags?: Tag[]
 }
 
 export interface CommentType {
@@ -106,6 +107,9 @@ export type ReadAllRow = PostTable['Row'] & {
   profiles: ProfileTableRow['Row'] | null
   likes?: {count: number}[]
   comment?: {count: number}[]
+  tag_x_post: {
+    tag: Tag
+  }[]
 }
 
 export type ReadOneRow = PostTable['Row'] & {

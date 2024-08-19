@@ -33,7 +33,7 @@ const onSubmit = async () => {
 
   if (!validateForm().success) return
 
-  // if (state.value === 'form') createUser()
+  createUser()
 }
 
 const checkState = () => {

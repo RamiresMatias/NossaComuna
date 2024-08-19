@@ -1,7 +1,7 @@
 <template>
   <PostDetailLoading v-if="isBusy || !currentPost?.id" />
   <div v-else class="grid grid-cols-12 w-full max-w-[1380px] px-4 lg:px-0 gap-y-6">
-    <div v-if="!pending" class="col-span-1 hidden lg:flex flex-col items-center m-0 p-0 gap-4">
+    <div v-if="!pending" class="col-span-0.5 hidden lg:flex flex-col items-center m-0 p-0 gap-4">
       <Button
         v-if="isAuthorPost" 
         icon="pi pi-pencil" 
@@ -48,12 +48,12 @@
         </div>
         <div class="w-full flex gap-4 mb-10 mt-4">
           <Stat :count="post.likes" class="text-lg text-primary-400">
-            <template #icon>
+            <template #preffix>
               <i class="pi pi-heart-fill text-lg"></i>
             </template>
           </Stat>
           <Stat :count="comments.length" class="text-lg text-primary-400">
-            <template #icon>
+            <template #preffix>
               <i class="pi pi-comments text-lg"></i>
             </template>
           </Stat>
@@ -154,9 +154,9 @@ const {
   onReply
 } = useComment(post.value)
 
-const { author, loading: loadingProfile } = useAuthor(post.value)
+const { author, loading: loadingProfile } = useAuthor(post)
 
-const { likePost, deslikePost, likeComment } = useLike(post.value)
+const { likePost, deslikePost, likeComment } = useLike(post)
 
 const { getTagsFromPost, postTags } = usePostTag()
 
