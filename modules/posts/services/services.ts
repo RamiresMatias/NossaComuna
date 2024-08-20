@@ -66,20 +66,36 @@ export default (client: SupabaseClient<Database>) => ({
       .match({id: post.id})
   },
   async getAllPosts ({to, from}: GetAllPosts) {
-    const {data} = await client
-      .from('post')
-      .select(`
-        id, title, is_draft, code, created_at, cover_image_url, 
-        profiles!inner(id, username, avatar_url),
-        likes(count),
-        comment(count),
-        tag_x_post(tag(id, description))
-      `)
-      .order('created_at', {ascending: true})
-      .range(from, to)
-      .returns<ReadAllRow[]>()
 
-    return readAllAdapter(data)
+    const [total, posts] = await Promise.all([
+      client
+        .from('post')
+        .select(`
+          id, title, is_draft, code, created_at, cover_image_url, 
+          profiles!inner(id, username, avatar_url),
+          likes(count),
+          comment(count),
+          tag_x_post(tag(id, description))
+        `, {count: 'exact', head: true}),
+    
+      client
+        .from('post')
+        .select(`
+          id, title, is_draft, code, created_at, cover_image_url, 
+          profiles!inner(id, username, avatar_url),
+          likes(count),
+          comment(count),
+          tag_x_post(tag(id, description))
+        `)
+        .order('created_at', {ascending: true})
+        .range(from, to)
+        .returns<ReadAllRow[]>()
+    ])
+
+    return {
+      total: total.count ?? 0,
+      results: readAllAdapter(posts.data)
+    }
   },
   async getPostByCode ({username, code}: {username: string; code: string}) {
     const {data} = await client
