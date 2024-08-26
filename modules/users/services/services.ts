@@ -56,5 +56,12 @@ export default (client: SupabaseClient<Database>) => ({
     const response = await client.from('profiles').select('*').eq('username', username).limit(1).single()
     const user = getMySelfAdapter(response.data)
     return user
+  },
+  async checkUsernameExists (username: string) {
+    return client
+      .from('profiles')
+      .select('username')
+      .eq('username', username)
+      .limit(1)
   }
 })

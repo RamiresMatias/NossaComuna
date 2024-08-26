@@ -20,7 +20,7 @@
         <small v-if="errors?.email" class="error">{{ errors?.email._errors[0] }}</small>
       </div>
       <div class="flex flex-col gap-2 w-full">
-        <label for="username">Username</label>
+        <label for="username">Nome de usuário</label>
         <InputText id="username" :disabled="loading || loadingUpdate" placeholder="User123" v-model="form.username"></InputText>
         <small v-if="errors?.username" class="error">{{ errors?.username._errors[0] }}</small>
       </div>

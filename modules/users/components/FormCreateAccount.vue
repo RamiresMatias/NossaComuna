@@ -8,7 +8,7 @@
       </div>
     </div>
     <div class="flex flex-col gap-2 w-full">
-      <label for="username">Username</label>
+      <label for="username">Nome de usuário</label>
       <InputText id="username" placeholder="" v-model="modelValue.username"></InputText>
       <small v-if="errors?.username" class="error">{{ errors?.username._errors[0] }}</small>
     </div>

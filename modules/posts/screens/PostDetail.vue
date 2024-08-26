@@ -152,7 +152,7 @@ const {
   createComment,
   deleteComment,
   onReply
-} = useComment(post.value)
+} = useComment(post)
 
 const { author, loading: loadingProfile } = useAuthor(post)
 
@@ -175,11 +175,17 @@ const navigateToEdit = () => {
   navigateTo(`/posts/edit/${post.value.id}`)
 }
 
-useSeoMeta({
-  title: () => `${post.value?.title} by ${post.value?.profile?.username}`,
+useServerSeoMeta({
   ogTitle: () => `${post.value?.title} by ${post.value?.profile?.username}`,
-  description: () => `Veja o post de ${post.value?.profile?.username} no NossaComuna`,
-  ogDescription: () => `Veja o post de ${post.value?.profile?.username} no NossaComuna`,
+  title: () => `${post.value?.title} by ${post.value?.profile?.username}`,
+  description: `Veja o post de ${post.value?.profile?.username} no NossaComuna`,
+  ogDescription: `Veja o post de ${post.value?.profile?.username} no NossaComuna`,
+  ogImage: () => post.value?.coverImageUrl,
+  ogImageUrl: () => post.value?.coverImageUrl,
+  twitterCard: () => 'summary_large_image',
+  twitterTitle: () => `${post.value?.title} by ${post.value?.profile?.username}`,
+  twitterDescription: `Veja o post de ${post.value?.profile?.username} no NossaComuna`,
+  twitterImage: () => post.value?.coverImageUrl,
 })
 
 </script>

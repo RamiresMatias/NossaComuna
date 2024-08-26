@@ -1,7 +1,7 @@
 import type { CommentType, PostDetail } from "@/types/index"
 import { myselfKey, type MyselfContextProvider } from '@/modules/users/composables/useMyself/useMyself'
 
-export function useComment(post: PostDetail) {
+export function useComment(post: Ref<PostDetail>) {
 
   const { user } = inject(myselfKey) as MyselfContextProvider
 
@@ -13,11 +13,11 @@ export function useComment(post: PostDetail) {
 
 
   const getComments = async () => {
-    if (!post.id) return
+    if (!post.value?.id) return
     try {
       loading.value = true
   
-      const data = await services.post.getAllComments({postId: post.id, userId: user.value.id})
+      const data = await services.post.getAllComments({postId: post.value?.id, userId: user.value.id})
       const result = []
       data.forEach((el: CommentType, _, self) => {
         const parent = data.find((parent: CommentType) => parent.id === el.commentId)
@@ -36,7 +36,7 @@ export function useComment(post: PostDetail) {
     try {
       loading.value = true
       
-      await services.post.createComment({description, postId: post.id})
+      await services.post.createComment({description, postId: post.value?.id})
       getComments()
       myComment.value = ''
       
@@ -70,7 +70,7 @@ export function useComment(post: PostDetail) {
     try {
       loading.value = true
       
-      await services.post.replyComment({description: comment, postId: post.id, commentId, userId: user.value.id})
+      await services.post.replyComment({description: comment, postId: post.value.id, commentId, userId: user.value.id})
       getComments()
       
       loading.value = false
@@ -79,8 +79,12 @@ export function useComment(post: PostDetail) {
     }
   }
 
+  onUnmounted(() => {
+    comments.splice(0, comments.length)
+  })
+
   watchEffect(() => {
-    if (post?.id) getComments()
+    if (post.value?.id) getComments()
   })
 
   return {

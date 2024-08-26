@@ -1,1 +1,1 @@
-alter table post alter column description varchar;
+-- alter table post alter column description varchar;

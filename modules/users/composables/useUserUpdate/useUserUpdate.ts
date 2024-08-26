@@ -8,7 +8,7 @@ interface UseUserUpdateOptions {
 
 const schema = z.object({
   email: z.string().email('O e-mail é obrigatório'),
-  username: z.string().min(4, 'O username precisa de no mínimo 4 caracteres').regex(/^[A-Za-z0-9]+(?:[ _-][A-Za-z0-9]+)*$/, 'Digite um username válido'),
+  username: z.string().min(4, 'O nome de usuário precisa de no mínimo 4 caracteres').regex(/^[A-Za-z0-9]+(?:[ _-][A-Za-z0-9]+)*$/, 'Digite um nome de usuário válido'),
 })
 
 

@@ -1,6 +1,6 @@
 <template>
   <div class="grid grid-cols-12 w-full gap-4 mx-auto items-start px-4 pt-1 pb-8 2xl:px-0 relative mb-4 box-border">
-    <div class="sm:col-span-8 col-span-full flex w-full">
+    <div class="col-span-full flex w-full">
       <IconField class="w-full" icon-position="left">
         <InputIcon v-if="loading" class="pi pi-spin pi-spinner" />
         <InputIcon v-else class="pi pi-search" />
@@ -19,7 +19,8 @@
     </div>
     <div v-else-if="!loading && !posts?.length" class="col-span-full flex flex-col items-center justify-center gap-4">
       <CharactersListEmpty class="w-[400px]" />
-      <h2 class="text-xl text-center ">Ops... Não há nenhum post criado. Crie um post agora mesmo e compartilhe seus pensamentos</h2>
+      <h2 v-if="filters.search?.trim?.()" class="text-xl text-center ">Ops... Não encontramos nenhum post, que tal procurar por outro título</h2>
+      <h2 v-else class="text-xl text-center ">Ops... Não há nenhum post criado. Crie um post agora mesmo e compartilhe seus pensamentos</h2>
     </div>
     <div class="sm:col-span-8 order-2 sm:order-1 col-span-full flex flex-col gap-4 w-full">
       <Post

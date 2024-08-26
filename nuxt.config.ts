@@ -4,6 +4,10 @@ import path from 'path'
 export default defineNuxtConfig({
   devtools: { enabled: true },
 
+  app: {
+    pageTransition: { name: 'slide-right', mode: 'out-in' },
+  },
+
   modules: [
     '@nuxtjs/tailwindcss',
     'nuxt-primevue',

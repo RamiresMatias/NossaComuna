@@ -36,7 +36,7 @@ export function readOneAdapterRpc(value: ReadOnePostRow | null): PostDetail | nu
       username: value[0].username,
       avatarUrl: value[0].avatar_url ? (value[0].avatar_url + '?lastMod=' + new Date()) : ''
     },
-    description: JSON.parse(value[0].description),
+    description: value[0].description,
     likes: value[0].likes,
     liked: value[0].liked
   }
