@@ -4,7 +4,7 @@
       <Avatar :image="avatarUrl" shape="circle" size="large" />
       <span class="font-bold text-gray-700 text-lg hover:text-blue-900">{{ username }}</span>
     </NuxtLink>
-    <div class="font-medium text-slate-500">
+    <div v-if="bio" class="font-medium text-slate-500">
       {{ bio }}
     </div>
     <div class="info">
@@ -25,12 +25,12 @@ import type { Profile } from '@/types'
 withDefaults(
   defineProps<Profile>(),
   {
-    avatarUrl: 'http://127.0.0.1:54321/storage/v1/object/public/avatars/bd6a03fa-ebc1-4f59-9e8d-c77a30aa6d73/bd6a03fa-ebc1-4f59-9e8d-c77a30aa6d73',
-    bio: 'Software Developer',
-    createdAt: () => new Date(),
-    email: 'teste@teste.com.br',
+    avatarUrl: '',
+    bio: '',
+    createdAt: () => null,
+    email: '',
     id: '',
-    username: 'Usuário teste'
+    username: ''
   }
 )
 </script>

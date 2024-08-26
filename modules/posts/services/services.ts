@@ -194,7 +194,8 @@ export default (client: SupabaseClient<Database>) => ({
         id, title, is_draft, code, created_at, cover_image_url, 
         profiles!inner(id, username, avatar_url),
         likes(count),
-        comment(count)
+        comment(count),
+        tag_x_post(id, tag_id, tag(id, description))
       `)
       .eq('profiles.username', username)
       .order('created_at', {ascending: true})

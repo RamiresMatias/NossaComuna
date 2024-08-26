@@ -28,6 +28,7 @@
         :profile="item.profile"
         :total-comments="item.totalComments"
         :likes="item.likes"
+        :tags="item.tags"
         class="shadow-none"
       />
       <AboutDetails 
