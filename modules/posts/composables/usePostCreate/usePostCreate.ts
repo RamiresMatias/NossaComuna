@@ -10,6 +10,7 @@ import { usePostTag } from '@/modules/tag/composables/usePostTag/usePostTag'
 const schema = z.object({
   title: z.string().min(2, 'Título é obrigatório'),
   description: z.string().min(10, 'A descrição é obrigatória'),
+  tags: z.object({}).array().nonempty('É necessário inserir ao menos uma tag')
 })
 
 export function usePostCreate() {

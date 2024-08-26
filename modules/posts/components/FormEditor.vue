@@ -36,8 +36,9 @@
         placeholder="Insira o titulo aqui"
         class="title-post"
       />
-      <InputTag v-model="form.tags" />
       <small v-if="errors?.title" class="error ml-8">{{ errors?.title._errors[0] }}</small>
+      <InputTag v-model="form.tags" />
+      <small v-if="errors?.tags" class="error ml-8">{{ errors?.tags._errors[0] }}</small>
     </div>
     <div class="bg-neutral-100 w-full h-20 flex items-center gap-2 px-8 mb-2 mt-6 py-2">
       <Button label="H1" severity="secondary" text class="text-xl text-neutral-900" @click="setHeading(1)" />

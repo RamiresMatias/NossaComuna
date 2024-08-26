@@ -1,7 +1,7 @@
 <template>
   <PostDetailLoading v-if="isBusy || !currentPost?.id" />
   <div v-else class="grid grid-cols-12 w-full max-w-[1380px] px-4 lg:px-0 gap-y-6">
-    <div v-if="!pending" class="col-span-0.5 hidden lg:flex flex-col items-center m-0 p-0 gap-4">
+    <div v-if="!isBusy" class="col-span-0.5 hidden lg:flex flex-col items-center m-0 p-0 gap-4">
       <Button
         v-if="isAuthorPost" 
         icon="pi pi-pencil" 
@@ -138,7 +138,7 @@ const route = useRoute()
 
 const services = useServices()
 
-const { pending, data } = await useLazyAsyncData('post-details', () => {
+const { data, status } = await useLazyAsyncData('post-details', () => {
   const { username, code } = route.params as {username: string, code: string}
   return services.post.getPostByCode({username, code})
 })
@@ -167,7 +167,7 @@ watch(data, (newPost, oldPost) => {
 })
 
 const isAuthorPost = computed(() => post.value?.profile?.id === user.value?.id)
-const isBusy = computed(() => pending.value)
+const isBusy = computed(() => status.value === 'pending')
 const currentPost = computed(() => post.value)
 
 const navigateToEdit = () => {

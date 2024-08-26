@@ -57,7 +57,7 @@ export function readOneAdapter(value: ReadOneRow | null): PostDetail | null {
       username: value.profiles.username,
       avatarUrl: value.profiles.avatar_url
     },
-    description: JSON.parse(value.description),
+    description: value.description,
     likes: value.likes?.[0]?.count || 0,
     liked: false
   }

@@ -39,8 +39,8 @@ export function useAuthentication() {
     try {
       loading.value = true
       const response = await services.auth.signInWithEmail(form.email, form.password)
-    
-      if (response.name === 'AuthApiError') {
+      
+      if (response?.name === 'AuthApiError') {
         toast.add({
           severity: 'error',
           summary: 'Login inválido',

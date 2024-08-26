@@ -133,3 +133,8 @@ export interface BindTagProps {
   postId: string
   tags: Tag[]
 }
+
+export interface FilterPostListProps {
+  tags?: string[]
+  search?: string
+}

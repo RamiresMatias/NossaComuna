@@ -1,5 +1,16 @@
 <template>
   <div class="grid grid-cols-12 w-full gap-4 mx-auto items-start px-4 pt-1 pb-8 2xl:px-0 relative mb-4 box-border">
+    <div class="sm:col-span-8 col-span-full flex w-full">
+      <IconField class="w-full" icon-position="left">
+        <InputIcon v-if="loading" class="pi pi-spin pi-spinner" />
+        <InputIcon v-else class="pi pi-search" />
+        <InputText 
+          v-model="filters.search" 
+          type="text" 
+          placeholder="Pesquise por um post" 
+        ></InputText>
+      </IconField>
+    </div>
     <div v-if="loadingTags" class="sm:col-span-4 col-span-full bg-white flex flex-col gap-2 rounded-md p-3 w-full">
       <Skeleton width="12rem" height="1rem"></Skeleton>
       <div class="flex gap-2 items-center flex-wrap">
@@ -12,22 +23,22 @@
     </div>
     <div class="sm:col-span-8 order-2 sm:order-1 col-span-full flex flex-col gap-4 w-full">
       <Post
-      v-for="(item, i) in posts" 
-      :key="i"
-      :id="item.id"
-      :code="item.code"
-      :cover-image="item.coverImage"
-      :created-at="item.createdAt"
-      :is-draft="item.isDraft"
-      :title="item.title"
-      :profile="item.profile"
-      :total-comments="item.totalComments"
-      :likes="item.likes"
-      :tags="item.tags"
+        v-for="(item, i) in posts" 
+        :key="i"
+        :id="item.id"
+        :code="item.code"
+        :cover-image="item.coverImage"
+        :created-at="item.createdAt"
+        :is-draft="item.isDraft"
+        :title="item.title"
+        :profile="item.profile"
+        :total-comments="item.totalComments"
+        :likes="item.likes"
+        :tags="item.tags"
       />
       <PostSkeleton 
         v-if="loading"
-        v-for="item in 4"
+        v-for="item in 6"
         :key="item"
         class="sm:col-span-8 col-span-full"
       />
@@ -41,19 +52,19 @@
           class="flex gap-2 items-center cursor-pointer transition-all text-xs" 
           severity="secondary"
           :class="{
-            'bg-primary-300': selectedTags.includes(tag.id),
-            'hover:bg-neutral-200 bg-neutral-100 ': !selectedTags.includes(tag.id)
+            'bg-primary-300': filters.tags.includes(tag.id),
+            'hover:bg-neutral-200 bg-neutral-100 ': !filters.tags.includes(tag.id)
           }"
           @click="selectTag(tag.id)"
         >
           <span 
             :class="{
-              'text-neutral-100': selectedTags.includes(tag.id),
-              'text-gray-600 ': !selectedTags.includes(tag.id)
+              'text-neutral-100': filters.tags.includes(tag.id),
+              'text-gray-600 ': !filters.tags.includes(tag.id)
             }"
           >{{ tag.description }}</span>
           <i
-            v-if="selectedTags.includes(tag.id)"
+            v-if="filters.tags.includes(tag.id)"
             class="pi pi-times cursor-pointer text-neutral-100 hover:text-red-600 flex items-center justify-center rounded-full
             transition-all"
           ></i>
@@ -76,9 +87,7 @@ const containerContentRef = inject<Ref<HTMLDivElement>>('containerContentRef')
 const { scrollEnd } = useScrollBody(containerContentRef)
 const { list: tags, loading: loadingTags } = useTag()
 
-const selectedTags = ref<string[]>([])
-
-const { posts, loading, getPostList } = usePostList()
+const { filters, posts, loading, getPostList, getListLazy } = usePostList()
 
 watch(scrollEnd, (nVal, oVal) => {
   if (nVal && !oVal && !loading.value) {
@@ -86,11 +95,19 @@ watch(scrollEnd, (nVal, oVal) => {
   }
 })
 
+const getRequestLazy = debounce(() => getListLazy(), 2000)
+
+watch(filters, () => {
+  getRequestLazy()
+}, {
+  deep: true
+})
+
 const selectTag = (id: string) => {
-  const idx = selectedTags.value.findIndex(el => el === id)
+  const idx = filters.tags.findIndex(el => el === id)
   idx >= 0 
-    ? selectedTags.value.splice(idx, 1)
-    : selectedTags.value.push(id)
+    ? filters.tags.splice(idx, 1)
+    : filters.tags.push(id)
 }
 
 const onScroll = () => {

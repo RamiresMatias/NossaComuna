@@ -3,10 +3,10 @@ export function useScrollBody (element: Ref<HTMLElement>) {
   const scrollEnd = ref<boolean>(false)
 
   function onScrollEnd (event: any) {
-    const el = event.target
+    const el: HTMLDivElement = event.target
 
     if (!el) return (scrollEnd.value = false)
-    
+
     scrollEnd.value = el.offsetHeight + el.scrollTop >= el.scrollHeight
   }
 

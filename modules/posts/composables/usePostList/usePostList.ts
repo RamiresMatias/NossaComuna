@@ -1,4 +1,4 @@
-import type { PostType } from "~/types"
+import type { FilterPostListProps, PostType } from "@/types"
 
 export function usePostList() {
 
@@ -14,6 +14,11 @@ export function usePostList() {
   const posts = reactive<PostType[]>([])
   const total = ref<number>(0)
 
+  const filters = reactive<FilterPostListProps>({
+    tags: [],
+    search: ''
+  })
+
   const getPostList = async () => {
     const canFetchMore = total.value > posts.length
 
@@ -22,7 +27,12 @@ export function usePostList() {
     try {
       loading.value = true
   
-      const { results, total: totalPosts } = await services.post.getAllPosts({ from: from.value, to: to.value })
+      const { results, total: totalPosts } = await services.post.getAllPosts({ 
+        from: from.value, 
+        to: to.value,
+        filters: { ...filters }
+      })
+
       page.value += 1
 
       posts.push(...results)
@@ -36,6 +46,14 @@ export function usePostList() {
     }
   }
 
+  const getListLazy = () => {
+    page.value = 0
+    posts.splice(0, posts.length)
+    total.value = 0
+
+    getPostList()
+  }
+
   onMounted(() => {
     getPostList()
   })
@@ -43,6 +61,8 @@ export function usePostList() {
   return {
     loading,
     posts,
-    getPostList
+    filters,
+    getPostList,
+    getListLazy,
   }
 }

@@ -1,6 +1,6 @@
 import type { SupabaseClient } from "@supabase/supabase-js"
 import type { Database } from '@/libs/supabase/schema'
-import type { CreatePostType, ReadAllRow, ReadOneRow } from "@/types"
+import type { CreatePostType, FilterPostListProps, ReadAllRow, ReadOneRow } from "@/types"
 
 import {useSession} from '@/modules/auth/composables/useSession/useSession'
 import { getPostByIdAndAuthorAdapter, readAllAdapter, readAllCommentsAdapter, readOneAdapter, readOneAdapterRpc } from "./adapter"
@@ -16,7 +16,8 @@ interface ReplyCommentProps {
 
 interface GetAllPosts {
   from: number,
-  to: number
+  to: number,
+  filters: FilterPostListProps
 }
 
 export default (client: SupabaseClient<Database>) => ({
@@ -65,31 +66,46 @@ export default (client: SupabaseClient<Database>) => ({
       })
       .match({id: post.id})
   },
-  async getAllPosts ({to, from}: GetAllPosts) {
+  async getAllPosts ({to, from, filters}: GetAllPosts) {
+
+    let queryTotal = client
+      .from('post')
+      .select(`
+        id, title,
+        tag_x_post(id, tag_id, tag(id, description)),
+        temp_tag_x_post:tag_x_post!inner(id, tag_id, tag(id, description))
+      `, {count: 'exact', head: true})
+
+    let queryPosts = client
+      .from('post')
+      .select(`
+        *, 
+        profiles!inner(id, username, avatar_url),
+        likes(count),
+        comment(count),
+        tag_x_post(id, tag_id, tag(id, description)),
+        temp_tag_x_post:tag_x_post!inner(id, tag_id, tag(id, description))
+      `)
+      
+    
+    if (filters.tags.length) {
+      queryPosts.in('temp_tag_x_post.tag_id', filters.tags)
+      queryTotal.in('temp_tag_x_post.tag_id', filters.tags)
+    }
+
+    if (filters.search?.trim()) {
+      queryTotal.filter('title', 'like', `%${filters.search}%`)
+      queryPosts.filter('title', 'like', `%${filters.search}%`)
+    }
+
+    queryPosts
+      .order('created_at', {ascending: true})
+      .range(from, to)
+      .returns<ReadAllRow[]>()
 
     const [total, posts] = await Promise.all([
-      client
-        .from('post')
-        .select(`
-          id, title, is_draft, code, created_at, cover_image_url, 
-          profiles!inner(id, username, avatar_url),
-          likes(count),
-          comment(count),
-          tag_x_post(tag(id, description))
-        `, {count: 'exact', head: true}),
-    
-      client
-        .from('post')
-        .select(`
-          id, title, is_draft, code, created_at, cover_image_url, 
-          profiles!inner(id, username, avatar_url),
-          likes(count),
-          comment(count),
-          tag_x_post(tag(id, description))
-        `)
-        .order('created_at', {ascending: true})
-        .range(from, to)
-        .returns<ReadAllRow[]>()
+      queryTotal,
+      queryPosts
     ])
 
     return {

@@ -35,3 +35,23 @@ export const sleep = (delay = 1000) => {
     }, delay)
   })
 }
+
+export const debounce = (callback: Function, timeout: number = 1000) => {
+  let timer;
+  return function (...args) {
+    window.clearTimeout(timer);
+
+    timer = setTimeout(() => {
+      callback(...args);
+    }, timeout);
+  };
+}
+
+export const debounce_v2 = (callback: Function, timeout: number = 1000) => {
+  let timer
+  clearTimeout(timer)
+
+  timer = setTimeout(() => {
+    callback()
+  }, timeout);
+}
