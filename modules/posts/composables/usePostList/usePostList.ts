@@ -48,7 +48,7 @@ export function usePostList() {
 
   const getListLazy = () => {
     page.value = 0
-    posts.splice(0, posts.length)
+    Object.assign(posts, [])
     total.value = 0
 
     getPostList()

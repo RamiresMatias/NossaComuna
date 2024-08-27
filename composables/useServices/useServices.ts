@@ -12,7 +12,7 @@ export function useServices() {
 
   return {
     auth: AuthService(supabaseClient, {
-      redirectUrl: `${config.public.siteUrl}/auth/github`
+      redirectUrl: `${config.public.siteUrl}/auth/github`,
     }),
     users: UserServices(supabaseClient),
     post: PostServices(supabaseClient),

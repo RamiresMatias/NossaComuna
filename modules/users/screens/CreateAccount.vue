@@ -6,7 +6,7 @@
       </div>
 
       <FormCreateAccount v-if="state === 'form'" v-model="form" :errors />
-      <ButtonsGroup v-else-if="state === 'buttons'" @on-create-email="state = 'form'" />
+      <!-- <ButtonsGroup v-else-if="state === 'buttons'" @on-create-email="state = 'form'" /> -->
 
       <Button v-if="state === 'form'" label="Criar" class="w-full mt-4" @click="onSubmit" :loading="loading" />
       <Divider />
@@ -27,7 +27,7 @@ const route = useRoute()
 
 const { form, createUser, loading, errors, validateForm } = useCreateAccount()
 
-const state = ref<'buttons' | 'form'>('buttons')
+const state = ref<'buttons' | 'form'>('form')
 
 const onSubmit = async () => {
 
@@ -39,7 +39,7 @@ const onSubmit = async () => {
 const checkState = () => {
   const stateQuery = route.query.state as string
 
-  if (!stateQuery) state.value = 'buttons'
+  // if (!stateQuery) state.value = 'buttons'
 
   state.value = stateQuery === 'form' ? 'form' : 'buttons'
 }

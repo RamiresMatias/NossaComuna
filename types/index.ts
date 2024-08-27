@@ -104,7 +104,7 @@ export type TagTable = Database['public']['Tables']['tag']
 export type PostTagTable = Database['public']['Tables']['tag_x_post']
 
 export type ReadAllRow = PostTable['Row'] & {
-  profiles: ProfileTableRow['Row'] | null
+  profiles: Partial<ProfileTableRow['Row']> | null
   likes?: {count: number}[]
   comment?: {count: number}[]
   tag_x_post: {

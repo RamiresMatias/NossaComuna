@@ -140,7 +140,7 @@ const services = useServices()
 
 const { data, status } = await useLazyAsyncData('post-details', () => {
   const { username, code } = route.params as {username: string, code: string}
-  return services.post.getPostByCode({username, code})
+  return services.post.getRpcPostByCode({username, code, userId: user.value.id})
 })
 
 const post = computed(() => data.value)
@@ -175,17 +175,21 @@ const navigateToEdit = () => {
   navigateTo(`/posts/edit/${post.value.id}`)
 }
 
+useHead({
+  title: () => `${data.value?.title} por ${data.value?.profile?.username}`,
+})
+
 useServerSeoMeta({
-  ogTitle: () => `${post.value?.title} by ${post.value?.profile?.username}`,
-  title: () => `${post.value?.title} by ${post.value?.profile?.username}`,
-  description: `Veja o post de ${post.value?.profile?.username} no NossaComuna`,
-  ogDescription: `Veja o post de ${post.value?.profile?.username} no NossaComuna`,
-  ogImage: () => post.value?.coverImageUrl,
-  ogImageUrl: () => post.value?.coverImageUrl,
-  twitterCard: () => 'summary_large_image',
-  twitterTitle: () => `${post.value?.title} by ${post.value?.profile?.username}`,
-  twitterDescription: `Veja o post de ${post.value?.profile?.username} no NossaComuna`,
-  twitterImage: () => post.value?.coverImageUrl,
+  ogTitle: `${data.value?.title} por ${data.value?.profile?.username}`,
+  title: `${data.value?.title} por ${data.value?.profile?.username}`,
+  description: `Veja o post de ${data.value?.profile?.username} no NossaComuna`,
+  ogDescription: `Veja o post de ${data.value?.profile?.username} no NossaComuna`,
+  ogImage: data.value?.coverImageUrl,
+  ogImageUrl: data.value?.coverImageUrl,
+  twitterCard: 'summary_large_image',
+  twitterTitle: `${data.value?.title} por ${data.value?.profile?.username}`,
+  twitterDescription: `Veja o post de ${data.value?.profile?.username} no NossaComuna`,
+  twitterImage: data.value?.coverImageUrl,
 })
 
 </script>

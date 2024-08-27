@@ -14,7 +14,8 @@
         <Header v-if="!session.isLogged() && !loading" @authenticate="handleAuth" @navigate-to-post-create="handlePostCreate" />
       </template>
       <template #content>
-        <slot></slot>
+        <div v-if="loading"></div>
+        <slot v-else></slot>
       </template>
     </MainContent>
   </div>

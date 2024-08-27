@@ -17,24 +17,25 @@
     <div class="flex flex-col items-center justify-center gap-4 pb-4">
       <p>Entre com sua conta</p>
       <div class="flex gap-4 w-full items-center justify-center">
-        <Button 
+        <!-- <Button 
           label="Entrar com G-mail" 
           severity="danger"
           outlined
           icon="pi pi-google"
           icon-pos="left"
-        />
+        /> -->
         <Button 
           label="Entrar com Github" 
           severity="contrast"
           icon="pi pi-github"
           icon-pos="left"
+          @click="authGithub"
         />
       </div>
     </div>
     <Divider />
     <div class="w-full text-center">
-      É novo por aqui? <NuxtLink to="/create-account?state=buttons" class="hover:text-blue-400">Crie uma conta</NuxtLink>
+      É novo por aqui? <NuxtLink to="/create-account?state=form" class="hover:text-blue-400">Crie uma conta</NuxtLink>
     </div>
   </div>
 </template>
@@ -45,7 +46,7 @@ import FormLogin from '@/modules/auth/components/FormLogin.vue'
 
 import { useAuthentication } from '@/modules/auth/composables/useAuthentication/useAuthentication'
 
-const { form, loading, authWithEmail, errors, validateForm } = useAuthentication()
+const { form, loading, authWithEmail, errors, validateForm, authGithub } = useAuthentication()
 
 const handleAuthentication = async () => {
   if(!validateForm().success) return

@@ -5,6 +5,20 @@
   </NuxtLayout>
 </template>
 
+<script setup lang="ts">
+
+useHead({
+  title: '👨‍💻 NossaComuna'
+})
+
+useSeoMeta({
+  title: '👨‍💻 NossaComuna',
+  ogTitle: '👨‍💻 NossaComuna',
+  description: 'Colabore com a comunidade. Escreva postagens, interaja com as pessoas e compartilhe conhecimento',
+  ogDescription: 'Colabore com a comunidade. Escreva postagens, interaja com as pessoas e compartilhe conhecimento'
+})
+</script>
+
 <style lang="scss">
 .slide-left-enter-active,
 .slide-left-leave-active,

@@ -115,9 +115,13 @@ const onScroll = () => {
   getPostList()
 }
 
+useHead({
+  title: '👨‍💻 NossaComuna - Posts'
+})
+
 useSeoMeta({
-  title: 'Posts',
-  ogTitle: 'Posts',
+  title: '👨‍💻 NossaComuna - Posts',
+  ogTitle: '👨‍💻 NossaComuna - Posts',
   description: 'Leia, crie e compartilhe conhecimento em nossa comunidade',
   ogDescription: 'Leia, crie e compartilhe conhecimento em nossa comunidade'
 })
