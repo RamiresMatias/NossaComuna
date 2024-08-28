@@ -14,7 +14,7 @@
         @click="navigateToEdit"
       />
       <Button 
-        v-if="!isAuthorPost"
+        v-if="!isAuthorPost && user?.id"
         :icon="post.liked ? 'pi pi-heart-fill' : 'pi pi-heart'" 
         severity="contrast" 
         text 
@@ -78,7 +78,7 @@
         <h2 class="text-2xl font-semibold">Comentários ({{ comments.length }})</h2>
         <CommentLoading v-if="loadingComments" v-for="item in 4" :key="item" />
         <CreateComment 
-          v-if="!loadingComments" 
+          v-if="!loadingComments && user?.id" 
           v-model="myComment" 
           :profile-pic="user?.avatarUrl" 
           :loading="loadingComments" 
@@ -140,7 +140,10 @@ const services = useServices()
 
 const { data, status } = await useLazyAsyncData('post-details', () => {
   const { username, code } = route.params as {username: string, code: string}
-  return services.post.getRpcPostByCode({username, code, userId: user.value.id})
+
+  return user.value?.id 
+    ? services.post.getRpcPostByCode({username, code, userId: user.value.id})
+    : services.post.getPostByCode({username, code})
 })
 
 const post = computed(() => data.value)
