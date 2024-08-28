@@ -24,7 +24,7 @@ export function useComment(post: Ref<PostDetail>) {
         if (parent) parent.comments.push(el)
         else result.push(el)
       })
-      comments.splice(0, comments.length, ...result)
+      Object.assign(comments, result)
   
       loading.value = false
     } catch (error) {
@@ -80,7 +80,7 @@ export function useComment(post: Ref<PostDetail>) {
   }
 
   onUnmounted(() => {
-    comments.splice(0, comments.length)
+    Object.assign(comments, [])
   })
 
   watchEffect(() => {

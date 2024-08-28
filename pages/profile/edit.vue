@@ -6,6 +6,7 @@
 import EditProfile from '@/modules/users/screens/EditProfile.vue'
 
 definePageMeta({
-  middleware: ['auth']
+  middleware: ['auth'],
+  layout: 'default'
 })
 </script>

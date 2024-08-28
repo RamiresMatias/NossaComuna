@@ -12,3 +12,7 @@ Aplicação criada para práticas e estudos de Nuxt 3. Onde é possível o usuá
 ### Observações
 
 O app ainda está em desenvolvimento 👨🏼‍🏭
+
+### Link
+
+[NossaComuna](https://nossacomuna.netlify.app/)

@@ -24,4 +24,15 @@
 const emit = defineEmits<{
   (e: 'navigate-to-posts'): void
 }>()
+
+useHead({
+  title: '👨‍💻 NossaComuna - Bem vindo'
+})
+
+useSeoMeta({
+  title: '👨‍💻 NossaComuna - Bem vindo',
+  ogTitle: '👨‍💻 NossaComuna - Bem vindo',
+  description: 'Colabore com a comunidade. Escreva postagens, interaja com as pessoas e compartilhe conhecimento',
+  ogDescription: 'Colabore com a comunidade. Escreva postagens, interaja com as pessoas e compartilhe conhecimento'
+})
 </script>

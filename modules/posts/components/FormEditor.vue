@@ -13,7 +13,13 @@
         chooseLabel="Imagem de capa"
       />
       <div v-else class="flex items-center w-full gap-10">
-        <img :src="((form.coverImage as any)?.objectURL || (form.coverImageUrl + '?c=' + new Date()))" alt="Imagem de capa do post" class="rounded-md w-24 h-24 object-contain" />
+        <NuxtImg
+          :src="((form.coverImage as any)?.objectURL || (form.coverImageUrl + '?c=' + new Date()))"
+          alt="Imagem de capa do post"
+          class="rounded-md w-24 h-24 object-contain"
+          loading="lazy"
+          decoding="auto"
+        />
         <div>
           <Button 
             label="Remover"

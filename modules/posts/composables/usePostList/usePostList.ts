@@ -11,7 +11,7 @@ export function usePostList() {
   const services = useServices()
   const loading = ref<boolean>(false)
 
-  const posts = reactive<PostType[]>([])
+  const posts = ref<PostType[]>([])
   const total = ref<number>(0)
 
   const filters = reactive<FilterPostListProps>({
@@ -20,7 +20,7 @@ export function usePostList() {
   })
 
   const getPostList = async () => {
-    const canFetchMore = total.value > posts.length
+    const canFetchMore = total.value > posts.value.length
 
     if ((!canFetchMore && total.value !== 0) || loading.value) return
 
@@ -35,7 +35,7 @@ export function usePostList() {
 
       page.value += 1
 
-      posts.push(...results)
+      posts.value.push(...results)
       total.value = totalPosts
   
       await sleep(1000)
@@ -48,7 +48,7 @@ export function usePostList() {
 
   const getListLazy = () => {
     page.value = 0
-    Object.assign(posts, [])
+    posts.value = []
     total.value = 0
 
     getPostList()

@@ -6,6 +6,11 @@ export default defineNuxtConfig({
 
   app: {
     pageTransition: { name: 'slide-right', mode: 'out-in' },
+    layoutTransition: { name: 'slide-right', mode: 'out-in' },
+    head: {
+      charset: 'utf-8',
+      viewport: 'width=device-width, initial-scale=1',
+    },
   },
 
   modules: [
@@ -13,7 +18,8 @@ export default defineNuxtConfig({
     'nuxt-primevue',
     '@nuxtjs/google-fonts',
     '@nuxtjs/supabase',
-    "@nuxt/image"
+    "@nuxt/image",
+    '@nuxtjs/robots'
   ],
 
   css: ['primeicons/primeicons.css'],
@@ -54,6 +60,11 @@ export default defineNuxtConfig({
   typescript: {
     strict: false
   },
+
+  components: [
+    { path: '@/modules/posts/components', pathPrefix: false },
+    '~/components'
+  ],
 
   compatibilityDate: '2024-08-17'
 })

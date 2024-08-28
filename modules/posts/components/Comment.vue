@@ -1,7 +1,13 @@
 <template>
   <div class="w-full flex flex-col gap-2">
     <div class="w-full flex gap-2">
-      <img :src="props.profile.avatarUrl" alt="Avatar do autor do comentário" class="w-8 h-8 rounded-full" />
+      <NuxtImg
+        :src="props.profile.avatarUrl + '?c=' + new Date()"
+        alt="Avatar do usuário"
+        class="w-8 h-8 rounded-full"
+        loading="lazy"
+        decoding="auto"
+      />
       <div class="w-full flex flex-col">
         <section class="w-full border border-solid border-gray-200 rounded-md flex flex-col p-2">
           <div class="flex gap-2 w-full items-center justify-start mb-4">

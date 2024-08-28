@@ -39,7 +39,7 @@
       />
       <PostSkeleton 
         v-if="loading"
-        v-for="item in 6"
+        v-for="item in 2"
         :key="item"
         class="sm:col-span-8 col-span-full"
       />
@@ -122,8 +122,8 @@ useHead({
 useSeoMeta({
   title: '👨‍💻 NossaComuna - Posts',
   ogTitle: '👨‍💻 NossaComuna - Posts',
-  description: 'Leia, crie e compartilhe conhecimento em nossa comunidade',
-  ogDescription: 'Leia, crie e compartilhe conhecimento em nossa comunidade'
+  description: 'Visualize, curta e interaja os posts criados por outros autores',
+  ogDescription: 'Visualize, curta e interaja os posts criados por outros autores'
 })
 
 </script>

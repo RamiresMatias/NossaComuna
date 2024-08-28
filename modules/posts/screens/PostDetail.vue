@@ -118,12 +118,12 @@
 </template>
 
 <script setup lang="ts">
-import Stat from '@/modules/posts/components/Stat.vue'
-import Comment from '@/modules/posts/components/Comment.vue'
-import PostDetailLoading from '@/modules/posts/components/PostDetailLoading.vue'
-import CommentLoading from '@/modules/posts/components/CommentLoading.vue'
-import AuthorProfile from '@/modules/posts/components/AuthorProfile.vue'
-import AuthorProfileLoading from '@/modules/posts/components/AuthorProfileLoading.vue'
+const Stat = resolveComponent('Stat')
+const Comment = resolveComponent('Comment')
+const PostDetailLoading = resolveComponent('PostDetailLoading')
+const CommentLoading = resolveComponent('CommentLoading')
+const AuthorProfile = resolveComponent('AuthorProfile')
+const AuthorProfileLoading = resolveComponent('AuthorProfileLoading')
 
 import { useComment } from '@/modules/posts/composables/useComment/useComment'
 import { useAuthor } from '@/modules/posts/composables/useAuthor/useAuthor'
@@ -177,19 +177,22 @@ const navigateToEdit = () => {
 
 useHead({
   title: () => `${data.value?.title} por ${data.value?.profile?.username}`,
+  meta: [
+    { name: 'description', content: `Veja o post de ${data.value?.profile?.username} no NossaComuna` }
+  ]
 })
 
 useServerSeoMeta({
-  ogTitle: `${data.value?.title} por ${data.value?.profile?.username}`,
-  title: `${data.value?.title} por ${data.value?.profile?.username}`,
-  description: `Veja o post de ${data.value?.profile?.username} no NossaComuna`,
-  ogDescription: `Veja o post de ${data.value?.profile?.username} no NossaComuna`,
-  ogImage: data.value?.coverImageUrl,
-  ogImageUrl: data.value?.coverImageUrl,
-  twitterCard: 'summary_large_image',
-  twitterTitle: `${data.value?.title} por ${data.value?.profile?.username}`,
-  twitterDescription: `Veja o post de ${data.value?.profile?.username} no NossaComuna`,
-  twitterImage: data.value?.coverImageUrl,
+  ogTitle: () => `${data.value?.title} por ${data.value?.profile?.username}`,
+  title: () => `${data.value?.title} por ${data.value?.profile?.username}`,
+  description: () => `Veja o post de ${data.value?.profile?.username} no NossaComuna`,
+  ogDescription: () => `Veja o post de ${data.value?.profile?.username} no NossaComuna`,
+  ogImage: () => data.value?.coverImageUrl,
+  ogImageUrl: () => data.value?.coverImageUrl,
+  twitterCard: () => 'summary_large_image',
+  twitterTitle: () => `${data.value?.title} por ${data.value?.profile?.username}`,
+  twitterDescription: () => `Veja o post de ${data.value?.profile?.username} no NossaComuna`,
+  twitterImage: () => data.value?.coverImageUrl,
 })
 
 </script>

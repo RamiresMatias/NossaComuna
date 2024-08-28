@@ -1,6 +1,6 @@
 <template>
   <div class="w-full h-full max-w-screen-md mx-auto flex flex-col">
-    <FormEditor v-model="form" :errors="errors" :loading />
+    <FormEditor v-model="form" :errors="errors" :loading="loading" />
     <div class="flex gap-4 w-full justify-between">
       <Button 
         label="Salvar"

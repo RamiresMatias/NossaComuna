@@ -93,6 +93,6 @@ export function getPostByIdAndAuthorAdapter(value: PostTable['Row']): EditPostTy
     createdAt: new Date(value.created_at),
     coverImageUrl: value.cover_image_url,
     profileId: value.profile_id,
-    description: JSON.parse(value.description)
+    description: value.description
   }
 }
