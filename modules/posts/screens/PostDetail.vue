@@ -200,7 +200,7 @@ useServerSeoMeta({
 
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .editor-post {
   @apply p-2 md:p-0;
 

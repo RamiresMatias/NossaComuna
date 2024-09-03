@@ -76,19 +76,20 @@
 </template>
 
 <script setup lang="ts">
-import Post from '@/modules/posts/components/Post.vue'
-import PostSkeleton from '@/modules/posts/components/PostSkeleton.vue'
+const Post = resolveComponent('Post')
+const PostSkeleton = resolveComponent('PostSkeleton')
 
 import { useTag } from '@/modules/tag/composables/useTag/useTag'
 import { useScrollBody } from '@/composables/useScrollBody/useScrollBody'
 import { usePostList } from '@/modules/posts/composables/usePostList/usePostList'
 
 const containerContentRef = inject<Ref<HTMLDivElement>>('containerContentRef')
+const loadingMore = ref<boolean>(false)
 
 const { scrollEnd } = useScrollBody(containerContentRef)
 const { list: tags, loading: loadingTags } = useTag()
 
-const { filters, posts, loading, getPostList, getListLazy } = usePostList()
+const { filters, posts, loading, canFetchMore, getPostList, getListLazy } = usePostList()
 
 watch(scrollEnd, (nVal, oVal) => {
   if (nVal && !oVal && !loading.value) {
@@ -111,8 +112,11 @@ const selectTag = (id: string) => {
     : filters.tags.push(id)
 }
 
-const onScroll = () => {
-  getPostList()
+const onScroll = async () => {
+  if (!canFetchMore.value) return
+  loadingMore.value = true
+  await getPostList()
+  loadingMore.value = false
 }
 
 useHead({

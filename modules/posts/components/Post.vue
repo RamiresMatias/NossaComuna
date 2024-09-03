@@ -1,21 +1,32 @@
 <template>
-  <div class="w-full mx-auto" @click="handleNavigate">
+  <NuxtLink :to=" profile ? `/${profile.username}/${code}` : ''" class="w-full mx-auto">
     <article 
-      class="w-full p-4 bg-white flex gap-2 border-b border-solid justify-center border-b-gray-200 last:border-b-0 cursor-pointer rounded-md shadow-sm"
+      class="w-full p-4 bg-white flex flex-col gap-2 border-b border-solid justify-center border-b-gray-200 last:border-b-0 cursor-pointer rounded-md shadow-sm"
     >
-      <Avatar :image="profile.avatarUrl" shape="circle" size="large" />
-      <div class="w-full h-full flex flex-col gap-3">
-        <div class="flex w-full justify-between items-center gap-4">
-          <div class="w-full h-full flex flex-col flex-1">
-            <p class=" text-base text-neutral-800 text-balance ">
-              {{ profile?.username || profile?.name }}
-            </p>
-            <p class="text-xs text-slate-500">
-              {{ new Date(createdAt).toLocaleDateString('pt-br') }}
-            </p>
-          </div>
+      <div class="flex items-center gap-2">
+        <!-- <Avatar :image="profile.avatarUrl" shape="circle" size="large" aria-label="Imagem autor do post" /> -->
+        <NuxtImg
+          v-if="profile.avatarUrl"
+          :src="profile.avatarUrl + '?c=' + new Date()"
+          alt="Avatar do autor do post"
+          class="rounded-full"
+          loading="lazy"
+          decoding="auto"
+          width="40px"
+          height="40px"
+        />
+        <i v-else class="pi pi-user rounded-full w-10 h-10"></i>
+        <div class="w-full h-full flex flex-col flex-1">
+          <p class=" text-base text-neutral-800 text-balance ">
+            {{ profile?.username || profile?.name }}
+          </p>
+          <p class="text-xs text-slate-500">
+            {{ new Date(createdAt).toLocaleDateString('pt-br') }}
+          </p>
         </div>
-        <div class="w-full text-balance font-bold  text-xl lg:text-xl">
+      </div>
+      <div class="w-full h-full flex flex-col gap-3 pl-0 lg:pl-14">
+        <div class="w-full text-lg font-medium">
           {{ title }}
         </div>
         <div class="w-full flex flex-wrap gap-2 items-center">
@@ -28,8 +39,8 @@
             <span class="text-gray-600 text-xs">{{ tag.description }}</span>
           </Tag>
         </div>
-        <div class="w-full flex gap-4">
-          <Stat class="text-primary-400" :count="likes">
+        <div class="w-full flex gap-4 flex-wrap">
+          <Stat class="text-primary-600" :count="likes">
             <template #preffix>
               <i class="pi pi-heart-fill"></i>
             </template>
@@ -37,7 +48,7 @@
               {{ likes === 1 ? 'Curtida' : 'Curtidas' }}
             </template>
           </Stat>
-          <Stat class="text-primary-400" :count="totalComments">
+          <Stat class="text-primary-600" :count="totalComments">
             <template #preffix>
               <i class="pi pi-comments"></i>
             </template>
@@ -48,62 +59,13 @@
         </div>
       </div>
     </article>
-  </div>
-  <!-- <NuxtLink :to=" profile ? `/${profile.username}/${code}` : ''" class="w-full mx-auto">
-    <article 
-      class="w-full p-4 bg-white flex gap-2 border-b border-solid justify-center border-b-gray-200 last:border-b-0 cursor-pointer rounded-md shadow-sm"
-    >
-      <Avatar :image="profile.avatarUrl" shape="circle" size="large" />
-      <div class="w-full h-full flex flex-col gap-3">
-        <div class="flex w-full justify-between items-center gap-4">
-          <div class="w-full h-full flex flex-col flex-1">
-            <p class=" text-base text-neutral-800 text-balance ">
-              {{ profile?.username || profile?.name }}
-            </p>
-            <p class="text-xs text-slate-500">
-              {{ new Date(createdAt).toLocaleDateString('pt-br') }}
-            </p>
-          </div>
-        </div>
-        <div class="w-full text-balance font-bold  text-xl lg:text-xl">
-          {{ title }}
-        </div>
-        <div class="w-full flex flex-wrap gap-2 items-center">
-          <Tag 
-            v-for="tag in tags" 
-            :key="tag.id" 
-            class="flex gap-2 items-center bg-neutral-100" 
-            severity="secondary"
-          >
-            <span class="text-gray-600 text-xs">{{ tag.description }}</span>
-          </Tag>
-        </div>
-        <div class="w-full flex gap-4">
-          <Stat class="text-primary-400" :count="likes">
-            <template #preffix>
-              <i class="pi pi-heart-fill"></i>
-            </template>
-            <template #suffix>
-              {{ likes === 1 ? 'Curtida' : 'Curtidas' }}
-            </template>
-          </Stat>
-          <Stat class="text-primary-400" :count="totalComments">
-            <template #preffix>
-              <i class="pi pi-comments"></i>
-            </template>
-            <template #suffix>
-              {{ totalComments === 1 ? 'Comentário' : 'Comentários' }}
-            </template>
-          </Stat>
-        </div>
-      </div>
-    </article>
-  </NuxtLink> -->
+  </NuxtLink>
 </template>
 
 <script setup lang="ts">
 import type { PostType } from '@/types/index'
-import Stat from '@/modules/posts/components/Stat.vue'
+
+const Stat = resolveComponent('Stat')
 
 const props = withDefaults(
   defineProps<PostType>(),
@@ -119,12 +81,4 @@ const props = withDefaults(
     tags: () => [],
   }
 )
-
-const handleNavigate = () => {
-  navigateTo(props.profile ? `/${props.profile.username}/${props.code}` : '')
-}
 </script>
-
-<style scoped>
-
-</style>

@@ -22,7 +22,7 @@ create or replace function get_post_by_code(user_id uuid, user_name text, post_c
     profile.avatar_url as avatar_url,
     (
       select case when(
-        select distinct true from likes where likes.profile_id = user_id
+        select distinct true from likes where likes.profile_id = user_id and likes.post_id = p.id
       )
       then cast (1 as boolean)
       else cast (0 as boolean) end

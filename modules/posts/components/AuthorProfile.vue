@@ -35,7 +35,7 @@ withDefaults(
 )
 </script>
 
-<style scoped>
+<style lang="scss"scoped>
 .info {
   @apply flex flex-col  text-sm;
 

@@ -2,11 +2,11 @@
   <div class="w-full h-full flex flex-col items-center">
     <MainContent>
       <template #header>
-        <HeaderLoading v-if="loading" />
         <HeaderAuthenticated
           v-if="session.isLogged() && !loading && user.id"
           :nickname="user?.username || 'Usuário'"
           :profile-pic="user?.avatarUrl"
+          :loading="loading"
           @logout="handleLogout"
           @navigate-to-edit-profile="handleNavigateEditProfile"
           @navigate-to-post-create="handleNavigateToCreatePost"
@@ -40,7 +40,8 @@ const handleAuth = () => {
 const handlePostCreate = () => router.push('/posts/create')
 
 const handleLogout = async () => {
-  session.logout()
+  await session.logout()
+  navigateTo('/auth')
 }
 
 const handleNavigateEditProfile = () => {
