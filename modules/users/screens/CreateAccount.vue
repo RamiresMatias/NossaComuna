@@ -5,8 +5,7 @@
         <h1 class=" text-4xl font-bold">Crie sua conta</h1>
       </div>
 
-      <FormCreateAccount v-if="state === 'form'" v-model="form" :errors />
-      <!-- <ButtonsGroup v-else-if="state === 'buttons'" @on-create-email="state = 'form'" /> -->
+      <FormCreateAccount v-if="state === 'form'" ref="formRef" v-model="form" :errors />
 
       <Button v-if="state === 'form'" label="Criar" class="w-full mt-4" @click="onSubmit" :loading="loading" />
       <Divider />
@@ -19,7 +18,6 @@
 
 <script setup lang="ts">
 import FormCreateAccount from '@/modules/users/components/FormCreateAccount.vue'
-import ButtonsGroup from '@/modules/users/components/ButtonsGroup.vue'
 
 import { useCreateAccount } from '@/modules/users/composables/useCreateAccount/useCreateAccount'
 
@@ -28,18 +26,17 @@ const route = useRoute()
 const { form, createUser, loading, errors, validateForm } = useCreateAccount()
 
 const state = ref<'buttons' | 'form'>('form')
+const formRef = ref()
 
 const onSubmit = async () => {
 
-  if (!validateForm().success) return
+  if (!validateForm().success || !formRef.value.validateAll()) return
 
   createUser()
 }
 
 const checkState = () => {
   const stateQuery = route.query.state as string
-
-  // if (!stateQuery) state.value = 'buttons'
 
   state.value = stateQuery === 'form' ? 'form' : 'buttons'
 }

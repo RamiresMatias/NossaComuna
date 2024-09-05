@@ -25,7 +25,7 @@
           </p>
         </div>
       </div>
-      <div class="w-full h-full flex flex-col gap-3 pl-0 lg:pl-14">
+      <div class="w-full h-full flex flex-col gap-3 pl-0 lg:pl-12">
         <div class="w-full text-lg font-medium">
           {{ title }}
         </div>

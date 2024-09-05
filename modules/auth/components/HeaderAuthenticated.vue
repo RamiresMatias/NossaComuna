@@ -27,7 +27,9 @@
               width="32px"
               height="32px"
             />
-            <i v-else class="pi pi-user rounded-full w-8 h-8"></i>
+            <div v-else class="flex items-center justify-center w-8 h-8 rounded-full bg-slate-200 text-slate-600">
+              <i class="pi pi-user"></i>
+            </div>
           </button>
         </div>
         <Button

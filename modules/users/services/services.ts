@@ -6,6 +6,7 @@ import type { FormEditUser } from "~/types"
 
 export default (client: SupabaseClient<Database>) => ({
   async getMySelf(id: string) {
+    if (!id) return false
     const response = await client.from('profiles').select('*').eq('id', id).limit(1).single()
     const user = getMySelfAdapter(response.data)
     return user
