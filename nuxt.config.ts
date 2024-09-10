@@ -67,5 +67,12 @@ export default defineNuxtConfig({
     '~/components'
   ],
 
-  compatibilityDate: '2024-08-17'
+  compatibilityDate: '2024-08-17',
+
+  builder: 'vite',
+  vite: {
+    build: {
+      chunkSizeWarningLimit: 1000
+    }
+  }
 })

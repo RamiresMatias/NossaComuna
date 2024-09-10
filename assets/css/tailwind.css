@@ -39,7 +39,7 @@ body,
 .error {
   @apply text-red-500;
 }
-
+/* 
 body,p, h1, ul, li, blockquote {
   padding: 0;
   margin: 0;
@@ -54,4 +54,4 @@ body {
   padding: 0;
   margin: 0;
   font-family: -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
-}
+} */

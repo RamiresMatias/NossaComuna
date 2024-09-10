@@ -4,7 +4,6 @@
       class="w-full p-4 bg-white flex flex-col gap-2 border-b border-solid justify-center border-b-gray-200 last:border-b-0 cursor-pointer rounded-md shadow-sm"
     >
       <div class="flex items-center gap-2">
-        <!-- <Avatar :image="profile.avatarUrl" shape="circle" size="large" aria-label="Imagem autor do post" /> -->
         <NuxtImg
           v-if="profile.avatarUrl"
           :src="profile.avatarUrl + '?c=' + new Date()"
@@ -26,9 +25,9 @@
         </div>
       </div>
       <div class="w-full h-full flex flex-col gap-3 pl-0 lg:pl-12">
-        <div class="w-full text-lg font-medium">
+        <h1 class="w-full text-lg font-medium">
           {{ title }}
-        </div>
+        </h1>
         <div class="w-full flex flex-wrap gap-2 items-center">
           <Tag 
             v-for="tag in tags" 

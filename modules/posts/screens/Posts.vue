@@ -11,13 +11,7 @@
         ></InputText>
       </IconField>
     </div>
-    <div v-if="loadingTags" class="sm:col-span-4 col-span-full bg-white flex flex-col gap-2 rounded-md p-3 w-full">
-      <Skeleton width="12rem" height="1rem"></Skeleton>
-      <div class="flex gap-2 items-center flex-wrap">
-        <Skeleton v-for="item in 5" :key="`skeleton-${item}`" width="6rem" height="1.5rem"></Skeleton>
-      </div>
-    </div>
-    <div v-else-if="!loading && !posts?.length" class="col-span-full flex flex-col items-center justify-center gap-4">
+    <div v-if="!loading && !posts?.length" class="col-span-full flex flex-col items-center justify-center gap-4">
       <CharactersListEmpty class="w-[400px]" />
       <h2 v-if="filters.search?.trim?.()" class="text-xl text-center ">Ops... Não encontramos nenhum post, que tal procurar por outro título</h2>
       <h2 v-else class="text-xl text-center ">Ops... Não há nenhum post criado. Crie um post agora mesmo e compartilhe seus pensamentos</h2>
@@ -37,15 +31,18 @@
         :likes="item.likes"
         :tags="item.tags"
       />
-      <PostSkeleton 
-        v-if="loading"
-        v-for="item in 2"
+      <!-- <PostSkeleton 
+        v-if="loading || loadingMore"
+        v-for="item in 6"
         :key="item"
         class="sm:col-span-8 col-span-full"
-      />
+      /> -->
     </div>
-    <div v-if="posts?.length && tags.length && !loadingTags" class="sticky top-2 sm:col-span-4 col-span-full order-1 sm:order-2 bg-white flex flex-col gap-2 rounded-md p-3 w-full">
+    <div class="sticky top-2 sm:col-span-4 col-span-full order-1 sm:order-2 bg-white flex flex-col gap-2 rounded-md p-3 w-full">
       <h3>Top tags</h3>
+      <!-- <div v-if="loadingTags" class="flex gap-2 items-center flex-wrap">
+        <Skeleton v-for="item in 5" :key="`skeleton-${item}`" width="6rem" height="1.5rem"></Skeleton>
+      </div> -->
       <div class="flex gap-2 items-center flex-wrap">
         <Tag 
           v-for="tag in tags" 
