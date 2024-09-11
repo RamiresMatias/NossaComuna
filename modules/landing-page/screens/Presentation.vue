@@ -12,16 +12,20 @@
 import Hero from '@/modules/landing-page/components/Hero.vue'
 import Content from '@/modules/landing-page/components/Content.vue'
 
-import {useSession} from '@/modules/auth/composables/useSession/useSession'
-
-const { logout } = useSession()
 const router = useRouter()
-
-const handleAuth = () => {
-  router.push('/auth')
-}
 
 const navigaToPosts = () => {
   router.push('/posts')
 }
+
+useHead({
+  title: '👨‍💻 NossaComuna - Bem vindo a NossaComuna'
+})
+
+useSeoMeta({
+  title: '👨‍💻 NossaComuna - Bem vindo a NossaComuna',
+  ogTitle: '👨‍💻 NossaComuna - Bem vindo a NossaComuna',
+  description: 'Colabore com a comunidade. Escreva postagens, interaja com as pessoas e compartilhe conhecimento',
+  ogDescription: 'Colabore com a comunidade. Escreva postagens, interaja com as pessoas e compartilhe conhecimento'
+})
 </script>

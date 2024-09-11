@@ -3,7 +3,7 @@
     <nav class="bg-white px-4 lg:px-6 py-2.5">
       <div class="flex justify-center sm:justify-between items-center mx-auto max-w-[1380px]">
         <div class="flex items-center flex-1 justify-center sm:justify-start">
-          <NuxtLink to="/posts">
+          <NuxtLink to="/posts" :prefetch="false">
             <Logo size="default" />
           </NuxtLink>
         </div>

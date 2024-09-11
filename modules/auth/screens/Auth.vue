@@ -1,6 +1,6 @@
 <template>
   <div class="w-full flex flex-col items-center max-w-screen-sm mx-auto p-4">
-    <NuxtLink to="/posts" class="mb-10 hover:bg-gray-100 p-4 transition-all rounded-md">
+    <NuxtLink to="/posts" :prefetch="false" class="mb-10 hover:bg-gray-100 p-4 transition-all rounded-md">
       <Logo size="xl" />
     </NuxtLink>
     <FormLogin v-model="form" :errors="errors" @on-enter="handleAuthentication" />
@@ -35,7 +35,7 @@
     </div>
     <Divider />
     <div class="w-full text-center">
-      É novo por aqui? <NuxtLink to="/create-account?state=form" class="hover:text-blue-400">Crie uma conta</NuxtLink>
+      É novo por aqui? <NuxtLink to="/create-account?state=form" :prefetch="false" class="hover:text-blue-400">Crie uma conta</NuxtLink>
     </div>
   </div>
 </template>

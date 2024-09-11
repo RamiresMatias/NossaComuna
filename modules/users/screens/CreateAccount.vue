@@ -10,7 +10,7 @@
       <Button v-if="state === 'form'" label="Criar" class="w-full mt-4" @click="onSubmit" :loading="loading" />
       <Divider />
       <div class="w-full text-center">
-        Já possui uma conta? <NuxtLink to="/auth" class="hover:text-blue-400">Logar</NuxtLink>
+        Já possui uma conta? <NuxtLink to="/auth" :prefetch="false" class="hover:text-blue-400">Logar</NuxtLink>
       </div>
     </div>
   </div>

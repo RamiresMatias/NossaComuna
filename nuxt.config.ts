@@ -21,7 +21,8 @@ export default defineNuxtConfig({
     'nuxt-primevue',
     '@nuxtjs/google-fonts',
     '@nuxtjs/supabase',
-    "@nuxt/image"
+    '@nuxt/image',
+    '@nuxtjs/critters'
   ],
 
   css: ['primeicons/primeicons.css'],
@@ -73,6 +74,13 @@ export default defineNuxtConfig({
   vite: {
     build: {
       chunkSizeWarningLimit: 1000
+    }
+  },
+
+  routeRules: {
+    '/': {
+      prerender: true,
+      ssr: true
     }
   }
 })
