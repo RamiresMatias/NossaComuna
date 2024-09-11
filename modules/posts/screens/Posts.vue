@@ -17,22 +17,20 @@
       <h2 v-else class="text-xl text-center ">Ops... Não há nenhum post criado. Crie um post agora mesmo e compartilhe seus pensamentos</h2>
     </div>
     <div class="sm:col-span-8 order-2 sm:order-1 col-span-full flex flex-col gap-4 w-full">
-      <DelayHydration>
-        <Post
-          v-for="(item, i) in posts" 
-          :key="i"
-          :id="item.id"
-          :code="item.code"
-          :cover-image="item.coverImage"
-          :created-at="item.createdAt"
-          :is-draft="item.isDraft"
-          :title="item.title"
-          :profile="item.profile"
-          :total-comments="item.totalComments"
-          :likes="item.likes"
-          :tags="item.tags"
-        />
-      </DelayHydration>
+      <Post
+        v-for="(item, i) in posts" 
+        :key="i"
+        :id="item.id"
+        :code="item.code"
+        :cover-image="item.coverImage"
+        :created-at="item.createdAt"
+        :is-draft="item.isDraft"
+        :title="item.title"
+        :profile="item.profile"
+        :total-comments="item.totalComments"
+        :likes="item.likes"
+        :tags="item.tags"
+      />
       <!-- <PostSkeleton 
         v-if="loading || loadingMore"
         v-for="item in 6"
@@ -40,7 +38,7 @@
         class="sm:col-span-8 col-span-full"
       /> -->
     </div>
-    <div class="sticky top-2 sm:col-span-4 col-span-full order-1 sm:order-2 bg-white flex flex-col gap-2 rounded-md p-3 w-full">
+    <div v-if="posts.length > 0" class="sticky top-2 sm:col-span-4 col-span-full order-1 sm:order-2 bg-white flex flex-col gap-2 rounded-md p-3 w-full">
       <h3>Top tags</h3>
       <!-- <div v-if="loadingTags" class="flex gap-2 items-center flex-wrap">
         <Skeleton v-for="item in 5" :key="`skeleton-${item}`" width="6rem" height="1.5rem"></Skeleton>

@@ -79,13 +79,6 @@ export default defineNuxtConfig({
     }
   },
 
-  routeRules: {
-    '/': {
-      prerender: true,
-      ssr: true
-    }
-  },
-
   vitalizer: {
     disableStylesheets: 'entry'
   },
