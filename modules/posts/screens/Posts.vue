@@ -17,20 +17,22 @@
       <h2 v-else class="text-xl text-center ">Ops... Não há nenhum post criado. Crie um post agora mesmo e compartilhe seus pensamentos</h2>
     </div>
     <div class="sm:col-span-8 order-2 sm:order-1 col-span-full flex flex-col gap-4 w-full">
-      <Post
-        v-for="(item, i) in posts" 
-        :key="i"
-        :id="item.id"
-        :code="item.code"
-        :cover-image="item.coverImage"
-        :created-at="item.createdAt"
-        :is-draft="item.isDraft"
-        :title="item.title"
-        :profile="item.profile"
-        :total-comments="item.totalComments"
-        :likes="item.likes"
-        :tags="item.tags"
-      />
+      <DelayHydration>
+        <Post
+          v-for="(item, i) in posts" 
+          :key="i"
+          :id="item.id"
+          :code="item.code"
+          :cover-image="item.coverImage"
+          :created-at="item.createdAt"
+          :is-draft="item.isDraft"
+          :title="item.title"
+          :profile="item.profile"
+          :total-comments="item.totalComments"
+          :likes="item.likes"
+          :tags="item.tags"
+        />
+      </DelayHydration>
       <!-- <PostSkeleton 
         v-if="loading || loadingMore"
         v-for="item in 6"

@@ -22,7 +22,9 @@ export default defineNuxtConfig({
     '@nuxtjs/google-fonts',
     '@nuxtjs/supabase',
     '@nuxt/image',
-    '@nuxtjs/critters'
+    '@nuxtjs/critters',
+    'nuxt-vitalizer',
+    'nuxt-lazy-hydrate'
   ],
 
   css: ['primeicons/primeicons.css'],
@@ -82,5 +84,12 @@ export default defineNuxtConfig({
       prerender: true,
       ssr: true
     }
-  }
+  },
+
+  vitalizer: {
+    disableStylesheets: 'entry'
+  },
+  experimental: {
+    componentIslands: true,
+  },
 })
