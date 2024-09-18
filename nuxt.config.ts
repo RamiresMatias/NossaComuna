@@ -85,10 +85,14 @@ export default defineNuxtConfig({
     }
   },
 
-  critters: {
-    config: {
-      preload: 'swap'
-    }
+  // critters: {
+  //   config: {
+  //     preload: 'swap'
+  //   }
+  // },
+
+  vitalizer: {
+    disableStylesheets: 'entry'
   },
 
   experimental: {
