@@ -69,13 +69,11 @@ export default defineNuxtConfig({
   typescript: {
     strict: false
   },
-
+  
   components: [
     { path: '@/modules/posts/components', pathPrefix: false },
     '~/components'
   ],
-
-  compatibilityDate: '2024-08-17',
 
   builder: 'vite',
   vite: {
