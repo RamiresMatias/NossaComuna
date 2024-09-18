@@ -69,13 +69,14 @@ export default defineNuxtConfig({
   typescript: {
     strict: false
   },
-  
+
   components: [
     { path: '@/modules/posts/components', pathPrefix: false },
     '~/components'
   ],
 
   builder: 'vite',
+
   vite: {
     build: {
       chunkSizeWarningLimit: 1000,
@@ -93,11 +94,15 @@ export default defineNuxtConfig({
   vitalizer: {
     disableStylesheets: 'entry'
   },
+
   experimental: {
     componentIslands: true,
   },
+
   delayHydration: { 
     mode: 'init',
     debug: process.env.NODE_ENV === 'development'
-  }
+  },
+
+  compatibilityDate: '2024-09-18'
 })
