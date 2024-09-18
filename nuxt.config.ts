@@ -2,7 +2,7 @@ import path from 'path'
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  devtools: { enabled: true },
+  devtools: { enabled: process.env.NODE_ENV === 'local' },
 
   app: {
     pageTransition: { name: 'slide-right', mode: 'out-in' },
@@ -21,7 +21,12 @@ export default defineNuxtConfig({
     'nuxt-primevue',
     '@nuxtjs/google-fonts',
     '@nuxtjs/supabase',
-    "@nuxt/image"
+    '@nuxt/image',
+    '@nuxtjs/critters',
+    'nuxt-vitalizer',
+    'nuxt-lazy-hydrate',
+    'nuxt-purgecss',
+    'nuxt-delay-hydration',
   ],
 
   css: ['primeicons/primeicons.css'],
@@ -67,12 +72,34 @@ export default defineNuxtConfig({
     '~/components'
   ],
 
-  compatibilityDate: '2024-08-17',
-
   builder: 'vite',
+
   vite: {
     build: {
-      chunkSizeWarningLimit: 1000
+      chunkSizeWarningLimit: 1000,
+      cssMinify: true,
+      minify: true,
     }
-  }
+  },
+
+  critters: {
+    config: {
+      preload: 'swap'
+    }
+  },
+
+  vitalizer: {
+    disableStylesheets: 'entry'
+  },
+
+  experimental: {
+    componentIslands: true,
+  },
+
+  delayHydration: { 
+    mode: 'init',
+    debug: process.env.NODE_ENV === 'development'
+  },
+
+  compatibilityDate: '2024-09-18'
 })
