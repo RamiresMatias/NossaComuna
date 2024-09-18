@@ -2,7 +2,7 @@ import path from 'path'
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  devtools: { enabled: true },
+  devtools: { enabled: process.env.NODE_ENV === 'local' },
 
   app: {
     pageTransition: { name: 'slide-right', mode: 'out-in' },
@@ -24,7 +24,9 @@ export default defineNuxtConfig({
     '@nuxt/image',
     '@nuxtjs/critters',
     'nuxt-vitalizer',
-    'nuxt-lazy-hydrate'
+    'nuxt-lazy-hydrate',
+    'nuxt-purgecss',
+    'nuxt-delay-hydration',
   ],
 
   css: ['primeicons/primeicons.css'],
@@ -38,7 +40,10 @@ export default defineNuxtConfig({
   },
 
   nitro: {
-    compressPublicAssets: true,
+    compressPublicAssets: {
+      brotli: true,
+      gzip: true
+    },
     minify: true,
   },
 
@@ -75,7 +80,15 @@ export default defineNuxtConfig({
   builder: 'vite',
   vite: {
     build: {
-      chunkSizeWarningLimit: 1000
+      chunkSizeWarningLimit: 1000,
+      cssMinify: true,
+      minify: true,
+    }
+  },
+
+  critters: {
+    config: {
+      preload: 'swap'
     }
   },
 
@@ -84,5 +97,22 @@ export default defineNuxtConfig({
   },
   experimental: {
     componentIslands: true,
+  },
+  delayHydration: { 
+    mode: 'init',
+    debug: process.env.NODE_ENV === 'development'
+  },
+  hooks: {
+    'build:manifest': (manifest) => {
+      const css = manifest['node_modules/nuxt/dist/app/entry.js']?.css
+
+      if (css) {
+
+        for (let i = css.length - 1; i >= 0; i--) {
+
+          if (css[i].startsWith('entry')) css.splice(i, 1)
+        }
+      }
+    },
   },
 })

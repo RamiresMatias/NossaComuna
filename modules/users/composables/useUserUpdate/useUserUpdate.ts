@@ -43,6 +43,18 @@ export function useUserUpdate({user}: UseUserUpdateOptions) {
       if (!form.id) return
       loading.value = true
 
+      const { data: usernameExists } = await services.users.checkUsernameExists(form.username)
+
+      if (usernameExists[0]) {
+        loading.value = false
+        return toast.add({
+          severity: 'error',
+          summary: 'Erro ao tentar criar usuário',
+          detail: 'Nome de usuário já utilizado, tente outro!',
+          life: 4000
+        })
+      }
+
       await services.users.update(form.id, {
         username: form.username || '',
         bio: form.bio,

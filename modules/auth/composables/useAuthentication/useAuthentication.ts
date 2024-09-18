@@ -58,7 +58,6 @@ export function useAuthentication() {
   const authGithub = async () => {
     try {
       loading.value = true
-      console.log('object');
       await services.auth.signinWithGithub()
 
       loading.value = false

@@ -36,7 +36,7 @@
       />
       <section class="w-full h-full flex flex-col max-w-[880px] px-4 mx-auto" :class="{'mt-8': !post.coverImageUrl}">
         <div class="flex w-full gap-2 flex-col min-[300px]:flex-row">
-          <Avatar :image="post.profile.avatarUrl" shape="circle" size="large" />
+          <Avatar :image="post.profile.avatarUrl" shape="circle" size="large" alt="Avatar do autor do perfil" />
           <div class="w-full h-full flex flex-col flex-1 gap-1">
             <p class=" text-base lg:text-lg text-[--title-color] font-bold text-balance">
               {{ post.profile.username }}

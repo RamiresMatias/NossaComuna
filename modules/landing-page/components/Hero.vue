@@ -1,6 +1,6 @@
 <template>
   <section class="w-full h-full flex flex-col items-center justify-center bg-[--body-color]">
-    <h1 class="w-full text-balance mb-4 text-3xl lg:text-5xl grid place-items-center font-extrabold text-black h-full">
+    <h1 class="w-full text-center mb-4 text-3xl lg:text-5xl grid place-items-center font-extrabold text-black h-full">
       Bem vindo a nossa Comunidade
     </h1>
     <div class="w-full h-full bg-white flex flex-col items-center justify-center gap-10">
@@ -21,6 +21,7 @@
 </template>
 
 <script setup lang="ts">
+
 const emit = defineEmits<{
   (e: 'navigate-to-posts'): void
 }>()

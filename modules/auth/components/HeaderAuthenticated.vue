@@ -16,7 +16,7 @@
             icon="pi pi-plus"
             @click="() => emit('navigate-to-post-create')"
           />
-          <button class="flex items-center" aria-haspopup="tree" aria-controls="header-auth-menu" @click="toggle">
+          <button class="flex items-center" aria-haspopup="tree" aria-label="Menu do perfil" aria-controls="header-auth-menu" @click="toggle">
             <NuxtImg
               v-if="props.profilePic"
               :src="props.profilePic + '?c=' + new Date()"

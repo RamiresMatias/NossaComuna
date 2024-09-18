@@ -39,7 +39,7 @@
       /> -->
     </div>
     <div v-if="posts.length > 0" class="sticky top-2 sm:col-span-4 col-span-full order-1 sm:order-2 bg-white flex flex-col gap-2 rounded-md p-3 w-full">
-      <h3>Top tags</h3>
+      <h1>Top tags</h1>
       <!-- <div v-if="loadingTags" class="flex gap-2 items-center flex-wrap">
         <Skeleton v-for="item in 5" :key="`skeleton-${item}`" width="6rem" height="1.5rem"></Skeleton>
       </div> -->
