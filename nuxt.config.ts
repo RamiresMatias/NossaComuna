@@ -80,8 +80,8 @@ export default defineNuxtConfig({
   vite: {
     build: {
       chunkSizeWarningLimit: 1000,
-      cssMinify: true,
-      minify: true,
+      cssMinify: false,
+      minify: false,
     }
   },
 
