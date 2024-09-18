@@ -40,7 +40,10 @@ export default defineNuxtConfig({
   },
 
   nitro: {
-    compressPublicAssets: true,
+    compressPublicAssets: {
+      brotli: true,
+      gzip: true
+    },
     minify: true,
   },
 
@@ -86,10 +89,6 @@ export default defineNuxtConfig({
     config: {
       preload: 'swap'
     }
-  },
-
-  vitalizer: {
-    disableStylesheets: 'entry'
   },
 
   experimental: {
