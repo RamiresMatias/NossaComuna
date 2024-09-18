@@ -40,10 +40,7 @@ export default defineNuxtConfig({
   },
 
   nitro: {
-    compressPublicAssets: {
-      brotli: true,
-      gzip: true
-    },
+    compressPublicAssets: true,
     minify: true,
   },
 
@@ -80,8 +77,6 @@ export default defineNuxtConfig({
   vite: {
     build: {
       chunkSizeWarningLimit: 1000,
-      cssMinify: true,
-      minify: true,
     }
   },
 
