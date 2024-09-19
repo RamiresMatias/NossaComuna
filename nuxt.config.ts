@@ -22,10 +22,10 @@ export default defineNuxtConfig({
     '@nuxtjs/google-fonts',
     '@nuxtjs/supabase',
     '@nuxt/image',
-    // '@nuxtjs/critters',
-    // 'nuxt-vitalizer',
+    '@nuxtjs/critters',
+    'nuxt-vitalizer',
     'nuxt-lazy-hydrate',
-    'nuxt-purgecss',
+    // 'nuxt-purgecss',
     'nuxt-delay-hydration',
     ['nuxt-mail', {
       message: {
