@@ -27,7 +27,20 @@ export default defineNuxtConfig({
     'nuxt-lazy-hydrate',
     'nuxt-purgecss',
     'nuxt-delay-hydration',
-    'nuxt-mail',
+    ['nuxt-mail', {
+      message: {
+        to: process.env.NUXT_MAIL_TARGET,
+      },
+      smtp: {
+        host: process.env.NUXT_MAIL_SMPT,
+        port: process.env.NUXT_MAIL_PORT,
+        secure: true,
+        auth: {
+          user: process.env.NUXT_MAIL_USERNAME,
+          pass: process.env.NUXT_MAIL_PASSWORD
+        }
+      },
+    }]
   ],
 
   css: ['primeicons/primeicons.css'],
@@ -92,7 +105,6 @@ export default defineNuxtConfig({
   experimental: {
     componentIslands: true,
   },
-
 
   hooks: {
     'build:manifest': (manifest) => {
