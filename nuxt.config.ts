@@ -40,11 +40,11 @@ export default defineNuxtConfig({
   },
 
   nitro: {
-    compressPublicAssets: true,
-    // compressPublicAssets: {
-    //   brotli: true,
-    //   gzip: true
-    // },
+    // compressPublicAssets: true,
+    compressPublicAssets: {
+      brotli: true,
+      gzip: true
+    },
     minify: true,
   },
 
