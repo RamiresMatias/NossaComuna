@@ -21,7 +21,12 @@ export default defineNuxtConfig({
     'nuxt-primevue',
     '@nuxtjs/google-fonts',
     '@nuxtjs/supabase',
-    "@nuxt/image"
+    '@nuxt/image',
+    '@nuxtjs/critters',
+    'nuxt-vitalizer',
+    'nuxt-lazy-hydrate',
+    'nuxt-purgecss',
+    'nuxt-delay-hydration',
   ],
 
   css: ['primeicons/primeicons.css'],
@@ -35,7 +40,11 @@ export default defineNuxtConfig({
   },
 
   nitro: {
-    compressPublicAssets: true,
+    // compressPublicAssets: true,
+    compressPublicAssets: {
+      brotli: true,
+      gzip: true
+    },
     minify: true,
   },
 
@@ -70,9 +79,16 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-08-17',
 
   builder: 'vite',
+
   vite: {
     build: {
-      chunkSizeWarningLimit: 1000
+      chunkSizeWarningLimit: 1000,
+      // cssMinify: true,
+      // minify: true,
     }
-  }
+  },
+
+  experimental: {
+    componentIslands: true,
+  },
 })
