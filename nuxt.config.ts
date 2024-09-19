@@ -25,22 +25,7 @@ export default defineNuxtConfig({
     '@nuxtjs/critters',
     'nuxt-vitalizer',
     'nuxt-lazy-hydrate',
-    // 'nuxt-purgecss',
-    'nuxt-delay-hydration',
-    ['nuxt-mail', {
-      message: {
-        to: process.env.NUXT_MAIL_TARGET,
-      },
-      smtp: {
-        host: process.env.NUXT_MAIL_SMPT,
-        port: process.env.NUXT_MAIL_PORT,
-        secure: true,
-        auth: {
-          user: process.env.NUXT_MAIL_USERNAME,
-          pass: process.env.NUXT_MAIL_PASSWORD
-        }
-      },
-    }]
+    'nuxt-delay-hydration'
   ],
 
   css: ['primeicons/primeicons.css'],
