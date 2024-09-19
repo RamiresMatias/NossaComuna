@@ -25,8 +25,9 @@ export default defineNuxtConfig({
     // '@nuxtjs/critters',
     // 'nuxt-vitalizer',
     'nuxt-lazy-hydrate',
-    // 'nuxt-purgecss',
+    'nuxt-purgecss',
     'nuxt-delay-hydration',
+    'nuxt-mail',
   ],
 
   css: ['primeicons/primeicons.css'],
