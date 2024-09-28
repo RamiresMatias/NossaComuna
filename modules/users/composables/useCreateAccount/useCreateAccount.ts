@@ -61,7 +61,7 @@ export function useCreateAccount() {
       await sleep(1000)
 
       loading.value = false
-      navigateTo('/posts')
+      navigateTo(`/confirm/${form.email}`)
     } catch (error) {
       if (error.status === 422) {
         toast.add({

@@ -25,7 +25,8 @@ export default defineNuxtConfig({
     '@nuxtjs/critters',
     'nuxt-vitalizer',
     'nuxt-lazy-hydrate',
-    'nuxt-delay-hydration'
+    'nuxt-delay-hydration',
+    'nuxt-mailer'
   ],
 
   css: ['primeicons/primeicons.css'],
@@ -58,6 +59,16 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
+    mailerUser: process.env.NUXT_MAILER_USER,
+    mailerPass: process.env.NUXT_MAILER_PASS,
+    mailerLog: process.env.NUXT_MAILER_LOG,
+    mailerDriver: process.env.NUXT_MAILER_DRIVER,
+    mailerHost: process.env.NUXT_MAILER_HOST,
+    mailerPort: process.env.NUXT_MAILER_PORT,
+    mailerSmtpTls: process.env.NUXT_MAILER_SMTP_TLS,
+    mailerFromAddress: process.env.NUXT_MAILER_FROM_ADDRESS,
+    mailerToAddress: process.env.NUXT_MAILER_TO_ADDRESS,
+
     public: {
       siteUrl: process.env.SITE_URL,
       nodeEnv: process.env.NODE_ENV,

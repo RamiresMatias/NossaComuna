@@ -25,6 +25,7 @@
     "@types/uuid": "^9.0.8",
     "axios": "^1.7.7",
     "h3-compression": "^0.3.2",
+    "nuxt-mailer": "^0.11.0",
     "nuxt-primevue": "^0.3.1",
     "primeicons": "^6.0.1",
     "primevue": "^3.53.0",

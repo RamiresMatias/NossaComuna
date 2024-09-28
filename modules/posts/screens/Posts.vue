@@ -2,7 +2,7 @@
   <div class="grid grid-cols-12 w-full gap-4 mx-auto items-start px-4 pt-1 pb-8 2xl:px-0 relative mb-4 box-border">
     <div class="col-span-full flex w-full">
       <IconField class="w-full" icon-position="left">
-        <InputIcon v-if="loading" class="pi pi-spin pi-spinner" />
+        <InputIcon v-if="loading || loadingMore" class="pi pi-spin pi-spinner" />
         <InputIcon v-else class="pi pi-search" />
         <InputText 
           v-model="filters.search" 
@@ -11,7 +11,7 @@
         ></InputText>
       </IconField>
     </div>
-    <div v-if="!loading && !posts?.length" class="col-span-full flex flex-col items-center justify-center gap-4">
+    <div v-if="!loading && !loadingMore && !posts?.length && !hasFilters" class="col-span-full flex flex-col items-center justify-center gap-4">
       <CharactersListEmpty class="w-[400px]" />
       <h2 v-if="filters.search?.trim?.()" class="text-xl text-center ">Ops... Não encontramos nenhum post, que tal procurar por outro título</h2>
       <h2 v-else class="text-xl text-center ">Ops... Não há nenhum post criado. Crie um post agora mesmo e compartilhe seus conhecimentos</h2>
@@ -31,6 +31,9 @@
         :likes="item.likes"
         :tags="item.tags"
       />
+      <div v-if="posts.length === 0 && hasFilters" class="text-xl text-center bg-white p-4 rounded-md shadow-sm">
+        Ops... Nenhum post encontrado, tente alterar o filtro para trazer outros resultados.
+      </div>
       <!-- <PostSkeleton 
         v-if="loading || loadingMore"
         v-for="item in 6"
@@ -38,7 +41,7 @@
         class="sm:col-span-8 col-span-full"
       /> -->
     </div>
-    <div v-if="posts.length > 0" class="sticky top-2 sm:col-span-4 col-span-full order-1 sm:order-2 bg-white flex flex-col gap-2 rounded-md p-3 w-full">
+    <div v-if="posts.length > 0 || hasFilters" class="sticky top-2 sm:col-span-4 col-span-full order-1 sm:order-2 bg-white flex flex-col gap-2 rounded-md p-3 w-full shadow-sm">
       <h1>Top tags</h1>
       <!-- <div v-if="loadingTags" class="flex gap-2 items-center flex-wrap">
         <Skeleton v-for="item in 5" :key="`skeleton-${item}`" width="6rem" height="1.5rem"></Skeleton>
@@ -94,13 +97,21 @@ watch(scrollEnd, (nVal, oVal) => {
   }
 })
 
-const getRequestLazy = debounce(() => getListLazy(), 2000)
+const getRequestLazy = debounce(() => {
+  getListLazy()
+  loadingMore.value = false
+}, 2000)
 
 watch(filters, () => {
+  canFetchMore.value = true
+  loadingMore.value = true
+
   getRequestLazy()
 }, {
   deep: true
 })
+
+const hasFilters = computed(() => !!filters.search || filters.tags.length > 0)
 
 const selectTag = (id: string) => {
   const idx = filters.tags.findIndex(el => el === id)
@@ -110,7 +121,7 @@ const selectTag = (id: string) => {
 }
 
 const onScroll = async () => {
-  if (!canFetchMore.value) return
+  if (!canFetchMore.value) return (loadingMore.value = false)
   loadingMore.value = true
   await getPostList()
   loadingMore.value = false
