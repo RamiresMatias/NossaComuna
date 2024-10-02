@@ -11,6 +11,10 @@ export default defineEventHandler(async (event) => {
 
   const runtimeConfig = useRuntimeConfig()
 
+  /**
+   * @TODO Enviar o token criptografado com as informações necessárias 
+   * para redefinição de senha
+   */
   const redirectUrl = `${runtimeConfig.public.siteUrl}/forgot-password?email=${reqBody.to}`
 
   const template = createEmailTemplate('NossaComuna Suporte', redirectUrl)

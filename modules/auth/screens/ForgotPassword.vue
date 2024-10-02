@@ -1,6 +1,9 @@
 <template>
   <div class="flex items-center justify-center w-full h-full">
     <div class="flex flex-col items-center justify-center gap-4 max-w-lg">
+      <div class="w-full flex items-start mb-10">
+        <Button label="Voltar" severity="secondary" text icon="pi pi-arrow-left" icon-pos="left" @click="back"></Button>
+      </div>
       <div class="border border-solid border-primary-500 rounded-full">
         <i class="pi pi-lock text-4xl text-primary-500 p-4"></i>
       </div>
@@ -24,6 +27,12 @@ const {
   loading,
   sendEmail
 } = useForgotPassword()
+
+const router = useRouter()
+
+const back = () => {
+  router.push('/posts')
+}
 
 
 definePageMeta({

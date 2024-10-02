@@ -42,9 +42,9 @@
         placeholder="Insira o titulo aqui"
         class="title-post"
       />
-      <small v-if="errors?.title" class="error ml-8">{{ errors?.title._errors[0] }}</small>
+      <small v-if="props.errors?.title" class="error ml-8">{{ props.errors?.title._errors[0] }}</small>
       <InputTag v-model="form.tags" />
-      <small v-if="errors?.tags" class="error ml-8">{{ errors?.tags._errors[0] }}</small>
+      <small v-if="props.errors?.tags" class="error ml-8">{{ props.errors?.tags._errors[0] }}</small>
     </div>
     <div class="bg-neutral-100 w-full h-20 flex items-center gap-2 px-8 mb-2 mt-6 py-2">
       <Button label="H1" severity="secondary" text class="text-xl text-neutral-900" @click="setHeading(1)" />
@@ -56,11 +56,11 @@
       <Button severity="secondary" text class="text-xl text-neutral-900" icon="pi pi-list" @click="setList" />
       <Button severity="secondary" text class="text-xl text-neutral-900" icon="pi pi-code" @click="setCode" />
     </div>
-    <TiptapEditor v-if="!loading" ref="tiptapRef" v-model="form.description" :readonly="false"></TiptapEditor>
+    <TiptapEditor v-if="!props.loading" ref="tiptapRef" v-model="form.description" :readonly="false"></TiptapEditor>
     <div v-else class="flex items-center justify-center p-10 gap-2">
       Carregando conteúdo <i class="pi pi-spin pi-spinner text-2xl"></i>
     </div>
-    <small v-if="errors?.description" class="error ml-8">{{ errors?.description._errors[0] }}</small>
+    <small v-if="props.errors?.description" class="error ml-8">{{ props.errors?.description._errors[0] }}</small>
   </form>
 </template>
 
@@ -73,7 +73,7 @@ import InputTag from '@/modules/posts/components/InputTag.vue'
 
 type FormEditorProps = CreatePostType | EditPostType
 
-defineProps<{
+const props = defineProps<{
   errors?: ZodFormattedError<FormEditorProps>
   loading?: boolean
 }>()

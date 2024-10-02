@@ -78,5 +78,14 @@ export default (client: SupabaseClient<Database>, options: ServiceOptions) => ({
     await client.from('profiles').update({
       avatar_url: `${runtimeConfig.public.supabaseUrl}/storage/v1/object/public/${data.fullPath}`
     }).eq('id', id)
+  },
+
+  async recoverPassword (email: string) {
+
+    const runtime = useRuntimeConfig()
+
+    return client.auth.resetPasswordForEmail(email, {
+      redirectTo: `${runtime.public.siteUrl}`
+    })
   }
 })

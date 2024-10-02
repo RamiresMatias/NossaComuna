@@ -19,7 +19,7 @@
           <p class=" text-base text-neutral-800 text-balance ">
             {{ profile?.username || profile?.name }}
           </p>
-          <p class="text-xs text-slate-500">
+          <p class="text-xs text-gray-600">
             {{ new Date(createdAt).toLocaleDateString('pt-br') }}
           </p>
         </div>

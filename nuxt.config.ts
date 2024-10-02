@@ -95,6 +95,13 @@ export default defineNuxtConfig({
       chunkSizeWarningLimit: 1000,
       cssMinify: true,
       minify: true,
+    },
+    css: {
+      preprocessorOptions: {
+        scss: {
+          api: 'modern-compiler'
+        }
+      }
     }
   },
 
