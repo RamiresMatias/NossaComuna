@@ -13,6 +13,7 @@
           decoding="async"
           width="40px"
           height="40px"
+          format="webp"
         />
         <i v-else class="pi pi-user rounded-full w-10 h-10"></i>
         <div class="w-full h-full flex flex-col flex-1">

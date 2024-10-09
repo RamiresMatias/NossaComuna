@@ -24,8 +24,11 @@
               class="rounded-full"
               loading="lazy"
               decoding="auto"
-              width="32px"
-              height="32px"
+              width="40px"
+              height="40px"
+              format="webp"
+              quality="20"
+              preload
             />
             <div v-else class="flex items-center justify-center w-8 h-8 rounded-full bg-slate-200 text-slate-600">
               <i class="pi pi-user"></i>

@@ -7,6 +7,7 @@
         class="w-8 h-8 rounded-full"
         loading="lazy"
         decoding="auto"
+        format="webp"
       />
       <div class="w-full flex flex-col">
         <section class="w-full border border-solid border-gray-200 rounded-md flex flex-col p-2">

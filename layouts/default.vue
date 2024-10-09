@@ -15,8 +15,7 @@
       </template>
       <template #content>
         <main class="h-full">
-          <div v-if="loading"></div>
-          <slot v-else></slot>
+          <slot></slot>
         </main>
       </template>
     </MainContent>

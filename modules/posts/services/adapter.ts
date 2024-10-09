@@ -15,7 +15,7 @@ export function readAllAdapter(values: ReadAllRow[] | null): PostType[] | [] {
     profile: {
       id: el.profile_id,
       username: el.profiles.username,
-      avatarUrl: el.profiles.avatar_url ? (el.profiles.avatar_url + '?lastMod=' + new Date()) : ''
+      avatarUrl: el.profiles.avatar_url
     },
     tags: el.tag_x_post.map(el => el.tag)
   }))
@@ -34,7 +34,7 @@ export function readOneAdapterRpc(value: ReadOnePostRow | null): PostDetail | nu
     profile: {
       id: value[0].profile_id,
       username: value[0].username,
-      avatarUrl: value[0].avatar_url ? (value[0].avatar_url + '?lastMod=' + new Date()) : ''
+      avatarUrl: value[0].avatar_url
     },
     description: value[0].description,
     likes: value[0].likes,

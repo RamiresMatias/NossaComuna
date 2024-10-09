@@ -76,8 +76,9 @@
 </template>
 
 <script setup lang="ts">
-const Post = resolveComponent('Post')
-const PostSkeleton = resolveComponent('PostSkeleton')
+// const Post = prefetchComponents('Post')
+// const PostSkeleton = resolveComponent('PostSkeleton')
+
 
 import { useTag } from '@/modules/tag/composables/useTag/useTag'
 import { useScrollBody } from '@/composables/useScrollBody/useScrollBody'
@@ -89,7 +90,19 @@ const loadingMore = ref<boolean>(false)
 const { scrollEnd } = useScrollBody(containerContentRef)
 const { list: tags, loading: loadingTags } = useTag()
 
-const { filters, posts, loading, canFetchMore, getPostList, getListLazy } = usePostList()
+const services = useServices()
+
+const { filters, posts: posts, loading, canFetchMore, from, to, getPostList, getListLazy } = usePostList()
+
+// const { data: postsAsync } = useAsyncData('posts', () => {
+//   return services.post.getAllPosts({ 
+//     from: from.value, 
+//     to: to.value,
+//     filters: { ...filters }
+//   })
+// })
+
+// const posts = computed(() => postsAsync.value.results || [])
 
 watch(scrollEnd, (nVal, oVal) => {
   if (nVal && !oVal && !loading.value) {

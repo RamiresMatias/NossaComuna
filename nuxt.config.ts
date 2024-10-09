@@ -13,7 +13,7 @@ export default defineNuxtConfig({
       htmlAttrs: {
         lang: 'pt-BR'
       },
-    }
+    },
   },
 
   modules: [
@@ -32,11 +32,13 @@ export default defineNuxtConfig({
   css: ['primeicons/primeicons.css'],
 
   primevue: {
-    options: { unstyled: true },
+    options: { 
+      unstyled: false,
+    },
     importPT: {
       as: 'lara',
       from: path.resolve(__dirname, "./assets/presets/lara")
-    }
+    },
   },
 
   nitro: {
@@ -95,6 +97,11 @@ export default defineNuxtConfig({
       chunkSizeWarningLimit: 1000,
       cssMinify: true,
       minify: true,
+      rollupOptions: {
+        output: {
+          inlineDynamicImports: true
+        }
+      }
     },
     css: {
       preprocessorOptions: {
@@ -107,6 +114,10 @@ export default defineNuxtConfig({
 
   experimental: {
     componentIslands: true,
+  },
+
+  routeRules: {
+    '/posts': { prerender: true, isr: true }
   },
 
   hooks: {

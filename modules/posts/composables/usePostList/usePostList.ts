@@ -7,7 +7,7 @@ export function usePostList() {
   const PAGE_COUNT = 6
   const page = ref<number>(0)
 
-  const loading = ref<boolean>(true)
+  const loading = ref<boolean>(false)
   const posts = ref<PostType[]>([])
   const total = ref<number>(0)
   const filters = reactive<FilterPostListProps>({
@@ -62,6 +62,8 @@ export function usePostList() {
     loading,
     posts,
     filters,
+    from,
+    to,
     canFetchMore,
     getPostList,
     getListLazy,

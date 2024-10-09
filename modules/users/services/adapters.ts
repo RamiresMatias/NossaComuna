@@ -9,7 +9,7 @@ export function getMySelfAdapter(data: Row | null): User | null {
 
   return {
     id: data.id,
-    avatarUrl: data.avatar_url ? (data.avatar_url + '?lastMod=' + new Date()) : '',
+    avatarUrl: data.avatar_url,
     username: data.username || undefined,
     createdAt: new Date(data.created_at),
     bio: data.bio || undefined,
