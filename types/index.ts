@@ -33,7 +33,7 @@ export interface PostType {
 
 export interface CommentType {
   id: string
-  description: string
+  content: string
   profile: Partial<Profile>
   createdAt: Date
   comments?: CommentType[]
@@ -45,13 +45,13 @@ export interface CommentType {
 export interface PostDetail {
   id: string
   code: string
-  description: string
+  content: string
   title: string
   createdAt?: Date
   profile: Partial<Profile>
   coverImageUrl: string
   isDraft?: boolean
-  totalComments?: number
+  comments?: number
   likes: number
   liked: boolean
 }

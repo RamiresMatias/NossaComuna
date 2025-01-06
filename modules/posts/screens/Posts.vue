@@ -34,18 +34,18 @@
       <div v-if="posts.length === 0 && hasFilters" class="text-xl text-center bg-white p-4 rounded-md shadow-sm">
         Ops... Nenhum post encontrado, tente alterar o filtro para trazer outros resultados.
       </div>
-      <!-- <PostSkeleton 
+      <PostSkeleton 
         v-if="loading || loadingMore"
         v-for="item in 6"
         :key="item"
         class="sm:col-span-8 col-span-full"
-      /> -->
+      />
     </div>
     <div v-if="posts.length > 0 || hasFilters" class="sticky top-2 sm:col-span-4 col-span-full order-1 sm:order-2 bg-white flex flex-col gap-2 rounded-md p-3 w-full shadow-sm">
       <h1>Top tags</h1>
-      <!-- <div v-if="loadingTags" class="flex gap-2 items-center flex-wrap">
+      <div v-if="loadingTags" class="flex gap-2 items-center flex-wrap">
         <Skeleton v-for="item in 5" :key="`skeleton-${item}`" width="6rem" height="1.5rem"></Skeleton>
-      </div> -->
+      </div>
       <div class="flex gap-2 items-center flex-wrap">
         <Tag 
           v-for="tag in tags" 

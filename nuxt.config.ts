@@ -51,7 +51,12 @@ export default defineNuxtConfig({
   },
 
   supabase: {
-    redirect: false
+    redirect: false,
+    clientOptions: {
+      auth: {
+        autoRefreshToken: false
+      }
+    }
   },
 
   imports: {
@@ -69,13 +74,14 @@ export default defineNuxtConfig({
     mailerPort: process.env.NUXT_MAILER_PORT,
     mailerSmtpTls: process.env.NUXT_MAILER_SMTP_TLS,
     mailerFromAddress: process.env.NUXT_MAILER_FROM_ADDRESS,
-    mailerToAddress: process.env.NUXT_MAILER_TO_ADDRESS,
+    mailerToAddress: process.env.NUXT_MAILER_TO_ADDRESS,    
 
     public: {
       siteUrl: process.env.SITE_URL,
       nodeEnv: process.env.NODE_ENV,
       supabaseUrl: process.env.SUPABASE_URL,
-      supabaseKey: process.env.SUPABASE_KEY
+      supabaseKey: process.env.SUPABASE_KEY,
+      apiUrl: process.env.API_URL
     }
   },
 
@@ -133,4 +139,8 @@ export default defineNuxtConfig({
       }
     },
   },
+
+  plugins: [
+    '~/plugins/axios/axios'
+  ]
 })

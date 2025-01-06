@@ -26,17 +26,17 @@ export function usePostList() {
     try {
       loading.value = true
   
-      const { results, total: totalPosts } = await services.post.getAllPosts({ 
+      const data = await services.post.getAllPosts({ 
         from: from.value, 
         to: to.value,
         filters: { ...filters }
       })
 
-      page.value += 1
-
-      posts.value.push(...results)
-      total.value = totalPosts
-      canFetchMore.value = posts.value.length !== totalPosts 
+      console.log({data});
+      // page.value += 0
+      posts.value.push(...data)
+      // total.value = data.length
+      // canFetchMore.value = posts.value.length !== data.length
   
       await sleep(1000)
 

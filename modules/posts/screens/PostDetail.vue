@@ -1,7 +1,7 @@
 <template>
   <PostDetailLoading v-if="isBusy || !currentPost?.id" />
   <div v-else class="grid grid-cols-12 w-full max-w-[1380px] px-4 lg:px-0 gap-y-6">
-    <div v-if="!isBusy" class="col-span-0.5 hidden lg:flex flex-col items-center m-0 p-0 gap-4">
+    <section v-if="!isBusy" class="col-span-0.5 hidden lg:flex flex-col items-center m-0 p-0 gap-4">
       <Button
         v-if="isAuthorPost" 
         icon="pi pi-pencil" 
@@ -24,8 +24,8 @@
         class="text-xl text-primary-300"
         @click="post.liked ? deslikePost() : likePost()"
       />
-    </div>
-    <article class="w-full h-full mx-auto bg-white rounded-md flex flex-col col-span-full lg:col-span-8 shadow-sm">
+    </section>
+    <section class="w-full h-full mx-auto bg-white rounded-md flex flex-col col-span-full lg:col-span-8 shadow-sm">
       <NuxtImg 
         v-if="post.coverImageUrl"
         :src="post.coverImageUrl + '?c=' + new Date()"
@@ -46,7 +46,7 @@
             </p>
           </div>
         </div>
-        <div class="w-full flex gap-4 mb-10 mt-4">
+        <div class="w-full flex gap-4 mt-4">
           <Stat :count="post.likes" class="text-lg text-primary-400">
             <template #preffix>
               <i class="pi pi-heart-fill text-lg"></i>
@@ -60,7 +60,7 @@
         </div>
         <div class="mb-4 flex items-center gap-2 flex-wrap">
           <Tag 
-            v-for="tag in postTags" 
+            v-for="tag in []" 
             :key="tag.id" 
             class="flex gap-2 items-center bg-neutral-100" 
             severity="secondary"
@@ -71,7 +71,7 @@
         <h1 class="text-5xl font-bold text-pretty tracking-wide mb-6">
           {{ post.title }}
         </h1>
-        <TiptapEditor ref="tiptapRef" v-model="post.description" readonly></TiptapEditor>
+        <TiptapEditor ref="tiptapRef" v-model="post.content" readonly></TiptapEditor>
       </section>
       <div class="w-full h-[2px] bg-gray-200 mt-6"></div>
       <section class="w-full h-full flex flex-col max-w-[880px] px-4 mx-auto py-6 gap-10">
@@ -88,11 +88,11 @@
           v-if="!loadingComments"
           v-for="comment in comments" 
           :key="comment.id"
-          :description="comment.description"
+          :content="comment.content"
           :profile="comment.profile"
           :created-at="comment.createdAt"
           :id="comment.id"
-          :is-author="comment.profile.id === user.id"
+          :is-author="comment.profile.id === user?.id"
           :comments="comment.comments"
           :liked="comment.liked"
           :likes="comment.likes"
@@ -101,18 +101,18 @@
           @on-like="(commentId) => likeComment({comments, commentId})"
         ></Comment>
       </section>
-    </article>
+    </section>
     <section class="col-span-full lg:col-span-3 lg:ml-4">
-      <AuthorProfileLoading v-if="isBusy || loadingProfile" />
+      <!-- <AuthorProfileLoading v-if="isBusy && !post.profile.id" />
       <AuthorProfile
         v-else 
-        :id="author.id"
-        :username="author.username"
-        :avatar-url="author.avatarUrl"
-        :bio="author.bio"
-        :created-at="author.createdAt"
-        :email="author.email"
-      />
+        :id="post.profile.id"
+        :username="post.profile.username"
+        :avatar-url="post.profile.avatarUrl"
+        :bio="post.profile.bio"
+        :created-at="post.profile.createdAt"
+        :email="post.profile.username"
+      /> -->
     </section>
   </div>
 </template>
@@ -141,9 +141,7 @@ const services = useServices()
 const { data, status } = await useLazyAsyncData('post-details', () => {
   const { username, code } = route.params as {username: string, code: string}
 
-  return user.value?.id 
-    ? services.post.getRpcPostByCode({username, code, userId: user.value.id})
-    : services.post.getPostByCode({username, code})
+  return services.post.getPostByCode({username, code})
 })
 
 const post = computed(() => data.value)
@@ -157,17 +155,17 @@ const {
   onReply
 } = useComment(post)
 
-const { author, loading: loadingProfile } = useAuthor(post)
+// const { author, loading: loadingProfile } = useAuthor(post)
 
 const { likePost, deslikePost, likeComment } = useLike(post)
 
-const { getTagsFromPost, postTags } = usePostTag()
+// const { getTagsFromPost, postTags } = usePostTag()
 
-watch(data, (newPost, oldPost) => {
-  if (newPost?.id && !oldPost) getTagsFromPost(newPost.id)
-}, {
-  immediate: true
-})
+// watch(data, (newPost, oldPost) => {
+//   if (newPost?.id && !oldPost) getTagsFromPost(newPost.id)
+// }, {
+//   immediate: true
+// })
 
 const isAuthorPost = computed(() => post.value?.profile?.id === user.value?.id)
 const isBusy = computed(() => status.value === 'pending')

@@ -24,7 +24,7 @@
             </span>
           </div>
           <p class="text-sm md:text-base text-pretty text-left w-full  font-normal">
-            {{ props.description }}
+            {{ props.content }}
           </p>
         </section>
         <div class="flex items-center gap-2 justify-start py-2 flex-wrap">
@@ -67,11 +67,11 @@
       <Comment
         v-for="reply in comments" 
         :key="reply.id"
-        :description="reply.description"
+        :content="reply.content"
         :profile="reply.profile"
         :created-at="reply.createdAt"
         :id="reply.id"
-        :is-author="reply.profile.id === user.id"
+        :is-author="reply.profile.id === user?.id"
         :comments="reply.comments"
         class="mt-4"
         :level="1"
@@ -103,7 +103,7 @@ const props = withDefaults(
   defineProps<CommentProps>(),
   {
     id: '',
-    description: `Seeing those example file structures is extremely helpful! In a way, I already used the Atomic Design approach without the molecules level. Depending on the project size, I guess it's fine to skip one level.`,
+    content: `Seeing those example file structures is extremely helpful! In a way, I already used the Atomic Design approach without the molecules level. Depending on the project size, I guess it's fine to skip one level.`,
     profile: () => Object.create({username: 'Klebin', avatarUrl: 'https://i.ibb.co/VwpJcdH/1ca5d6cede414702a3fd2eeb12bb68b8.jpg'}),
     createdAt: () => new Date(),
     isAuthor: false,

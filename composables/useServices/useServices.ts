@@ -8,14 +8,12 @@ import type { Database } from '@/libs/supabase/schema'
 export function useServices() {
 
   const supabaseClient = useSupabaseClient<Database>()
-  const config = useRuntimeConfig()
+  const { $httpClient } = useNuxtApp()
 
   return {
-    auth: AuthService(supabaseClient, {
-      redirectUrl: `${config.public.siteUrl}/auth/github`,
-    }),
+    auth: AuthService($httpClient),
     users: UserServices(supabaseClient),
-    post: PostServices(supabaseClient),
-    tag: TagServices(supabaseClient)
+    post: PostServices($httpClient),
+    tag: TagServices($httpClient)
   }
 }

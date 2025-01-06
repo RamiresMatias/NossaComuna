@@ -17,13 +17,6 @@
     <div class="flex flex-col items-center justify-center gap-4 pb-4">
       <p>Entre com sua conta</p>
       <div class="flex gap-4 w-full items-center justify-center">
-        <!-- <Button 
-          label="Entrar com G-mail" 
-          severity="danger"
-          outlined
-          icon="pi pi-google"
-          icon-pos="left"
-        /> -->
         <Button 
           label="Entrar com Github" 
           severity="contrast"

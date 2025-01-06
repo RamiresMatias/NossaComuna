@@ -9,10 +9,21 @@ Aplicação criada para práticas e estudos de Nuxt 3. Onde é possível o usuá
 - Curtir e responder comentários
 - Verificar os perfis de outros usuários
 
-### Observações
 
-O app ainda está em desenvolvimento 👨🏼‍🏭
+### Tecnologias utilizadas
+
+ - Nuxt 3
+ - Tailwind CSS
+ - Typescript
+ - Tiptap editor
+ - Axios
+ - Primevue
+ - Prettier
 
 ### Link
 
 [NossaComuna](https://nossacomuna.netlify.app/)
+
+### Observações
+
+O app ainda está em desenvolvimento 👨🏼‍🏭

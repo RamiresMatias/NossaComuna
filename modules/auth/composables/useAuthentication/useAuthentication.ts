@@ -6,11 +6,15 @@ const schema = z.object({
 })
 
 
+
 export function useAuthentication() {
 
   const toast = useToast()
   const services = useServices()
   const loading = ref<boolean>(false)
+  const token = useCookie('auth-token', {
+    default: () => '',
+  })
 
   const errors = ref<ZodFormattedError<{
     email: string
@@ -38,9 +42,15 @@ export function useAuthentication() {
   const authWithEmail = async () => {
     try {
       loading.value = true
-      const response = await services.auth.signInWithEmail(form.email, form.password)
-      
-      if (response?.name === 'AuthApiError') {
+
+      await services.auth.signIn(form.email, form.password)
+    
+      loading.value = false
+
+      navigateTo('/posts')
+    } catch (error) {
+      loading.value = false
+      if (error.status === 401) {
         toast.add({
           severity: 'error',
           summary: 'Login inválido',
@@ -48,17 +58,13 @@ export function useAuthentication() {
           life: 4000
         })
       }
-    
-      loading.value = false
-    } catch (error) {
-      console.log({error});
     }
   }
 
   const authGithub = async () => {
     try {
       loading.value = true
-      await services.auth.signinWithGithub()
+      // await services.auth.signinWithGithub()
 
       loading.value = false
     } catch (error) {
@@ -72,6 +78,7 @@ export function useAuthentication() {
     errors,
     authWithEmail,
     validateForm,
-    authGithub
+    authGithub,
+    token
   }
 }
