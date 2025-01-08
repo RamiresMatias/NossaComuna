@@ -46,7 +46,7 @@
             </p>
           </div>
         </div>
-        <div class="w-full flex gap-4 mt-4">
+        <div class="w-full flex gap-4 my-4">
           <Stat :count="post.likes" class="text-lg text-primary-400">
             <template #preffix>
               <i class="pi pi-heart-fill text-lg"></i>
@@ -60,7 +60,7 @@
         </div>
         <div class="mb-4 flex items-center gap-2 flex-wrap">
           <Tag 
-            v-for="tag in []" 
+            v-for="tag in post.tags" 
             :key="tag.id" 
             class="flex gap-2 items-center bg-neutral-100" 
             severity="secondary"
@@ -103,7 +103,7 @@
       </section>
     </section>
     <section class="col-span-full lg:col-span-3 lg:ml-4">
-      <!-- <AuthorProfileLoading v-if="isBusy && !post.profile.id" />
+      <AuthorProfileLoading v-if="isBusy && !post.profile.id" />
       <AuthorProfile
         v-else 
         :id="post.profile.id"
@@ -111,8 +111,8 @@
         :avatar-url="post.profile.avatarUrl"
         :bio="post.profile.bio"
         :created-at="post.profile.createdAt"
-        :email="post.profile.username"
-      /> -->
+        :email="post.profile?.user?.email"
+      />
     </section>
   </div>
 </template>

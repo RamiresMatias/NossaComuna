@@ -16,10 +16,6 @@ export function usePostList() {
   })
   const canFetchMore = ref<boolean>(true)
 
-  const from = computed(() => page.value * PAGE_COUNT)
-  const to = computed(() => from.value + PAGE_COUNT - 1)
-
-
   const getPostList = async () => {
     if (!canFetchMore.value) return
 
@@ -27,16 +23,15 @@ export function usePostList() {
       loading.value = true
   
       const data = await services.post.getAllPosts({ 
-        from: from.value, 
-        to: to.value,
+        size: 10, 
+        to: page.value,
         filters: { ...filters }
       })
 
-      console.log({data});
-      // page.value += 0
+      page.value += 10
       posts.value.push(...data)
       // total.value = data.length
-      // canFetchMore.value = posts.value.length !== data.length
+      canFetchMore.value = posts.value.length !== data.length
   
       await sleep(1000)
 
@@ -62,8 +57,6 @@ export function usePostList() {
     loading,
     posts,
     filters,
-    from,
-    to,
     canFetchMore,
     getPostList,
     getListLazy,

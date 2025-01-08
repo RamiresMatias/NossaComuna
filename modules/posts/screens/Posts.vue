@@ -18,6 +18,7 @@
     </div>
     <div class="sm:col-span-8 order-2 sm:order-1 col-span-full flex flex-col gap-4 w-full">
       <Post
+        v-if="!loading"
         v-for="(item, i) in posts" 
         :key="i"
         :id="item.id"
@@ -31,12 +32,12 @@
         :likes="item.likes"
         :tags="item.tags"
       />
-      <div v-if="posts.length === 0 && hasFilters" class="text-xl text-center bg-white p-4 rounded-md shadow-sm">
+      <div v-if="posts.length === 0 && hasFilters && !loadingMore && !loading" class="text-xl text-center bg-white p-4 rounded-md shadow-sm">
         Ops... Nenhum post encontrado, tente alterar o filtro para trazer outros resultados.
       </div>
       <PostSkeleton 
         v-if="loading || loadingMore"
-        v-for="item in 6"
+        v-for="item in 1"
         :key="item"
         class="sm:col-span-8 col-span-full"
       />
@@ -92,7 +93,7 @@ const { list: tags, loading: loadingTags } = useTag()
 
 const services = useServices()
 
-const { filters, posts: posts, loading, canFetchMore, from, to, getPostList, getListLazy } = usePostList()
+const { filters, posts: posts, loading, canFetchMore, getPostList, getListLazy } = usePostList()
 
 // const { data: postsAsync } = useAsyncData('posts', () => {
 //   return services.post.getAllPosts({ 

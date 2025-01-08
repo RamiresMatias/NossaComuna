@@ -58,3 +58,19 @@ export const debounce_v2 = (callback: Function, timeout: number = 1000) => {
     callback()
   }, timeout);
 }
+
+export const serializeParams = (params: any) => {
+  let str = ''
+
+  for (const prop in params) {
+    if (typeof params[prop] !== 'object') str += `${prop}=${params[prop]}&`
+    
+    if (typeof params[prop] === 'object' && params[prop].length) {
+      params[prop].forEach(el => {
+        str += `${prop}=${el}&`
+      });
+    }
+  }
+
+  return str
+}

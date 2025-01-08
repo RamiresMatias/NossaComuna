@@ -16,20 +16,29 @@ interface ReplyCommentProps {
 }
 
 interface GetAllPosts {
-  from: number,
   to: number,
+  size: number,
   filters: FilterPostListProps
 }
 
 export default (http: AxiosInstance) => ({
 
-  async getAllPosts ({to, from, filters}: GetAllPosts) {
-    const { data } = await http.get('/post')
+  async getAllPosts (params: GetAllPosts) {
+
+    const { data } = await http.get('/post', {
+      params: {
+        to: params.to,
+        size: params.size,
+        tags: params.filters.tags,
+        search: params.filters.search,
+      },
+      paramsSerializer: () => serializeParams({...params.filters, to: params.to, size: params.size})
+    })
     return data.map(el => ({
       ...el,
-      likes: el.likes.length,
-      comments: el.comments.length,
-      tags: []
+      likes: el._count.likes,
+      comments: el._count.comments,
+      tags: el.tags.map(el => ({...el.Tag}))
     }))
   },
 
@@ -38,7 +47,11 @@ export default (http: AxiosInstance) => ({
     return {
       ...data,
       likes: data._count.likes,
-      coverImageUrl: data.coverImage
+      coverImageUrl: data.coverImage,
+      tags: data.tags.map((el) => ({
+        description: el.Tag.description,
+        id: el.tagId
+      }))
     }
   },
 
