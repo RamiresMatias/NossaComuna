@@ -1,6 +1,7 @@
 import type { SupabaseClient } from "@supabase/supabase-js"
 import type { Database } from '@/libs/supabase/schema'
 import type { AxiosInstance } from "axios"
+import type { AuthResponse } from "@/types"
 interface ServiceOptions {
   redirectUrl: string
 }
@@ -13,7 +14,7 @@ interface NewUserProps {
 }
 
 export default (client: AxiosInstance) => ({
-  async signIn(email: string, password: string): Promise<{accessToken: string}> {
+  async signIn(email: string, password: string): Promise<AuthResponse> {
     const { data } = await client.post('/signin', {email, password})
     return data
   },

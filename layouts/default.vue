@@ -3,7 +3,7 @@
     <MainContent>
       <template #header>
         <HeaderAuthenticated
-          v-if="session.isLogged() && !loading && user.id"
+          v-if="!loading && user.id"
           :nickname="user?.username || 'Usuário'"
           :profile-pic="user?.avatarUrl"
           :loading="loading"
@@ -11,7 +11,7 @@
           @navigate-to-edit-profile="handleNavigateEditProfile"
           @navigate-to-post-create="handleNavigateToCreatePost"
         /> 
-        <Header v-if="!session.isLogged() && !loading" @authenticate="handleAuth" @navigate-to-post-create="handlePostCreate" />
+        <Header v-if="!loading && !user?.id" @authenticate="handleAuth" @navigate-to-post-create="handlePostCreate" />
       </template>
       <template #content>
         <main class="h-full">
@@ -24,12 +24,10 @@
 
 <script lang="ts" setup>
 import HeaderAuthenticated from '@/modules/auth/components/HeaderAuthenticated.vue'
-import {useSession} from '@/modules/auth/composables/useSession/useSession'
 import { useMyself } from '@/modules/users/composables/useMyself/useMyself'
 
-const { user, loading } = useMyself()
+const { user, loading, logout } = useMyself()
 
-const session = useSession()
 const router = useRouter()
 
 const handleAuth = () => {
@@ -39,7 +37,7 @@ const handleAuth = () => {
 const handlePostCreate = () => router.push('/posts/create')
 
 const handleLogout = async () => {
-  await session.logout()
+  logout()
   navigateTo('/auth')
 }
 

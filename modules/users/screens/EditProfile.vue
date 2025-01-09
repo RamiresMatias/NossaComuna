@@ -50,11 +50,11 @@ import type { FileUploadUploadEvent } from 'primevue/fileupload'
 
 import { useUser } from '@/modules/users/composables/useUser/useUser'
 import { useUserUpdate } from '@/modules/users/composables/useUserUpdate/useUserUpdate'
-import { useSession } from '@/modules/auth/composables/useSession/useSession'
+import { useMyself } from '@/modules/users/composables/useMyself/useMyself'
 
-const session = useSession()
+const { user: userLogged } = useMyself()
 
-const { user, loading } = useUser(session.user.value.id)
+const { user, loading } = useUser(userLogged.value.id)
 const { form, update, errors, validateForm, loading: loadingUpdate } = useUserUpdate({user})
 
 const linkNewFile = ref()

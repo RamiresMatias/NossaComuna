@@ -1,6 +1,6 @@
 import type { User } from "@/types/index"
-import {useSession} from '@/modules/auth/composables/useSession/useSession'
 import type { InjectionKey } from "vue"
+import { useLocalStorage } from "@/composables/useLocalStorage/useLocalStorage"
 
 export interface MyselfContextProvider {
   user: Ref<User | undefined>
@@ -10,34 +10,36 @@ export interface MyselfContextProvider {
 export const myselfKey = Symbol('myself')as InjectionKey<MyselfContextProvider> 
 
 export function useMyself() {
-  const services = useServices()
-  const session = useSession()
-  const loading = ref<boolean>(true)
-  const user = ref<User>()
+  const lcStorage = useLocalStorage()
+  const token = useCookie('auth-token', {
+    default: () => '',
+    readonly: false,
+    secure: true
+  })
+
+  const loading = ref<boolean>(false)
+  const user = ref<User>({...lcStorage.getItem('user-data')})
 
   provide<MyselfContextProvider>(myselfKey, { user, loading })
 
-  const fetchUser = async () => {
-    loading.value = true
-    try {
-      
-      const response = await services.users.getMySelf(session.user.value?.id!)
-      if(!response) return
-      user.value = response
-    } catch (error) {
-      console.log(error);
-    } finally {
-      loading.value = false
-    }
+  const setUser = async (value: User) => {
+    user.value = value
+    lcStorage.setItem('user-data', value)
+  }
+
+  const logout = () => {
+    lcStorage.removeItem('user-data')
+    token.value = ''
   }
 
   onMounted(() => {
-    fetchUser()
+    // fetchUser()
   })
 
   return {
     loading,
     user,
-    fetchUser
+    setUser,
+    logout
   }
 }

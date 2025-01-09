@@ -1,10 +1,10 @@
 import {z, type ZodFormattedError} from 'zod'
+import { useMyself } from '@/modules/users/composables/useMyself/useMyself'
 
 const schema = z.object({
   email: z.string().min(1, 'Informe um e-mail').email('Insira um e-mail válido'),
   password: z.string().min(1, 'Informe uma senha'),
 })
-
 
 
 export function useAuthentication() {
@@ -15,6 +15,7 @@ export function useAuthentication() {
   const token = useCookie('auth-token', {
     default: () => '',
   })
+  const useMySelf = useMyself()
 
   const errors = ref<ZodFormattedError<{
     email: string
@@ -43,7 +44,9 @@ export function useAuthentication() {
     try {
       loading.value = true
 
-      await services.auth.signIn(form.email, form.password)
+      const { user } = await services.auth.signIn(form.email, form.password)
+
+      useMySelf.setUser({...user, ...user.profile})
     
       loading.value = false
 

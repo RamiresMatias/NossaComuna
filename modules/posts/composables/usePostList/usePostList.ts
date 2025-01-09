@@ -30,7 +30,6 @@ export function usePostList() {
 
       page.value += 10
       posts.value.push(...data)
-      // total.value = data.length
       canFetchMore.value = posts.value.length !== data.length
   
       await sleep(1000)

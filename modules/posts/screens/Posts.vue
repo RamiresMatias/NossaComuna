@@ -28,7 +28,7 @@
         :is-draft="item.isDraft"
         :title="item.title"
         :profile="item.profile"
-        :total-comments="item.totalComments"
+        :comments="item.comments"
         :likes="item.likes"
         :tags="item.tags"
       />
@@ -91,9 +91,7 @@ const loadingMore = ref<boolean>(false)
 const { scrollEnd } = useScrollBody(containerContentRef)
 const { list: tags, loading: loadingTags } = useTag()
 
-const services = useServices()
-
-const { filters, posts: posts, loading, canFetchMore, getPostList, getListLazy } = usePostList()
+const { filters, posts, loading, canFetchMore, getPostList, getListLazy } = usePostList()
 
 // const { data: postsAsync } = useAsyncData('posts', () => {
 //   return services.post.getAllPosts({ 

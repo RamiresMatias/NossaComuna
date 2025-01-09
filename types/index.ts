@@ -8,7 +8,7 @@ export interface Tag {
 
 export interface Profile {
   id: string
-  email: string
+  email?: string
   createdAt: Date
   username?: string
   bio?: string
@@ -26,9 +26,9 @@ export interface PostType {
   profile: Partial<Profile>
   coverImage: string
   isDraft?: boolean
-  likes?: number
-  totalComments?: number,
-  tags?: Tag[]
+  likes: number
+  comments: number,
+  tags: Tag[]
 }
 
 export interface CommentType {
@@ -74,13 +74,14 @@ export interface FormEditUser {
 
 export interface CreatePostType {
   id?: string
-  description: string
+  content: string
   title: string
   coverImage?: File
   isDraft?: boolean
   profileId?: string
   coverImageUrl?: string
-  tags?: Tag[]
+  tags: Tag[],
+  code: string
 }
 
 export interface CreateUserType {
@@ -137,4 +138,13 @@ export interface BindTagProps {
 export interface FilterPostListProps {
   tags?: string[]
   search?: string
+}
+
+export interface AuthResponse {
+  accessToken: string
+  user: {
+    email: string
+    id: string
+    profile: Profile
+  }
 }

@@ -1,5 +1,4 @@
 import type { Profile, User } from "@/types/index"
-import {useSession} from '@/modules/auth/composables/useSession/useSession'
 
 export function useProfileDetails(username: string) {
 

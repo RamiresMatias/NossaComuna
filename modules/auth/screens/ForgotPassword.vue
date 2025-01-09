@@ -31,7 +31,7 @@ const {
 const router = useRouter()
 
 const back = () => {
-  router.push('/posts')
+  router.push('/auth')
 }
 
 

@@ -10,6 +10,9 @@
       <InputText id="password" type="password" placeholder="" v-model="modelValue.password"></InputText>
       <small v-if="errors?.password" class="error">{{ errors?.password._errors[0] }}</small>
     </div>
+    <div class="w-full">
+      <NuxtLink disabled to="/forgot-password" :prefetch="false" class="hover:text-blue-400">Esqueceu a senha?</NuxtLink>
+    </div>
   </form>
 </template>
 

@@ -2,7 +2,7 @@ import type { CreatePostType } from "@/types/index"
 import { v4 } from "uuid"
 import {z, type ZodFormattedError} from 'zod'
 
-import { myselfKey, type MyselfContextProvider } from '@/modules/users/composables/useMyself/useMyself'
+import { useMyself } from '@/modules/users/composables/useMyself/useMyself'
 
 import { usePostTag } from '@/modules/tag/composables/usePostTag/usePostTag'
 
@@ -15,8 +15,7 @@ const schema = z.object({
 
 export function usePostCreate() {
 
-  const { user } = inject(myselfKey) as MyselfContextProvider
-
+  const { user } = useMyself()
   const services = useServices()
   const toast = useToast()
   const loading = ref<boolean>(false)
@@ -25,8 +24,9 @@ export function usePostCreate() {
     coverImage: null,
     title: '',
     isDraft: false,
-    description: '',
-    tags: []
+    content: '',
+    tags: [],
+    code: ''
   })
 
   const { bindTagsInPost } = usePostTag()
@@ -43,21 +43,20 @@ export function usePostCreate() {
   const create = async () => {
     try {
       loading.value = false
-
-      const id = v4()
   
-      const { error } = await services.post.createPost({
-        id,
+      const response = await services.post.createPost({
         title: form.title,
-        description: form.description,
+        content: form.content,
         coverImage: form.coverImage,
         isDraft: form.isDraft,
-        profileId: user.value.id
+        profileId: user.value.id,
+        tags: form.tags,
+        code: removeAccents(transformCode(form.title))
       })
 
-      if (!error) {
-        await bindTagsInPost({ postId: id, tags: form.tags })
-      }
+      // if (!error) {
+      //   await bindTagsInPost({ postId: id, tags: form.tags })
+      // }
 
       toast.add({
         severity: 'success',

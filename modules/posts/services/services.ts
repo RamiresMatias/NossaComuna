@@ -2,7 +2,6 @@ import type { SupabaseClient } from "@supabase/supabase-js"
 import type { Database } from '@/libs/supabase/schema'
 import type { CreatePostType, FilterPostListProps, ReadAllRow, ReadOneRow } from "@/types"
 
-import {useSession} from '@/modules/auth/composables/useSession/useSession'
 import { getPostByIdAndAuthorAdapter, readAllAdapter, readAllCommentsAdapter, readOneAdapter, readOneAdapterRpc } from "./adapter"
 
 import {v4} from 'uuid'
@@ -61,31 +60,33 @@ export default (http: AxiosInstance) => ({
       ...el,
       likes: el._count.like
     }))
-  }
+  },
 
-  // async createPost (post: CreatePostType) {
+  async createPost (post: CreatePostType) {
 
-  //   if (!post.profileId) throw new Error("É necessário estar logado para criar um post")
+    if (!post.profileId) throw new Error("É necessário estar logado para criar um post")
 
-  //   let coverImageUrl = ''
+    // let coverImageUrl = ''
 
-  //   if (post.coverImage) {
-  //     coverImageUrl = await this.uploadCoverImage({id: post.id, file: post.coverImage, userId: post.profileId})
-  //   }
+    // if (post.coverImage) {
+    //   coverImageUrl = await this.uploadCoverImage({id: post.id, file: post.coverImage, userId: post.profileId})
+    // }
+
+    return await http.post('/post', post)
     
-  //   return client
-  //     .from('post')
-  //     .insert({
-  //       id: post.id,
-  //       title: post.title,
-  //       description: post.description,
-  //       is_draft: post.isDraft,
-  //       created_at: new Date(),
-  //       cover_image_url: coverImageUrl,
-  //       code: removeAccents(transformCode(post.title)),
-  //       profile_id: post.profileId,
-  //     })
-  // },
+    // return client
+    //   .from('post')
+    //   .insert({
+    //     id: post.id,
+    //     title: post.title,
+    //     description: post.description,
+    //     is_draft: post.isDraft,
+    //     created_at: new Date(),
+    //     cover_image_url: coverImageUrl,
+    //     code: removeAccents(transformCode(post.title)),
+    //     profile_id: post.profileId,
+    //   })
+  },
   // async editPost (post: CreatePostType) {
   //   let coverImageUrl = ''
 

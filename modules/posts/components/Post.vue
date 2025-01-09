@@ -18,7 +18,7 @@
         <i v-else class="pi pi-user rounded-full w-10 h-10"></i>
         <div class="w-full h-full flex flex-col flex-1">
           <p class=" text-base text-neutral-800 text-balance ">
-            {{ profile?.username || profile?.name }}
+            {{ profile?.username }}
           </p>
           <p class="text-xs text-gray-600">
             {{ new Date(createdAt).toLocaleDateString('pt-br') }}
@@ -48,12 +48,12 @@
               {{ likes === 1 ? 'Curtida' : 'Curtidas' }}
             </template>
           </Stat>
-          <Stat class="text-primary-600" :count="totalComments">
+          <Stat class="text-primary-600" :count="comments">
             <template #preffix>
               <i class="pi pi-comments"></i>
             </template>
             <template #suffix>
-              {{ totalComments === 1 ? 'Comentário' : 'Comentários' }}
+              {{ comments === 1 ? 'Comentário' : 'Comentários' }}
             </template>
           </Stat>
         </div>
@@ -75,7 +75,7 @@ const props = withDefaults(
     id: '',
     coverImage: '',
     likes: 0,
-    totalComments: 0,
+    comments: 0,
     profile: () => Object.create({username: 'Klebin', avatarUrl: 'https://i.ibb.co/VwpJcdH/1ca5d6cede414702a3fd2eeb12bb68b8.jpg'}),
     createdAt: () => new Date(),
     tags: () => [],
