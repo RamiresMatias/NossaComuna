@@ -56,11 +56,11 @@
       <Button severity="secondary" text class="text-xl text-neutral-900" icon="pi pi-list" @click="setList" />
       <Button severity="secondary" text class="text-xl text-neutral-900" icon="pi pi-code" @click="setCode" />
     </div>
-    <TiptapEditor v-if="!props.loading" ref="tiptapRef" v-model="form.description" :readonly="false"></TiptapEditor>
+    <TiptapEditor v-if="!props.loading" ref="tiptapRef" v-model="form.content" :readonly="false"></TiptapEditor>
     <div v-else class="flex items-center justify-center p-10 gap-2">
       Carregando conteúdo <i class="pi pi-spin pi-spinner text-2xl"></i>
     </div>
-    <small v-if="props.errors?.description" class="error ml-8">{{ props.errors?.description._errors[0] }}</small>
+    <small v-if="props.errors?.content" class="error ml-8">{{ props.errors?.content._errors[0] }}</small>
   </form>
 </template>
 

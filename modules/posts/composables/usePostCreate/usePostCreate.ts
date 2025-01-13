@@ -1,16 +1,14 @@
-import type { CreatePostType } from "@/types/index"
+import type { CreatePostType, Tag } from "@/types/index"
 import { v4 } from "uuid"
 import {z, type ZodFormattedError} from 'zod'
 
 import { useMyself } from '@/modules/users/composables/useMyself/useMyself'
 
-import { usePostTag } from '@/modules/tag/composables/usePostTag/usePostTag'
-
 
 const schema = z.object({
   title: z.string().min(2, 'Título é obrigatório'),
-  description: z.string().min(10, 'A descrição é obrigatória'),
-  tags: z.object({}).array().nonempty('É necessário inserir ao menos uma tag')
+  content: z.string().min(10, 'A descrição é obrigatória'),
+  tags: z.string().array().nonempty('É necessário inserir ao menos uma tag')
 })
 
 export function usePostCreate() {
@@ -28,8 +26,6 @@ export function usePostCreate() {
     tags: [],
     code: ''
   })
-
-  const { bindTagsInPost } = usePostTag()
 
   const validateForm = () => {
     const result = schema.safeParse({...form})

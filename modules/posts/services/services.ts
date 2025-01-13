@@ -1,6 +1,6 @@
 import type { SupabaseClient } from "@supabase/supabase-js"
 import type { Database } from '@/libs/supabase/schema'
-import type { CreatePostType, FilterPostListProps, ReadAllRow, ReadOneRow } from "@/types"
+import type { CreatePostType, EditPostType, FilterPostListProps, ReadAllRow, ReadOneRow } from "@/types"
 
 import { getPostByIdAndAuthorAdapter, readAllAdapter, readAllCommentsAdapter, readOneAdapter, readOneAdapterRpc } from "./adapter"
 
@@ -73,41 +73,20 @@ export default (http: AxiosInstance) => ({
     // }
 
     return await http.post('/post', post)
-    
-    // return client
-    //   .from('post')
-    //   .insert({
-    //     id: post.id,
-    //     title: post.title,
-    //     description: post.description,
-    //     is_draft: post.isDraft,
-    //     created_at: new Date(),
-    //     cover_image_url: coverImageUrl,
-    //     code: removeAccents(transformCode(post.title)),
-    //     profile_id: post.profileId,
-    //   })
+
   },
-  // async editPost (post: CreatePostType) {
-  //   let coverImageUrl = ''
+  async editPost (post: EditPostType) {
+    let coverImageUrl = ''
 
-  //   if (post.coverImage && post.coverImageUrl) {
-  //     coverImageUrl = await this.updateCoverImage({id: post.id, file: post.coverImage, userId: post.profileId})
-  //   }
-  //   if (post.coverImage && !post.coverImageUrl) {
-  //     coverImageUrl = await this.uploadCoverImage({id: post.id, file: post.coverImage, userId: post.profileId})
-  //   }
+    // if (post.coverImage && post.coverImageUrl) {
+    //   coverImageUrl = await this.updateCoverImage({id: post.id, file: post.coverImage, userId: post.profileId})
+    // }
+    // if (post.coverImage && !post.coverImageUrl) {
+    //   coverImageUrl = await this.uploadCoverImage({id: post.id, file: post.coverImage, userId: post.profileId})
+    // }
 
-  //   return client
-  //     .from('post')
-  //     .update({
-  //       title: post.title,
-  //       description: JSON.stringify(post.description),
-  //       cover_image_url: (coverImageUrl || post.coverImageUrl),
-  //       profile_id: post.profileId,
-  //       code: removeAccents(transformCode(post.title))
-  //     })
-  //     .match({id: post.id})
-  // },
+    return await http.put(`/post/${post.id}`, post)
+  },
   // async getAllPosts ({to, from, filters}: GetAllPosts) {
 
   //   let queryTotal = client
@@ -217,18 +196,10 @@ export default (http: AxiosInstance) => ({
   // async deleteComment (id: string) {
   //   return client.from('comment').delete().match({id})
   // },
-  // async getPostByIdAndAuthor ({id, userId}: {id: string; userId: string}) {
-  //   const {data} = await client
-  //     .from('post')
-  //     .select('*')
-  //     .eq('id', id)
-  //     .eq('profile_id', userId)
-  //     .limit(1)
-  //     .returns<{}>()
-  //     .single()
-
-  //   return getPostByIdAndAuthorAdapter(data)
-  // },
+  async getPostByIdAndAuthor (postId: string) {
+    const { data } =  await http.get(`/post/${postId}`)
+    return data
+  },
   // async getPostsByUsername ({username}: {username: string}) {
   //   const {data} = await client
   //     .from('post')

@@ -11,7 +11,10 @@ export function useUser(id: string) {
       
       const response = await services.users.getMySelf(id)
       if(!response) return
-      user.value = response
+      user.value = {
+        ...response,
+        email: response.user.email
+      }
     } catch (error) {
       console.log(error);
     } finally {

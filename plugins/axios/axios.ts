@@ -1,5 +1,7 @@
 import axios from "axios";
 import { useAuthentication } from "@/modules/auth/composables/useAuthentication/useAuthentication";
+import { useMyself } from '@/modules/users/composables/useMyself/useMyself'
+
 
 // const config = useRuntimeConfig()
 // const { token } = useAuthentication()
@@ -19,6 +21,7 @@ import { useAuthentication } from "@/modules/auth/composables/useAuthentication/
 export default defineNuxtPlugin(nuxtApp => {
 
   const { token } = useAuthentication()
+  const { logout } = useMyself()
 
 
   const httpClient = axios.create({
@@ -40,6 +43,9 @@ export default defineNuxtPlugin(nuxtApp => {
     }
     return response
   }, (error) => {
+
+    if (error.status === 401) logout()
+    
     return Promise.reject(error)
   })
   

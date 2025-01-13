@@ -80,7 +80,7 @@ export interface CreatePostType {
   isDraft?: boolean
   profileId?: string
   coverImageUrl?: string
-  tags: Tag[],
+  tags: string[]
   code: string
 }
 
@@ -95,7 +95,7 @@ export interface CreateUserType {
 export interface EditPostType extends Omit<PostDetail, "profile" | "likes" | "liked"> {
   profileId?: string
   coverImage?: File
-  tags?: Tag[]
+  tags: string[]
 }
 
 export type ProfileTableRow = Database['public']['Tables']['profiles'] 

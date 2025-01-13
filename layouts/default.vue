@@ -38,7 +38,6 @@ const handlePostCreate = () => router.push('/posts/create')
 
 const handleLogout = async () => {
   logout()
-  navigateTo('/auth')
 }
 
 const handleNavigateEditProfile = () => {

@@ -12,7 +12,7 @@ export function useServices() {
 
   return {
     auth: AuthService($httpClient),
-    users: UserServices(supabaseClient),
+    users: UserServices($httpClient),
     post: PostServices($httpClient),
     tag: TagServices($httpClient)
   }

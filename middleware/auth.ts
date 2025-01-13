@@ -1,10 +1,13 @@
-import { myselfKey, useMyself } from "@/modules/users/composables/useMyself/useMyself"
+import { useMyself } from "@/modules/users/composables/useMyself/useMyself"
 
 export default defineNuxtRouteMiddleware(async (to, from) => {
-  const myself = useMyself()
-  if(!myself.user.value?.id) {
+
+  const { user } = useMyself()
+
+  if(!user.value?.id && to.path !== from.path) {
     if(to.path === '/auth') return
 
     return navigateTo('/auth')
   }
+  return
 })

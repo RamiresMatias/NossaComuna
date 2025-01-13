@@ -30,6 +30,7 @@ export function useMyself() {
   const logout = () => {
     lcStorage.removeItem('user-data')
     token.value = ''
+    navigateTo('/auth')
   }
 
   onMounted(() => {

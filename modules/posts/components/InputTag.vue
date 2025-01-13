@@ -1,7 +1,7 @@
 <template>
   <div class="select-tag">
     <ul class="select-tag__list">
-      <li v-for="(tag, i) in tags" :key="`${i}-${tag}`" class="select-tag__item">
+      <li v-for="(tag, i) in tagsSelected" :key="`${i}-${tag}`" class="select-tag__item">
         <Tag class="flex gap-2 items-center bg-neutral-100" severity="secondary">
           <span class="text-gray-600 text-base">{{ tag.description }}</span>
           <i
@@ -34,7 +34,7 @@
               v-for="item in filteredList" 
               :key="item.id" 
               class="select-tag__options__tag"
-              @click="selectTag(item)"
+              @click="selectTag(item.id)"
             >
               {{ item.description }}
             </li>
@@ -50,7 +50,7 @@ import type { Tag } from '~/types'
 
 import { useTag } from '@/modules/tag/composables/useTag/useTag'
 
-const tags = defineModel<Tag[]>({
+const tags = defineModel<string[]>({
   default: []
 })
 
@@ -58,19 +58,21 @@ const showDropdown = ref(false)
 
 const { filteredList, search, create, loading: loadingTags } = useTag()
 
+const tagsSelected = computed(() => filteredList.value.filter(el => tags.value.includes(el.id)))
+
 const handleEnterTag = async () => {
   const tagFound = filteredList.value.find((el) => el.description.toLowerCase() === search.value.trim().toLowerCase())
-  if (tagFound) return selectTag(tagFound)
+  if (tagFound) return selectTag(tagFound.id)
   
   const newTag = await create(search.value.trim())
 
   if (newTag) tags.value.push(newTag)
 }
 
-const selectTag = (tag: Tag) => {
-  const hasSelected = tags.value.some(el => el.id === tag.id)
+const selectTag = (tagId: string) => {
+  const hasSelected = tags.value.includes(tagId)
   if (hasSelected) return
-  tags.value.push(tag)
+  tags.value.push(tagId)
   showDropdown.value = false
   search.value = ''
 }

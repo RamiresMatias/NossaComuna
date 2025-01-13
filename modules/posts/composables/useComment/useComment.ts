@@ -84,8 +84,8 @@ export function useComment(post: Ref<PostDetail>) {
     Object.assign(comments, [])
   })
 
-  watchEffect(() => {
-    if (post.value?.id) getComments()
+  onMounted(() => {
+    getComments()
   })
 
   return {

@@ -1,14 +1,12 @@
 import type { EditPostType } from "@/types/index"
 import { myselfKey, type MyselfContextProvider } from '@/modules/users/composables/useMyself/useMyself'
 
-import { usePostTag } from '@/modules/tag/composables/usePostTag/usePostTag'
-
 import {z, type ZodFormattedError} from 'zod'
 
 const schema = z.object({
   title: z.string().min(2, 'Título é obrigatório'),
-  description: z.string().min(10, 'A descrição é obrigatória'),
-  tags: z.object({}).array().nonempty('É necessário inserir ao menos uma tag')
+  content: z.string().min(10, 'A descrição é obrigatória'),
+  tags: z.string().array().nonempty('É necessário inserir ao menos uma tag')
 })
 
 export function usePostEdit(id: string) {
@@ -25,11 +23,10 @@ export function usePostEdit(id: string) {
     coverImage: null,
     title: '',
     isDraft: false,
-    description: '',
-    coverImageUrl: ''
+    content: '',
+    coverImageUrl: '',
+    tags: []
   })
-
-  const { getTagsFromPost, postTags, bindTagsInPost } = usePostTag()
 
   const validateForm = () => {
     const result = schema.safeParse({...form})
@@ -49,19 +46,18 @@ export function usePostEdit(id: string) {
 
       loading.value = true
   
-      const { error } = await services.post.editPost({
+      await services.post.editPost({
         id: form.id,
         title: form.title,
-        description: form.description,
+        content: form.content,
         coverImage: form.coverImage,
         isDraft: form.isDraft,
         profileId: user.value.id,
-        coverImageUrl: form.coverImageUrl
+        coverImageUrl: form.coverImageUrl,
+        code: form.code,
+        tags: form.tags,
       })
 
-      if (!error) {
-        await bindTagsInPost({ postId: id, tags: form.tags })
-      }
 
       toast.add({
         severity: 'success',
@@ -84,22 +80,25 @@ export function usePostEdit(id: string) {
     try {
       loading.value = true
       
-      const postFound = await services.post.getPostByIdAndAuthor({id, userId: user.value?.id})
-      
-      getTagsFromPost(postFound.id).then(() => {
-        form.tags = postTags.value
+      const postFound = await services.post.getPostByIdAndAuthor(id)
+
+      // getTagsFromPost(postFound.id).then(() => {
+      //   form.tags = postTags.value
+      // })
+
+      // if (!postFound) {
+      //   return toast.add({
+      //     severity: 'warn',
+      //     summary: 'Ops!',
+      //     detail: 'Post não encontrado',
+      //     life: 2000
+      //   })
+      // }
+
+      Object.assign(form, {
+        ...postFound,
+        tags: postFound.tags.map(el => el.tagId)
       })
-
-      if (!postFound) {
-        return toast.add({
-          severity: 'warn',
-          summary: 'Ops!',
-          detail: 'Post não encontrado',
-          life: 2000
-        })
-      }
-
-      Object.assign(form, postFound)
 
       await sleep(1000)
       loading.value = false
@@ -107,14 +106,6 @@ export function usePostEdit(id: string) {
       loading.value = false
     }
   }
-
-  watch(
-    () => user.value,
-    (nVal) => {
-      nVal && getPostById()
-    },
-    {immediate: true }
-  )
 
   onMounted(() => {
     getPostById()
