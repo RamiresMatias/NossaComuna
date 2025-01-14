@@ -18,7 +18,7 @@ import { usePostCreate } from '@/modules/posts/composables/usePostCreate/usePost
 
 import FormEditor from '@/modules/posts/components/FormEditor.vue' 
 
-const { create, form, loading, errors, validateForm } = usePostCreate()
+const { create, form, loading, errors, validateForm,  } = usePostCreate()
 
 const handleCreate = async () => {
 

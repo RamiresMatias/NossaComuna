@@ -1,5 +1,5 @@
 <template>
-  <div class="grid grid-cols-12 w-full gap-4 mx-auto items-start px-4 pt-1 pb-8 2xl:px-0 relative mb-4 box-border">
+  <div class="grid grid-cols-12 w-full gap-4 mx-auto items-start pt-1 pb-8 2xl:px-0 relative mb-4 box-border">
     <div class="col-span-full flex w-full">
       <IconField class="w-full" icon-position="left">
         <InputIcon v-if="loading || loadingMore" class="pi pi-spin pi-spinner" />

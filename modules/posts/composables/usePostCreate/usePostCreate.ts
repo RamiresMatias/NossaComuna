@@ -18,6 +18,7 @@ export function usePostCreate() {
   const toast = useToast()
   const loading = ref<boolean>(false)
   const errors = ref<ZodFormattedError<CreatePostType>>()
+  const file = ref<File>()
   const form = reactive<CreatePostType>({
     coverImage: null,
     title: '',
@@ -75,5 +76,6 @@ export function usePostCreate() {
     errors,
     create,
     validateForm,
+    file
   }
 }

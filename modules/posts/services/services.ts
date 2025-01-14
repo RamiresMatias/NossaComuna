@@ -72,20 +72,33 @@ export default (http: AxiosInstance) => ({
     //   coverImageUrl = await this.uploadCoverImage({id: post.id, file: post.coverImage, userId: post.profileId})
     // }
 
-    return await http.post('/post', post)
+    const { data, status, statusText } = await http.post('/post', post)
 
+    if (data.id && post.coverImage) {
+      await this.uploadCoverImage(post.coverImage, data.id)
+    }
+
+    return data
   },
   async editPost (post: EditPostType) {
-    let coverImageUrl = ''
+    const { data } = await http.put(`/post/${post.id}`, post)
 
-    // if (post.coverImage && post.coverImageUrl) {
-    //   coverImageUrl = await this.updateCoverImage({id: post.id, file: post.coverImage, userId: post.profileId})
-    // }
-    // if (post.coverImage && !post.coverImageUrl) {
-    //   coverImageUrl = await this.uploadCoverImage({id: post.id, file: post.coverImage, userId: post.profileId})
-    // }
+    if (data.id && typeof post.coverImage !== 'string') {
+      await this.uploadCoverImage(post.coverImage, data.id)
+    }
 
-    return await http.put(`/post/${post.id}`, post)
+    return data
+  },
+  async uploadCoverImage (file: File, postId: string) {
+    const formData = new FormData()
+
+    formData.set('file', file)
+
+    return await http.post(`/post/upload/${postId}`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
   },
   // async getAllPosts ({to, from, filters}: GetAllPosts) {
 

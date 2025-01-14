@@ -14,7 +14,7 @@
       />
       <div v-else class="flex items-center w-full gap-10">
         <NuxtImg
-          :src="((form.coverImage as any)?.objectURL || (form.coverImageUrl + '?c=' + new Date()))"
+          :src="coverImage"
           alt="Imagem de capa do post"
           class="rounded-md w-24 h-24 object-contain"
           loading="lazy"
@@ -81,15 +81,26 @@ const props = defineProps<{
 const form = defineModel<CreatePostType | EditPostType>()
 
 const tiptapRef = ref()
+const previewFile = ref()
+
+const coverImage = computed(() => previewFile.value || form.value.coverImage)
 
 const removeFile = () => {
   form.value.coverImage = null
-  form.value.coverImageUrl = null
+  previewFile.value = null
 }
 
 const onUpload = async (event: FileUploadUploadEvent) => {
   const fileFm = Array.isArray(event.files) ? event.files[0] : event.files
-  form.value.coverImage = fileFm
+
+  
+  const fl = new FileReader()
+  fl.readAsDataURL(fileFm)
+  fl.onloadend = (ev) => {
+    previewFile.value = ev.target.result
+    form.value.coverImage = fileFm
+  }
+
 }
 
 const setHeading = (level: number) => {
