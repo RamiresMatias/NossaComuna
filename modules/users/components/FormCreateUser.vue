@@ -1,17 +1,5 @@
 <template>
-  <form class="w-full flex flex-col gap-4">
-    <div class="flex flex-col gap-2 w-full">
-      <label for="avatar">Avatar</label>
-      <div class="w-full flex gap-4 items-center">
-        <FileUpload mode="basic" name="demo[]" url="/api/upload" accept="image/*" :auto="true" @upload="onUpload" chooseLabel="Escolha uma foto" />
-        <Avatar v-if="modelValue.avatar" :image="(modelValue.avatar as any)?.objectURL" shape="circle" class="" />
-      </div>
-    </div>
-    <div class="flex flex-col gap-2 w-full">
-      <label for="username">Nome de usuário</label>
-      <InputText id="username" placeholder="" v-model="modelValue.username"></InputText>
-      <small v-if="errors?.username" class="error">{{ errors?.username._errors[0] }}</small>
-    </div>
+  <form class="w-full flex flex-col gap-4" autocomplete="off">
     <div class="flex flex-col gap-2 w-full">
       <label for="email">E-mail</label>
       <InputText id="email" type="email" placeholder="" v-model="modelValue.email"></InputText>
@@ -51,23 +39,20 @@
 </template>
 
 <script setup lang="ts">
-import type { FileUploadUploadEvent } from 'primevue/fileupload'
 import type { ZodFormattedError } from 'zod'
-import type { CreateUserType } from '~/types'
+import type { ICreateUser } from '../types/users';
 
 defineProps<{
-  errors?: ZodFormattedError<CreateUserType>
+  errors?: ZodFormattedError<ICreateUser>
 }>()
 
-const modelValue = defineModel<CreateUserType>({
+const modelValue = defineModel<ICreateUser>({
   default: {
-    avatar: null,
-    username: '',
-    bio: null
+    email: '',
+    password: '',
+    confirmPassword: '',
   }
 })
-
-const popoverForm = ref()
 
 const rules = computed(() => [
   {
@@ -91,12 +76,6 @@ const rules = computed(() => [
     test: () => modelValue.value.password && modelValue.value.confirmPassword && modelValue.value.password === modelValue.value.confirmPassword
   }
 ])
-
-
-const onUpload = async (file: FileUploadUploadEvent) => {
-  const fileUp = Array.isArray(file.files) ? file.files[0] as File : undefined
-  modelValue.value.avatar = fileUp
-}
 
 const validateAll = () => {
   return rules.value.every(rule => !!rule.test())

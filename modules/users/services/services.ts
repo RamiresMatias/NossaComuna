@@ -2,6 +2,7 @@
 import { getMySelfAdapter } from "./adapters"
 import type { FormEditUser } from "~/types"
 import type { AxiosInstance } from "axios"
+import type { ICreateProfile, ICreateUser } from "../types/users"
 
 
 export default (http: AxiosInstance) => ({
@@ -33,6 +34,13 @@ export default (http: AxiosInstance) => ({
     })
     return data
   },
+  async createUser ({ email, password }: Partial<ICreateUser>) {
+    const { data } = await http.post('/user', {email, password})
+    return data
+  },
+  async createProfile ({}: Partial<ICreateProfile>) {
+    const { data } = await http.post('/profile')
+  }
   // async uploadAvatar ({id, file, url}: {file: File, id: string, url?: string}) {
   //   const fileName = `/${id}/${id}`
 

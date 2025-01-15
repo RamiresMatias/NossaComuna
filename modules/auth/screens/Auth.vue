@@ -28,7 +28,7 @@
     </div>
     <Divider />
     <div class="w-full flex flex-col items-center gap-8">
-      <span>É novo por aqui? <NuxtLink to="/create-account?state=form" :prefetch="false" class="hover:text-blue-400">Crie uma conta</NuxtLink></span>
+      <span>É novo por aqui? <NuxtLink to="/create-account?state=create-user" :prefetch="false" class="hover:text-blue-400">Crie uma conta</NuxtLink></span>
     </div>
   </div>
 </template>
