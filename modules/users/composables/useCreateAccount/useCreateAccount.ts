@@ -85,12 +85,16 @@ export function useCreateAccount() {
 
   const createProfile = async () => {
     try {
-      await services.users.createProfile({
+      const response = await services.users.createProfile({
         userId: form.userId,
         username: form.username,
         avatar: form.avatar,
         bio: form.bio,
       })
+
+      if (response.id && form.avatar) {
+        await services.users.uploadAvatar(form.avatar, response.id)
+      }
 
       toast.add({
         severity: 'success',
@@ -109,7 +113,6 @@ export function useCreateAccount() {
     }
   }
 
-  
   // const createUser = async () => {  
   //   try {
   //     loading.value = true

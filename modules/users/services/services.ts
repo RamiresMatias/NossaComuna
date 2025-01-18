@@ -11,23 +11,6 @@ export default (http: AxiosInstance) => ({
     return data
   },
   async update(id: string, { username, bio, avatar, avatarUrl }: FormEditUser) {
-    let newAvatarUrl = ''
-
-    // const runtimeConfig = useRuntimeConfig()
-
-    // if (avatar) {
-    //   const { data, error } = await this.uploadAvatar({id, file: avatar, url: avatarUrl})
-    //   if (!error) newAvatarUrl = `${runtimeConfig.public.supabaseUrl}/storage/v1/object/public/${data.fullPath}`
-    // }
-
-    // const objUpdated: any = {
-    //   username,
-    //   bio,
-    // }
-
-    // if (newAvatarUrl) objUpdated.avatar_url = newAvatarUrl
-
-    // await client.from('profiles').update(objUpdated).eq('id', id)
     const { data } = await http.put(`/profile/${id}`, {
       bio,
       username
@@ -38,8 +21,27 @@ export default (http: AxiosInstance) => ({
     const { data } = await http.post('/user', {email, password})
     return data
   },
-  async createProfile ({}: Partial<ICreateProfile>) {
-    const { data } = await http.post('/profile')
+  async createProfile (profile: Partial<ICreateProfile>) {
+    const { data } = await http.post('/profile', profile)
+    return data
+  },
+  async uploadAvatar (file: File, profileId: string) {
+
+    const formData = new FormData()
+
+    formData.set('file', file)
+
+    const { data } = await http.post(`/profile/upload/${profileId}`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
+
+    return data
+  },
+  async getProfileByUsername (username: string) {
+    const {data} = await http.get(`/profile/details/${username}`)
+    return data
   }
   // async uploadAvatar ({id, file, url}: {file: File, id: string, url?: string}) {
   //   const fileName = `/${id}/${id}`

@@ -11,7 +11,7 @@ export function usePostUsers(username: string) {
     try {
       loading.value = true
   
-      posts.value = await services.post.getPostsByUsername({username})
+      posts.value = await services.post.getPostsByUsername(username)
   
       await sleep(1000)
 

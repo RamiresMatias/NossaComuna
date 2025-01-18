@@ -17,7 +17,7 @@
     </div>
 
     <div class="flex flex-col gap-4 w-[25rem] text-sm">
-      <p><strong>Sua senha precisa ter:</strong></p>
+      <h5 class="m-0 p-0 text-base font-semibold">Sua senha precisa ter:</h5>
       <div class="flex flex-col gap-4 items-start justify-start">
         <div
           v-for="rule in rules"
@@ -28,10 +28,7 @@
               <i v-if="!rule.test()" class="pi pi-times text-red-700"></i>
               <i v-else class="pi pi-check-circle text-green-700"></i>
             </Transition>
-            <span class="transition-all" :class="{
-              'text-green-700': rule.test(),
-              'text-red-700': !rule.test()
-            }">{{ rule.label }}</span>
+            <span class="text-neutral-500">{{ rule.label }}</span>
         </div>
       </div>
     </div>

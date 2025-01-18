@@ -20,8 +20,11 @@ export function useProfileDetails(username: string) {
   
     try {
       loading.value = true
-      const data = await services.users.getUserByUsername(username)
-      Object.assign(profile, data)
+      const data = await services.users.getProfileByUsername(username)
+      Object.assign(profile, {
+        ...data,
+        email: data.user.email
+      })
 
       await sleep(1000)
 

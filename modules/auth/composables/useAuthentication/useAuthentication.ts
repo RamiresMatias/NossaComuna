@@ -46,7 +46,7 @@ export function useAuthentication() {
 
       const { user } = await services.auth.signIn(form.email, form.password)
 
-      useMySelf.setUser({...user, ...user.profile})
+      useMySelf.setUser({...user.profile, email: user.email})
     
       loading.value = false
 

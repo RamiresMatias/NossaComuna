@@ -16,7 +16,7 @@
         :key="item"
       />
       <Post
-        v-if="activeSelect === 0 && !loadingPosts"
+        v-if="activeSelect === 0 && !loadingPosts && posts.length"
         v-for="(item, i) in posts" 
         :key="i"
         :id="item.id"
@@ -26,11 +26,14 @@
         :is-draft="item.isDraft"
         :title="item.title"
         :profile="item.profile"
-        :total-comments="item.totalComments"
+        :comments="item.comments"
         :likes="item.likes"
         :tags="item.tags"
         class="shadow-none"
       />
+      <p v-if="activeSelect === 0 && !loadingPosts && !posts.length" class="text-lg text-center my-auto">
+        Esse usuário naõ possui nenhum post 😕
+      </p>
       <AboutDetails 
         v-if="activeSelect === 1"
         :bio="profile.bio"

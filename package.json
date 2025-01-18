@@ -7,16 +7,13 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare",
-    "db:generate-types": "supabase gen types typescript --local > ./libs/supabase/schema.ts"
+    "postinstall": "nuxt prepare"
   },
   "dependencies": {
     "@nuxt/image": "^1.8.0",
     "@nuxtjs/critters": "^0.7.2",
     "@nuxtjs/google-fonts": "^3.2.0",
-    "@nuxtjs/supabase": "^1.4.0",
     "@nuxtjs/tailwindcss": "^6.12.1",
-    "@supabase/supabase-js": "^2.45.4",
     "@tiptap/extension-link": "^2.7.1",
     "@tiptap/extension-placeholder": "^2.7.1",
     "@tiptap/pm": "^2.7.1",

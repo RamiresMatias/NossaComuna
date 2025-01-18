@@ -1,5 +1,6 @@
 import type { Profile, User } from "@/types/index"
 import {z, type ZodFormattedError} from 'zod'
+import { useMyself } from "../useMyself/useMyself"
 
 interface UseUserUpdateOptions {
   user: Ref<User | undefined>
@@ -14,6 +15,7 @@ const schema = z.object({
 
 export function useUserUpdate({user}: UseUserUpdateOptions) {
 
+  const { updateLocalUser, setUser } = useMyself()
   const services = useServices()
   const toast = useToast()
   const loading = ref<boolean>(false)
@@ -43,12 +45,26 @@ export function useUserUpdate({user}: UseUserUpdateOptions) {
       if (!form.id) return
       loading.value = true
 
-      await services.users.update(form.id, {
+      const updated = await services.users.update(form.id, {
         username: form.username || '',
         bio: form.bio
       })
 
+      let avatarUrl = ''
+      if (form.avatar) {
+        avatarUrl = await services.users.uploadAvatar(form.avatar, form.id)
+      }
+
       await sleep(1000)
+
+      setUser({
+        createdAt: updated.createdAt,
+        id: updated.id,
+        email: updated.email,
+        bio: updated.bio,
+        username: updated.username,
+        avatarUrl: avatarUrl || updated.avatarUrl
+      })
     
       toast.add({
         severity: 'success',
@@ -70,7 +86,6 @@ export function useUserUpdate({user}: UseUserUpdateOptions) {
 
   watchEffect(() => {
     if (!user.value) return
-    console.log(user.value);
     Object.assign(form, user.value)
   })
 

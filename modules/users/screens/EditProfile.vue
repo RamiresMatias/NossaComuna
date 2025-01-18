@@ -52,7 +52,7 @@ import { useUser } from '@/modules/users/composables/useUser/useUser'
 import { useUserUpdate } from '@/modules/users/composables/useUserUpdate/useUserUpdate'
 import { useMyself } from '@/modules/users/composables/useMyself/useMyself'
 
-const { user: userLogged } = useMyself()
+const { user: userLogged, updateLocalUser } = useMyself()
 
 const { user, loading } = useUser(userLogged.value.id)
 const { form, update, errors, validateForm, loading: loadingUpdate } = useUserUpdate({user})

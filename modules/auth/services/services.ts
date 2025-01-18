@@ -1,5 +1,3 @@
-import type { SupabaseClient } from "@supabase/supabase-js"
-import type { Database } from '@/libs/supabase/schema'
 import type { AxiosInstance } from "axios"
 import type { AuthResponse } from "@/types"
 interface ServiceOptions {

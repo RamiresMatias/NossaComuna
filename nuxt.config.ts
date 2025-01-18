@@ -20,7 +20,6 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
     'nuxt-primevue',
     '@nuxtjs/google-fonts',
-    '@nuxtjs/supabase',
     '@nuxt/image',
     '@nuxtjs/critters',
     'nuxt-vitalizer',
@@ -50,15 +49,6 @@ export default defineNuxtConfig({
     minify: true,
   },
 
-  supabase: {
-    redirect: false,
-    clientOptions: {
-      auth: {
-        autoRefreshToken: false
-      }
-    }
-  },
-
   imports: {
     dirs: [
       "./composables/useServices",
@@ -79,8 +69,6 @@ export default defineNuxtConfig({
     public: {
       siteUrl: process.env.SITE_URL,
       nodeEnv: process.env.NODE_ENV,
-      supabaseUrl: process.env.SUPABASE_URL,
-      supabaseKey: process.env.SUPABASE_KEY,
       apiUrl: process.env.API_URL
     }
   },

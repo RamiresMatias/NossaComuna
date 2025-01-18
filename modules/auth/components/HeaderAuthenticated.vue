@@ -16,16 +16,14 @@
             icon="pi pi-plus"
             @click="() => emit('navigate-to-post-create')"
           />
-          <button class="flex items-center" aria-haspopup="tree" aria-label="Menu do perfil" aria-controls="header-auth-menu" @click="toggle">
+          <button class="flex items-center h-[40px] w-[40px]" aria-haspopup="tree" aria-label="Menu do perfil" aria-controls="header-auth-menu" @click="toggle">
             <NuxtImg
               v-if="props.profilePic"
               :src="props.profilePic + '?c=' + new Date()"
               alt="Avatar do usuário"
-              class="rounded-full"
+              class="rounded-full h-full w-full object-cover"
               loading="lazy"
               decoding="auto"
-              width="40px"
-              height="40px"
               format="webp"
               quality="20"
               preload

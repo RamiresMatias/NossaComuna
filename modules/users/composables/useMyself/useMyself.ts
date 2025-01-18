@@ -16,6 +16,8 @@ export function useMyself() {
     readonly: false,
     secure: true
   })
+  const services = useServices()
+
 
   const loading = ref<boolean>(false)
   const user = ref<User>({...lcStorage.getItem('user-data')})
@@ -33,6 +35,23 @@ export function useMyself() {
     navigateTo('/auth')
   }
 
+  const updateLocalUser = async (profileId: string) => {
+    try {
+      const mySelf = await services.users.getMySelf(profileId)
+
+      setUser({
+        createdAt: mySelf.createdAt,
+        id: mySelf.id,
+        avatarUrl: mySelf.avatarUrl,
+        bio: mySelf.bio,
+        email: mySelf.user.email,
+        username: mySelf.username
+      })
+    } catch (error) {
+      throw error
+    }
+  }
+
   onMounted(() => {
     // fetchUser()
   })
@@ -41,6 +60,7 @@ export function useMyself() {
     loading,
     user,
     setUser,
-    logout
+    logout,
+    updateLocalUser
   }
 }
