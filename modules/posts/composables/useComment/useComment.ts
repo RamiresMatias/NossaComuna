@@ -20,7 +20,7 @@ export function useComment(post: Ref<PostDetail>) {
       const data = await services.post.getAllComments({postId: post.value.id})
 
       const result = []
-      data.forEach((el: CommentType) => {
+      data?.forEach((el: CommentType) => {
         const parent = data.find((parent: CommentType) => parent.id === el.commentId)
         if (parent) parent.comments.push(el)
         else result.push(el)
@@ -33,11 +33,11 @@ export function useComment(post: Ref<PostDetail>) {
     }
   }
 
-  const createComment = async (description: string) => {
+  const createComment = async (content: string) => {
     try {
       loading.value = true
       
-      // await services.post.createComment({description, postId: post.value?.id})
+      await services.post.createComment({content, postId: post.value?.id, profileId: user.value.id})
       getComments()
       myComment.value = ''
       
@@ -51,7 +51,7 @@ export function useComment(post: Ref<PostDetail>) {
     try {
       loading.value = true
 
-      // await services.post.deleteComment(id)
+      await services.post.deleteComment(id)
       toast.add({
         severity: 'success',
         summary: 'Sucesso!',
@@ -71,7 +71,7 @@ export function useComment(post: Ref<PostDetail>) {
     try {
       loading.value = true
       
-      // await services.post.replyComment({description: comment, postId: post.value.id, commentId, userId: user.value.id})
+      await services.post.createComment({content: comment, postId: post.value.id, commentId, profileId: user.value.id})
       getComments()
       
       loading.value = false

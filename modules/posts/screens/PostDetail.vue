@@ -98,7 +98,7 @@
           :likes="comment.likes"
           @delete="(id) => deleteComment(id)"
           @on-reply="({comment, commentId}) => onReply({comment, commentId})"
-          @on-like="(commentId) => likeComment({comments, commentId})"
+          @on-like="(commentId) => likeComment({comments, commentId, postId: post.id})"
         ></Comment>
       </section>
     </section>
@@ -126,11 +126,9 @@ const AuthorProfile = resolveComponent('AuthorProfile')
 const AuthorProfileLoading = resolveComponent('AuthorProfileLoading')
 
 import { useComment } from '@/modules/posts/composables/useComment/useComment'
-import { useAuthor } from '@/modules/posts/composables/useAuthor/useAuthor'
 import { useLike } from '@/modules/posts/composables/useLike/useLike'
 
 import { myselfKey, type MyselfContextProvider } from '@/modules/users/composables/useMyself/useMyself'
-import { usePostTag } from '@/modules/tag/composables/usePostTag/usePostTag'
 
 const { user } = inject(myselfKey) as MyselfContextProvider
 
@@ -155,17 +153,8 @@ const {
   onReply
 } = useComment(post)
 
-// const { author, loading: loadingProfile } = useAuthor(post)
-
 const { likePost, deslikePost, likeComment } = useLike(post)
 
-// const { getTagsFromPost, postTags } = usePostTag()
-
-// watch(data, (newPost, oldPost) => {
-//   if (newPost?.id && !oldPost) getTagsFromPost(newPost.id)
-// }, {
-//   immediate: true
-// })
 
 const isAuthorPost = computed(() => post.value?.profile?.id === user.value?.id)
 const isBusy = computed(() => status.value === 'pending')

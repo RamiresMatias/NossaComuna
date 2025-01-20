@@ -1,10 +1,7 @@
-import type { Database } from '@/libs/supabase/schema'
 import type { CreatePostType, EditPostType, FilterPostListProps, ReadAllRow, ReadOneRow } from "@/types"
 
-import { getPostByIdAndAuthorAdapter, readAllAdapter, readAllCommentsAdapter, readOneAdapter, readOneAdapterRpc } from "./adapter"
-
-import {v4} from 'uuid'
 import type { AxiosInstance } from "axios"
+import type { ICreateComment } from "../types/post"
 
 interface ReplyCommentProps {
   description: string
@@ -99,6 +96,32 @@ export default (http: AxiosInstance) => ({
   },
   async getPostByIdAndAuthor (postId: string) {
     const { data } =  await http.get(`/post/${postId}`)
+    return data
+  },
+  async like ({postId, profileId, commentId}: {postId: string, profileId: string, commentId: string}) {
+    const { data } =  await http.post(`/like`, {
+      profileId,
+      postId,
+      commentId
+    })
+    return data
+  },
+  async deslike ({postId, profileId, commentId}: {postId: string, profileId: string, commentId: string}) {
+    const { data } =  await http.delete(`/like`, {
+      data: {
+        profileId,
+        postId,
+        commentId
+      }
+    })
+    return data
+  },
+  async createComment ({ content, postId, commentId, profileId }: ICreateComment) {
+    const { data } =  await http.post(`/comment`, {content, postId, commentId, profileId})
+    return data
+  },
+  async deleteComment (commentId: string) {
+    const { data } =  await http.delete(`/comment/${commentId}`)
     return data
   },
 })

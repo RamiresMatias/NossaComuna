@@ -1,5 +1,6 @@
 import type { CommentType, PostDetail } from "@/types/index"
 import { myselfKey, type MyselfContextProvider } from '@/modules/users/composables/useMyself/useMyself'
+import type { ILikeCommentProps } from "../../types/post"
 
 export function useLike(post: Ref<PostDetail>) {
 
@@ -10,7 +11,11 @@ export function useLike(post: Ref<PostDetail>) {
 
   const likePost = async () => {
     try {
-      await services.post.like({postId: post.value.id, userId: user.value.id})
+      await services.post.like({
+        postId: post.value.id, 
+        profileId: user.value.id, 
+        commentId: null
+      })
   
       post.value.liked = !post.value.liked
       post.value.likes += 1
@@ -21,7 +26,7 @@ export function useLike(post: Ref<PostDetail>) {
 
   const deslikePost = async () => {
     try {
-      await services.post.deslikePost({postId: post.value.id, userId: user.value.id})
+      await services.post.deslike({postId: post.value.id, profileId: user.value.id, commentId: null})
   
       post.value.liked = !post.value.liked
       post.value.likes -= 1
@@ -30,12 +35,12 @@ export function useLike(post: Ref<PostDetail>) {
     }
   }
 
-  const likeComment = async ({comments, commentId}: {comments: CommentType[], commentId: string}) => {
+  const likeComment = async ({comments, commentId, postId}: ILikeCommentProps) => {
     try {
       const comment = findComment(comments, commentId)
-      comment.liked 
-        ? await services.post.deslikeComment({commentId, userId: user.value.id})
-        : await services.post.likeComment({commentId, userId: user.value.id})
+      comment.liked
+        ? await services.post.deslike({commentId, profileId: user.value.id, postId})
+        : await services.post.like({commentId, profileId: user.value.id, postId})
   
       comment.liked = !comment.liked
       comment.likes = comment.liked ? (comment.likes + 1) : (comment.likes - 1) 
@@ -48,7 +53,7 @@ export function useLike(post: Ref<PostDetail>) {
     let elementFound = arrTree.find(el => el.id === id)
     if (elementFound) return elementFound 
     else {
-      arrTree.forEach(row => {
+      arrTree?.forEach(row => {
         if (row.comments.length > 0 && !elementFound) elementFound = findComment(row.comments, id)
       })
     }
