@@ -52,10 +52,7 @@ export default (http: AxiosInstance) => ({
 
   async getAllComments ({postId}: {postId: string}) {
     const { data } = await http.get(`/comment/post/${postId}`)
-    return data.map(el => ({
-      ...el,
-      likes: el._count.like
-    }))
+    return data
   },
 
   async createPost (post: CreatePostType) {

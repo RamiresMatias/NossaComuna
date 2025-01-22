@@ -3,21 +3,6 @@ import { useAuthentication } from "@/modules/auth/composables/useAuthentication/
 import { useMyself } from '@/modules/users/composables/useMyself/useMyself'
 
 
-// const config = useRuntimeConfig()
-// const { token } = useAuthentication()
-
-// axios.interceptors.request.use((config) => {
-//   console.log('interceptor', token.value);
-//   if (token.value) {
-//     config.headers.Authorization = `Bearer ${token.value}`;
-//   }
-//   return config
-// })
-
-// export const httpClient = axios.create({
-//   baseURL: `${''}/api/v1`
-// })
-
 export default defineNuxtPlugin(nuxtApp => {
 
   const { token } = useAuthentication()

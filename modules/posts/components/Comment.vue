@@ -2,7 +2,7 @@
   <div class="w-full flex flex-col gap-2">
     <div class="w-full flex gap-2">
       <NuxtImg
-        :src="props.profile.avatarUrl + '?c=' + new Date()"
+        :src="props.avatarUrl + '?c=' + new Date()"
         alt="Avatar do usuário"
         class="w-8 h-8 rounded-full"
         loading="lazy"
@@ -12,7 +12,7 @@
       <div class="w-full flex flex-col">
         <section class="w-full border border-solid border-gray-200 rounded-md flex flex-col p-2">
           <div class="flex gap-2 w-full items-center justify-start mb-4">
-            <span class="text-base text-[#3d3d3d] ">{{ props.profile.username }}</span>
+            <span class="text-base text-[#3d3d3d] ">{{ props.username }}</span>
             <span class="text-xs text-gray-400 ">• {{ new Date(props.createdAt).toLocaleDateString('pt-br') }}</span>
             <span v-if="isAuthor"class="ml-auto">
               <i 
@@ -68,11 +68,13 @@
         v-for="reply in comments" 
         :key="reply.id"
         :content="reply.content"
-        :profile="reply.profile"
         :created-at="reply.createdAt"
+        :username="reply.username"
+        :avatar-url="reply.avatarUrl"
+        :email="reply.email"
         :id="reply.id"
-        :is-author="reply.profile.id === user?.id"
-        :comments="reply.comments"
+        :is-author="reply.profileId === user?.id"
+        :comments="reply?.comments"
         class="mt-4"
         :level="1"
         :liked="reply.liked"
@@ -91,25 +93,16 @@ import type { CommentType } from '@/types'
 import Comment from '@/modules/posts/components/Comment.vue'
 
 import { myselfKey, type MyselfContextProvider } from '@/modules/users/composables/useMyself/useMyself'
+import type { ICommentPost } from '../types/post'
 
 const { user } = inject(myselfKey) as MyselfContextProvider
 
-interface CommentProps extends CommentType {
+interface CommentProps extends ICommentPost {
   isAuthor: boolean
   level?: number
 }
 
-const props = withDefaults(
-  defineProps<CommentProps>(),
-  {
-    id: '',
-    content: `Seeing those example file structures is extremely helpful! In a way, I already used the Atomic Design approach without the molecules level. Depending on the project size, I guess it's fine to skip one level.`,
-    profile: () => Object.create({username: 'Klebin', avatarUrl: 'https://i.ibb.co/VwpJcdH/1ca5d6cede414702a3fd2eeb12bb68b8.jpg'}),
-    createdAt: () => new Date(),
-    isAuthor: false,
-    comments: () => []
-  }
-)
+const props = defineProps<CommentProps>()
 
 const emit = defineEmits<{
   (e: 'delete', id: string): void,
@@ -124,7 +117,7 @@ const items = [
   {
     label: 'Deletar',
     command: () => emit('delete', props.id),
-    disabled: props.comments.length > 0
+    disabled: props?.comments?.length > 0
   }
 ]
 

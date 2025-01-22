@@ -1,5 +1,6 @@
 import type { CommentType, PostDetail } from "@/types/index"
 import { myselfKey, type MyselfContextProvider } from '@/modules/users/composables/useMyself/useMyself'
+import type { ICommentPost } from "../../types/post"
 
 export function useComment(post: Ref<PostDetail>) {
 
@@ -7,7 +8,7 @@ export function useComment(post: Ref<PostDetail>) {
 
   const services = useServices()
   const loading = ref<boolean>(false)
-  const comments = reactive<CommentType[]>([])
+  const comments = reactive<ICommentPost[]>([])
   const toast = useToast()
   const myComment = ref<string>('')
 
@@ -20,11 +21,13 @@ export function useComment(post: Ref<PostDetail>) {
       const data = await services.post.getAllComments({postId: post.value.id})
 
       const result = []
-      data?.forEach((el: CommentType) => {
-        const parent = data.find((parent: CommentType) => parent.id === el.commentId)
+      data?.forEach((el: ICommentPost) => {
+        const parent = data.find((parent: ICommentPost) => parent.id === el.commentId)
+        if (parent && !parent?.comments) parent.comments = []
         if (parent) parent.comments.push(el)
         else result.push(el)
       })
+      console.log({result});
       Object.assign(comments, result)
   
       loading.value = false
