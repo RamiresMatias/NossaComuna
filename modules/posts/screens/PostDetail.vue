@@ -100,7 +100,8 @@
           :likes="comment.likes"
           @delete="(id) => deleteComment(id)"
           @on-reply="({comment, commentId}) => onReply({comment, commentId})"
-          @on-like="(commentId) => likeComment({comments, commentId, postId: post.id})"
+          @on-like="(commentId: string) => likeComment({commentId, postId: post.id})"
+          @on-deslike="(commentId: string) => deslikeComment({commentId, postId: post.id})"
         ></Comment>
       </section>
     </section>
@@ -152,10 +153,12 @@ const {
   myComment,
   createComment,
   deleteComment,
-  onReply
+  onReply,
+  likeComment,
+  deslikeComment
 } = useComment(post)
 
-const { likePost, deslikePost, likeComment } = useLike(post)
+const { likePost, deslikePost } = useLike(post)
 
 
 const isAuthorPost = computed(() => post.value?.profile?.id === user.value?.id)

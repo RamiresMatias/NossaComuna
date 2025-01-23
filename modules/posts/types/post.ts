@@ -1,7 +1,6 @@
 import type { CommentType } from "~/types"
 
 export interface ILikeCommentProps {
-  comments: ICommentPost[]
   commentId: string
   postId: string
 }

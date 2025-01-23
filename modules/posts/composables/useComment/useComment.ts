@@ -1,6 +1,6 @@
 import type { CommentType, PostDetail } from "@/types/index"
 import { myselfKey, type MyselfContextProvider } from '@/modules/users/composables/useMyself/useMyself'
-import type { ICommentPost } from "../../types/post"
+import type { ICommentPost, ILikeCommentProps } from "../../types/post"
 
 export function useComment(post: Ref<PostDetail>) {
 
@@ -27,7 +27,7 @@ export function useComment(post: Ref<PostDetail>) {
         if (parent) parent.comments.push(el)
         else result.push(el)
       })
-      console.log({result});
+
       Object.assign(comments, result)
   
       loading.value = false
@@ -83,6 +83,43 @@ export function useComment(post: Ref<PostDetail>) {
     }
   }
 
+  const likeComment = async ({commentId, postId}: ILikeCommentProps) => {
+    try {
+      const comment = findComment(comments, commentId)
+
+      await services.post.like({commentId, profileId: user.value.id, postId})
+  
+      comment.liked = true
+      comment.likes += 1 
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  
+  const deslikeComment = async ({commentId, postId}: ILikeCommentProps) => {
+    try {
+      const comment = findComment(comments, commentId)
+
+      await services.post.deslike({commentId, profileId: user.value.id, postId})
+  
+      comment.liked = false
+      comment.likes -= 1
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const findComment = (arrTree: any[], id: string): CommentType => {
+    let elementFound = arrTree.find(el => el.id === id)
+    if (elementFound) return elementFound 
+    else {
+      arrTree?.forEach(row => {
+        if (row.comments.length > 0 && !elementFound) elementFound = findComment(row.comments, id)
+      })
+    }
+    return elementFound
+  }
+
   onUnmounted(() => {
     Object.assign(comments, [])
   })
@@ -99,5 +136,7 @@ export function useComment(post: Ref<PostDetail>) {
     createComment,
     deleteComment,
     onReply,
+    likeComment,
+    deslikeComment
   }
 }

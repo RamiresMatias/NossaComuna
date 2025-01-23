@@ -5,7 +5,7 @@ import {z, type ZodFormattedError} from 'zod'
 
 const schema = z.object({
   title: z.string().min(2, 'Título é obrigatório'),
-  content: z.string().min(10, 'A descrição é obrigatória'),
+  content: z.string().min(10, 'É necessário informar um conteúdo'),
   tags: z.string().array().nonempty('É necessário inserir ao menos uma tag')
 })
 

@@ -55,7 +55,7 @@ import { usePostUsers } from '@/modules/posts/composables/usePostUsers/usePostUs
 
 const route = useRoute()
 
-const { profile, loading } = useProfileDetails((route.params.username as string))
+const { profile } = useProfileDetails((route.params.username as string))
 const { posts, loading: loadingPosts } = usePostUsers((route.params.username as string))
 
 const activeSelect = ref(0)

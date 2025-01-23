@@ -30,13 +30,13 @@
         <div class="flex items-center gap-2 justify-start py-2 flex-wrap">
           <Button 
             :label="`${likes} Curtidas`" 
-            icon="pi pi-thumbs-up" 
+            :icon="props.liked ? 'pi pi-thumbs-up-fill' : 'pi pi-thumbs-up'" 
             icon-pos="left" 
             everity="secondary" 
             text 
             size="small" 
             class="text-xs"
-            @click="emit('on-like', props.id)"
+            @click="props.liked ? emit('on-deslike', props.id) : emit('on-like', props.id)"
           />
           <Button 
             label="Responder" 
@@ -82,14 +82,13 @@
         @delete="(id) => emit('delete', id)"
         @on-reply="(reply) => emit('on-reply', reply)"
         @on-like="(id) => emit('on-like', id)"
+        @on-deslike="(id) => emit('on-deslike', id)"
       ></Comment>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import type { CommentType } from '@/types'
-
 import Comment from '@/modules/posts/components/Comment.vue'
 
 import { myselfKey, type MyselfContextProvider } from '@/modules/users/composables/useMyself/useMyself'
@@ -107,7 +106,8 @@ const props = defineProps<CommentProps>()
 const emit = defineEmits<{
   (e: 'delete', id: string): void,
   (e: 'on-reply', {comment, commentId}: {comment: string, commentId: string}): void,
-  (e: 'on-like', id: string): void
+  (e: 'on-like', id: string): void,
+  (e: 'on-deslike', id: string): void
 }>()
 
 const reply = ref()

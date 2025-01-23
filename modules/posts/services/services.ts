@@ -89,7 +89,14 @@ export default (http: AxiosInstance) => ({
   },
   async getPostsByUsername (username: string) {
     const { data } = await http.get(`/post/all-posts/${username}`)
-    return data
+    return data.map(el => ({
+      ...el,
+      likes: el._count.likes,
+      tags: el.tags.map((el) => ({
+        description: el.Tag.description,
+        id: el.tagId
+      }))
+    }))
   },
   async getPostByIdAndAuthor (postId: string) {
     const { data } =  await http.get(`/post/${postId}`)
