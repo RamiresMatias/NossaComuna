@@ -41,6 +41,22 @@
         :following="[]"
         :created-at="profile.createdAt"
       />
+      <Post
+        v-if="activeSelect === 2"
+        v-for="(item, i) in postsLiked" 
+        :key="i"
+        :id="item.id"
+        :code="item.code"
+        :cover-image="item.coverImage"
+        :created-at="item.createdAt"
+        :is-draft="item.isDraft"
+        :title="item.title"
+        :profile="item.profile"
+        :comments="item.comments"
+        :likes="item.likes"
+        :tags="item.tags"
+        class="shadow-none"
+      />
     </div>
   </section>
 </template>
@@ -56,7 +72,7 @@ import { usePostUsers } from '@/modules/posts/composables/usePostUsers/usePostUs
 const route = useRoute()
 
 const { profile } = useProfileDetails((route.params.username as string))
-const { posts, loading: loadingPosts } = usePostUsers((route.params.username as string))
+const { posts, loading: loadingPosts, postsLiked } = usePostUsers(toRef(profile))
 
 const activeSelect = ref(0)
 

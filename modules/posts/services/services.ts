@@ -128,4 +128,15 @@ export default (http: AxiosInstance) => ({
     const { data } =  await http.delete(`/comment/${commentId}`)
     return data
   },
+  async getPostsByLiked (profileId: string) {
+    const { data } = await http.get(`/post/posts-liked-by/${profileId}`)
+    return data.map(el => ({
+      ...el,
+      likes: el._count.likes,
+      tags: el.tags.map((el) => ({
+        description: el.Tag.description,
+        id: el.tagId
+      }))
+    }))
+  }
 })

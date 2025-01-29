@@ -1,13 +1,14 @@
-import type { PostType } from "~/types"
+import type { PostType, Profile } from "~/types"
 
-export function usePostUsers(username: string) {
+export function usePostUsers(profile: Ref<Profile>) {
 
   const services = useServices()
   const loading = ref<boolean>(true)
 
   const posts = ref<PostType[]>([])
+  const postsLiked = ref<PostType[]>([])
 
-  const getPostsByUser = async () => {
+  const getPostsByUser = async (username: string) => {
     try {
       loading.value = true
   
@@ -21,13 +22,34 @@ export function usePostUsers(username: string) {
     }
   }
 
-  onMounted(() => {
-    getPostsByUser()
-  })
+  const getPostsByLiked = async (profileId: string) => {
+    try {
+      loading.value = true
+  
+      postsLiked.value = await services.post.getPostsByLiked(profileId)
+  
+      await sleep(1000)
+
+      loading.value = false
+    } catch (error) {
+      loading.value = false
+    }
+  }
+
+  watch(
+    () => profile.value.id, 
+    () => {
+      getPostsByUser(profile.value.username)
+      getPostsByLiked(profile.value.id)
+    }
+  )
+  
 
   return {
     loading,
     posts,
-    getPostsByUser
+    postsLiked,
+    getPostsByUser,
+    getPostsByLiked
   }
 }
