@@ -7,9 +7,9 @@
             <Logo size="default" />
           </NuxtLink>
         </div>
-        <div class="flex items-center gap-4">
-          <Skeleton width="6rem" height="2rem"></Skeleton>
-          <Skeleton width="2rem" height="2rem" shape="circle"></Skeleton>
+        <div class="flex items-center gap-2">
+          <Skeleton width="6rem" height="2rem" class="px-4 py-3"></Skeleton>
+          <Skeleton width="40px" height="40px" shape="circle"></Skeleton>
         </div>
       </div>
     </nav>

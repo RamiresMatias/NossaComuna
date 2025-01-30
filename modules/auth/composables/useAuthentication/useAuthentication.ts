@@ -14,6 +14,9 @@ export function useAuthentication() {
   const loading = ref<boolean>(false)
   const token = useCookie('auth-token', {
     default: () => '',
+    httpOnly: true,
+    secure: true,
+    sameSite: 'strict'
   })
   const useMySelf = useMyself()
 

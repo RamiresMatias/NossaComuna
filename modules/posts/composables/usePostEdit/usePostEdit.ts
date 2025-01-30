@@ -66,7 +66,6 @@ export function usePostEdit(id: string) {
         life: 2000
       })
   
-      await sleep(1000)
       loading.value = false
       navigateTo(`/${user.value.username}/${form.code}`)
     } catch (error) {
@@ -82,25 +81,11 @@ export function usePostEdit(id: string) {
       
       const postFound = await services.post.getPostByIdAndAuthor(id)
 
-      // getTagsFromPost(postFound.id).then(() => {
-      //   form.tags = postTags.value
-      // })
-
-      // if (!postFound) {
-      //   return toast.add({
-      //     severity: 'warn',
-      //     summary: 'Ops!',
-      //     detail: 'Post não encontrado',
-      //     life: 2000
-      //   })
-      // }
-
       Object.assign(form, {
         ...postFound,
         tags: postFound.tags.map(el => el.tagId)
       })
-
-      await sleep(1000)
+      
       loading.value = false
     } catch (error) {
       loading.value = false

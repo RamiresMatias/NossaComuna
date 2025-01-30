@@ -4,7 +4,6 @@ export function usePostList() {
 
   const services = useServices()
 
-  const PAGE_COUNT = 6
   const page = ref<number>(0)
 
   const loading = ref<boolean>(false)
@@ -32,8 +31,6 @@ export function usePostList() {
       posts.value.push(...data)
       canFetchMore.value = posts.value.length !== data.length
   
-      await sleep(1000)
-
       loading.value = false
     } catch (error) {
       loading.value = false

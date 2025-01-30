@@ -19,7 +19,7 @@ export function useMyself() {
   const services = useServices()
 
 
-  const loading = ref<boolean>(false)
+  const loading = ref<boolean>(true)
   const user = ref<User>({...lcStorage.getItem('user-data')})
 
   provide<MyselfContextProvider>(myselfKey, { user, loading })
@@ -37,6 +37,7 @@ export function useMyself() {
 
   const updateLocalUser = async (profileId: string) => {
     try {
+      loading.value = true
       const mySelf = await services.users.getMySelf(profileId)
 
       setUser({
@@ -47,13 +48,15 @@ export function useMyself() {
         email: mySelf.user.email,
         username: mySelf.username
       })
+      loading.value = false
     } catch (error) {
+      loading.value = false
       throw error
     }
   }
 
   onMounted(() => {
-    // fetchUser()
+    loading.value = false
   })
 
   return {

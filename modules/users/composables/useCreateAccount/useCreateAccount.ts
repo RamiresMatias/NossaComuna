@@ -135,7 +135,7 @@ export function useCreateAccount() {
   //       username: form.username,
   //       avatar: form.avatar
   //     })
-  //     await sleep(1000)
+  //     
 
   //     loading.value = false
   //     navigateTo(`/confirm/${form.email}`)

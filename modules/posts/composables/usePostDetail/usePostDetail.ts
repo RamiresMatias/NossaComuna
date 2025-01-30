@@ -28,9 +28,7 @@ export function usePostDetail({ username, code }: UsePostDetailProps) {
   const getPost = async () => {
     try {
       loading.value = true
-  
-      await sleep(1000)
-  
+    
       const data = await services.post.getRpcPostByCode({username, code, userId: user.value.id})
   
       Object.assign(post, data)

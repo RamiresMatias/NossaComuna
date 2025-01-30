@@ -55,7 +55,7 @@ export function useUserUpdate({user}: UseUserUpdateOptions) {
         avatarUrl = await services.users.uploadAvatar(form.avatar, form.id)
       }
 
-      await sleep(1000)
+      
 
       setUser({
         createdAt: updated.createdAt,

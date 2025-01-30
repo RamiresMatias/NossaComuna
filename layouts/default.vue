@@ -2,6 +2,7 @@
   <div class="w-full h-full flex flex-col items-center">
     <MainContent>
       <template #header>
+        <HeaderLoading v-if="loading"></HeaderLoading>
         <HeaderAuthenticated
           v-if="!loading && user.id"
           :nickname="user?.username || 'Usuário'"

@@ -62,7 +62,6 @@ export function usePostCreate() {
         life: 2000
       })
   
-      await sleep(1000)
       loading.value = false
       navigateTo('/posts')
     } catch (error) {

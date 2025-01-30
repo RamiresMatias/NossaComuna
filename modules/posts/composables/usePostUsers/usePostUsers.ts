@@ -14,8 +14,6 @@ export function usePostUsers(profile: Ref<Profile>) {
   
       posts.value = await services.post.getPostsByUsername(username)
   
-      await sleep(1000)
-
       loading.value = false
     } catch (error) {
       loading.value = false
@@ -24,12 +22,11 @@ export function usePostUsers(profile: Ref<Profile>) {
 
   const getPostsByLiked = async (profileId: string) => {
     try {
+      console.log(profileId);
       loading.value = true
   
       postsLiked.value = await services.post.getPostsByLiked(profileId)
   
-      await sleep(1000)
-
       loading.value = false
     } catch (error) {
       loading.value = false

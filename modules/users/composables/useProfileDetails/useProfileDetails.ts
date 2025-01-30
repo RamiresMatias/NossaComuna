@@ -26,7 +26,7 @@ export function useProfileDetails(username: string) {
         email: data.user.email
       })
 
-      await sleep(1000)
+      
 
       loading.value = false
     } catch (error) {
