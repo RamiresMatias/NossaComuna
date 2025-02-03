@@ -45,15 +45,16 @@ export function usePostList() {
     getPostList()
   }
 
-  onMounted(() => {
-    getPostList()
-  })
+  // onMounted(() => {
+  //   getPostList()
+  // })
 
   return {
     loading,
     posts,
     filters,
     canFetchMore,
+    page,
     getPostList,
     getListLazy,
   }

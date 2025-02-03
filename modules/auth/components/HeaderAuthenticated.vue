@@ -19,7 +19,7 @@
           <button class="flex items-center h-[40px] w-[40px]" aria-haspopup="tree" aria-label="Menu do perfil" aria-controls="header-auth-menu" @click="toggle">
             <NuxtImg
               v-if="props.profilePic"
-              :src="props.profilePic + '?c=' + new Date()"
+              :src="props.profilePic"
               alt="Avatar do usuário"
               class="rounded-full h-full w-full object-cover"
               loading="lazy"

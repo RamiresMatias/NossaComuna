@@ -69,7 +69,7 @@ defineExpose({
 
 .readonly {
   .ProseMirror {
-    @apply p-0;
+    @apply p-0 text-base;
   }
 }
 

@@ -1,14 +1,7 @@
-import type { CreatePostType, EditPostType, FilterPostListProps, ReadAllRow, ReadOneRow } from "@/types"
+import type { CreatePostType, EditPostType, FilterPostListProps, PostType, ReadAllRow, ReadOneRow } from "@/types"
 
 import type { AxiosInstance } from "axios"
 import type { ICreateComment } from "../types/post"
-
-interface ReplyCommentProps {
-  description: string
-  postId: string
-  commentId: string
-  userId: string
-}
 
 interface GetAllPosts {
   to: number,
@@ -18,7 +11,7 @@ interface GetAllPosts {
 
 export default (http: AxiosInstance) => ({
 
-  async getAllPosts (params: GetAllPosts) {
+  async getAllPosts (params: GetAllPosts): Promise<PostType[]> {
 
     const { data } = await http.get('/post', {
       params: {

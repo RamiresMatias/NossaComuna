@@ -11,6 +11,9 @@ export default defineNuxtPlugin(nuxtApp => {
 
   const httpClient = axios.create({
     baseURL: nuxtApp.$config.public.apiUrl,
+    headers: {
+      'Content-Type': 'application/json'
+    }
   })
 
   httpClient.interceptors.request.use((config) => {

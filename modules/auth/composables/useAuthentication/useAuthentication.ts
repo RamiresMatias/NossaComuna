@@ -14,7 +14,6 @@ export function useAuthentication() {
   const loading = ref<boolean>(false)
   const token = useCookie('auth-token', {
     default: () => '',
-    httpOnly: true,
     secure: true,
     sameSite: 'strict'
   })
@@ -47,8 +46,10 @@ export function useAuthentication() {
     try {
       loading.value = true
 
-      const { user } = await services.auth.signIn(form.email, form.password)
+      const { user, accessToken } = await services.auth.signIn(form.email, form.password)
 
+      token.value = accessToken
+      
       useMySelf.setUser({...user.profile, email: user.email})
     
       loading.value = false

@@ -13,8 +13,8 @@ export function useMyself() {
   const lcStorage = useLocalStorage()
   const token = useCookie('auth-token', {
     default: () => '',
-    readonly: false,
-    secure: true
+    secure: true,
+    sameSite: 'strict'
   })
   const services = useServices()
 

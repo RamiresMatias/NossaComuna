@@ -28,7 +28,7 @@
     <section class="w-full h-full mx-auto bg-white rounded-md flex flex-col col-span-full lg:col-span-8 shadow-sm">
       <NuxtImg 
         v-if="post.coverImageUrl"
-        :src="post.coverImageUrl + '?c=' + new Date()"
+        :src="post.coverImageUrl"
         alt="Imagem de capa do post"
         class="w-full h-full max-h-[400px] object-cover rounded-t-md mb-8"
         loading="lazy"
@@ -36,9 +36,15 @@
       />
       <section class="w-full h-full flex flex-col max-w-[880px] px-4 mx-auto" :class="{'mt-8': !post.coverImageUrl}">
         <div class="flex w-full gap-2 flex-col min-[300px]:flex-row">
-          <Avatar :image="post.profile.avatarUrl" shape="circle" size="large" alt="Avatar do autor do perfil" />
+          <NuxtImg 
+            :src="post.profile.avatarUrl"
+            alt="ImAvatar do author"
+            class="w-full h-full max-h-[48px] max-w-[48px] object-cover rounded-full"
+            loading="lazy"
+            decoding="auto"
+          />
           <div class="w-full h-full flex flex-col flex-1 gap-1">
-            <p class=" text-base lg:text-lg text-[--title-color] font-bold text-balance">
+            <p class=" text-base text-[--title-color] font-bold text-balance">
               {{ post.profile.username }}
             </p>
             <p class="text-xs font-regular text-gray-500">
@@ -65,13 +71,13 @@
             class="flex gap-2 items-center bg-neutral-100" 
             severity="secondary"
           >
-            <span class="text-gray-600 text-sm">{{ tag.description }}</span>
+            <span class="text-gray-600 text-xs">{{ tag.description }}</span>
           </Tag>
         </div>
-        <h1 class="text-5xl font-bold text-pretty tracking-wide mb-6">
+        <h1 class="text-3xl font-bold text-pretty tracking-wide mb-6">
           {{ post.title }}
         </h1>
-        <TiptapEditor ref="tiptapRef" v-model="post.content" readonly></TiptapEditor>
+        <TiptapEditor ref="tiptapRef" v-model="post.content" readonly class="text-xs"></TiptapEditor>
       </section>
       <div class="w-full h-[2px] bg-gray-200 mt-6"></div>
       <section class="w-full h-full flex flex-col max-w-[880px] px-4 mx-auto py-6 gap-10">

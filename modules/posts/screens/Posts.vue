@@ -85,23 +85,36 @@ import { useTag } from '@/modules/tag/composables/useTag/useTag'
 import { useScrollBody } from '@/composables/useScrollBody/useScrollBody'
 import { usePostList } from '@/modules/posts/composables/usePostList/usePostList'
 
+
 const containerContentRef = inject<Ref<HTMLDivElement>>('containerContentRef')
 const loadingMore = ref<boolean>(false)
+  
+const services = useServices()
 
 const { scrollEnd } = useScrollBody(containerContentRef)
 const { list: tags, loading: loadingTags } = useTag()
 
-const { filters, posts, loading, canFetchMore, getPostList, getListLazy } = usePostList()
+const { filters, posts: teste, loading: loadingTestes, canFetchMore, page, getPostList, getListLazy } = usePostList()
 
-// const { data: postsAsync } = useAsyncData('posts', () => {
-//   return services.post.getAllPosts({ 
-//     from: from.value, 
-//     to: to.value,
-//     filters: { ...filters }
-//   })
-// })
+const { data: postsAsync, status } = useAsyncData('posts', async () => {
+  const response = await services.post.getAllPosts({
+    size: 10, 
+    to: page.value,
+    filters: { ...filters }
+  })
 
-// const posts = computed(() => postsAsync.value.results || [])
+  prerenderRoutes(response.toSpliced(0, 10).map(p => {
+    return `/${p.profile.username}/${p.code}`
+  }))
+
+  page.value += 10
+  canFetchMore.value = posts.value.length !== response.length
+
+  return response
+})
+
+const loading = computed(() => status.value === 'pending')
+const posts = computed(() => postsAsync.value || [])
 
 watch(scrollEnd, (nVal, oVal) => {
   if (nVal && !oVal && !loading.value) {
