@@ -25,8 +25,30 @@ export default defineNuxtConfig({
     'nuxt-vitalizer',
     'nuxt-lazy-hydrate',
     'nuxt-delay-hydration',
-    'nuxt-mailer'
+    'nuxt-mailer',
+    '@nuxtjs/robots',
+    '@nuxtjs/sitemap'
   ],
+
+  sitemap: {
+    sources: ['/api/__sitemap__/urls'],
+  },
+
+  robots: {
+    allow: [
+      '/',
+      '/posts',
+      ':username/:code'
+    ],
+    disallow: [
+      '/profile/edit/:id',
+      '/auth',
+      '/create-account',
+      '/forgot-password',
+      '/confirm/:email',
+      '/sitemap.xml'
+    ],
+  },
 
   css: ['primeicons/primeicons.css'],
 
@@ -108,6 +130,7 @@ export default defineNuxtConfig({
 
   experimental: {
     componentIslands: true,
+    renderJsonPayloads: false
   },
 
   routeRules: {

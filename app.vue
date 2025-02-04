@@ -10,8 +10,6 @@
 prerenderRoutes(['/posts'])
 preloadRouteComponents('/posts')
 
-// await prefetchComponents(['Post'])
-
 
 useHead({
   title: '👨‍💻 NossaComuna'

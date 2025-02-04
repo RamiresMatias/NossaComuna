@@ -45,6 +45,8 @@ export function usePostList() {
     getPostList()
   }
 
+  const setPage = (num: number) => page.value = num
+
   // onMounted(() => {
   //   getPostList()
   // })
@@ -57,5 +59,6 @@ export function usePostList() {
     page,
     getPostList,
     getListLazy,
+    setPage
   }
 }

@@ -14,6 +14,7 @@
           width="40px"
           height="40px"
           format="webp"
+          :ismap="false"
         />
         <i v-else class="pi pi-user rounded-full w-10 h-10"></i>
         <div class="w-full h-full flex flex-col flex-1">
@@ -67,18 +68,5 @@ import type { PostType } from '@/types/index'
 
 const Stat = resolveComponent('Stat')
 
-const props = withDefaults(
-  defineProps<PostType>(),
-  {
-    code: 'nome-da-discussao',
-    title: 'Nome da discussão que o klebin criou',
-    id: '',
-    coverImage: '',
-    likes: 0,
-    comments: 0,
-    profile: () => Object.create({username: 'Klebin', avatarUrl: 'https://i.ibb.co/VwpJcdH/1ca5d6cede414702a3fd2eeb12bb68b8.jpg'}),
-    createdAt: () => new Date(),
-    tags: () => [],
-  }
-)
+defineProps<PostType>()
 </script>

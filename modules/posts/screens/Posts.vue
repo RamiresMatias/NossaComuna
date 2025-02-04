@@ -77,10 +77,6 @@
 </template>
 
 <script setup lang="ts">
-// const Post = prefetchComponents('Post')
-// const PostSkeleton = resolveComponent('PostSkeleton')
-
-
 import { useTag } from '@/modules/tag/composables/useTag/useTag'
 import { useScrollBody } from '@/composables/useScrollBody/useScrollBody'
 import { usePostList } from '@/modules/posts/composables/usePostList/usePostList'
@@ -88,15 +84,17 @@ import { usePostList } from '@/modules/posts/composables/usePostList/usePostList
 
 const containerContentRef = inject<Ref<HTMLDivElement>>('containerContentRef')
 const loadingMore = ref<boolean>(false)
+const page = ref<number>(0)
   
 const services = useServices()
 
 const { scrollEnd } = useScrollBody(containerContentRef)
 const { list: tags, loading: loadingTags } = useTag()
 
-const { filters, posts: teste, loading: loadingTestes, canFetchMore, page, getPostList, getListLazy } = usePostList()
+const { filters, canFetchMore, getListLazy } = usePostList()
 
-const { data: postsAsync, status } = useAsyncData('posts', async () => {
+const { data: postsAsync, status, execute } = useAsyncData('posts', async () => {
+  console.log(page.value);
   const response = await services.post.getAllPosts({
     size: 10, 
     to: page.value,
@@ -107,7 +105,7 @@ const { data: postsAsync, status } = useAsyncData('posts', async () => {
     return `/${p.profile.username}/${p.code}`
   }))
 
-  page.value += 10
+  page.value = 1
   canFetchMore.value = posts.value.length !== response.length
 
   return response
@@ -148,7 +146,7 @@ const selectTag = (id: string) => {
 const onScroll = async () => {
   if (!canFetchMore.value) return (loadingMore.value = false)
   loadingMore.value = true
-  await getPostList()
+  await execute()
   loadingMore.value = false
 }
 

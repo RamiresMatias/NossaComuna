@@ -26,7 +26,6 @@
               decoding="auto"
               format="webp"
               quality="20"
-              preload
             />
             <div v-else class="flex items-center justify-center w-8 h-8 rounded-full bg-slate-200 text-slate-600">
               <i class="pi pi-user"></i>
