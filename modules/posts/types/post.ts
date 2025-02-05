@@ -1,4 +1,4 @@
-import type { CommentType } from "~/types"
+import type { CommentType, PostType } from "~/types"
 
 export interface ILikeCommentProps {
   commentId: string
@@ -25,4 +25,9 @@ export interface ICommentPost {
   avatarUrl: string
   likes: number
   comments: ICommentPost[]
+}
+
+export interface IPostResponse {
+  totalItems: number
+  items: PostType[]
 }

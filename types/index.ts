@@ -1,4 +1,3 @@
-import type { Database } from "@/libs/supabase/schema"
 
 export interface Tag {
   id: string
@@ -96,38 +95,6 @@ export interface EditPostType extends Omit<PostDetail, "profile" | "likes" | "li
   profileId?: string
   coverImage?: File
   tags: string[]
-}
-
-export type ProfileTableRow = Database['public']['Tables']['profiles'] 
-export type PostTable = Database['public']['Tables']['post']
-export type CommentTable = Database['public']['Tables']['comment']
-export type TagTable = Database['public']['Tables']['tag']
-export type PostTagTable = Database['public']['Tables']['tag_x_post']
-
-export type ReadAllRow = PostTable['Row'] & {
-  profiles: Partial<ProfileTableRow['Row']> | null
-  likes?: {count: number}[]
-  comment?: {count: number}[]
-  tag_x_post: {
-    tag: Tag
-  }[]
-}
-
-export type ReadOneRow = PostTable['Row'] & {
-  profiles: ProfileTableRow['Row'] | null
-  likes: {count: number}[]
-}
-
-export type ReadAllRowComments = CommentTable['Row'] & {
-  profiles: ProfileTableRow['Row'] | null
-}
-
-export type ReadOnePostRow = Database['public']['Functions']['get_post_by_code']['Returns']
-export type ReadAllComments = Database['public']['Functions']['get_all_comments']['Returns']
-
-export type ReadAllTags = TagTable['Row']
-export type ReadAllPostTags = PostTagTable['Row'] & {
-  tag: Tag
 }
 
 export interface BindTagProps {

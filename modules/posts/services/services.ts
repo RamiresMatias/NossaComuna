@@ -1,7 +1,7 @@
-import type { CreatePostType, EditPostType, FilterPostListProps, PostType, ReadAllRow, ReadOneRow } from "@/types"
+import type { CreatePostType, EditPostType, FilterPostListProps } from "@/types"
 
 import type { AxiosInstance } from "axios"
-import type { ICreateComment } from "../types/post"
+import type { ICreateComment, IPostResponse } from "../types/post"
 
 interface GetAllPosts {
   to: number,
@@ -11,7 +11,7 @@ interface GetAllPosts {
 
 export default (http: AxiosInstance) => ({
 
-  async getAllPosts (params: GetAllPosts): Promise<PostType[]> {
+  async getAllPosts (params: GetAllPosts): Promise<IPostResponse> {
 
     const { data } = await http.get('/post', {
       params: {
@@ -22,12 +22,16 @@ export default (http: AxiosInstance) => ({
       },
       paramsSerializer: () => serializeParams({...params.filters, to: params.to, size: params.size})
     })
-    return data.map(el => ({
-      ...el,
-      likes: el._count.likes,
-      comments: el._count.comments,
-      tags: el.tags.map(el => ({...el.Tag}))
-    }))
+
+    return {
+      items: data.items.map(el => ({
+        ...el,
+        likes: el._count.likes,
+        comments: el._count.comments,
+        tags: el.tags.map(el => ({...el.Tag}))
+      })),
+      totalItems: data.totalItems
+    }
   },
 
   async getPostByCode ({username, code}: {username: string; code: string}) {

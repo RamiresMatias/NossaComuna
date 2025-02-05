@@ -21,17 +21,18 @@ export function usePostList() {
     try {
       loading.value = true
   
-      const data = await services.post.getAllPosts({ 
-        size: 10, 
+      const { totalItems, items } = await services.post.getAllPosts({ 
+        size: 6, 
         to: page.value,
         filters: { ...filters }
       })
 
-      page.value += 10
-      posts.value.push(...data)
-      canFetchMore.value = posts.value.length !== data.length
+      page.value += 6
+      posts.value.push(...items)
+      canFetchMore.value = posts.value.length < totalItems
   
       loading.value = false
+      return posts.value
     } catch (error) {
       loading.value = false
     }
@@ -47,9 +48,6 @@ export function usePostList() {
 
   const setPage = (num: number) => page.value = num
 
-  // onMounted(() => {
-  //   getPostList()
-  // })
 
   return {
     loading,

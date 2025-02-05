@@ -18,7 +18,7 @@
     </div>
     <div class="sm:col-span-8 order-2 sm:order-1 col-span-full flex flex-col gap-4 w-full">
       <Post
-        v-if="!loading"
+        v-if="!loading || posts.length"
         v-for="(item, i) in posts" 
         :key="i"
         :id="item.id"
@@ -36,8 +36,8 @@
         Ops... Nenhum post encontrado, tente alterar o filtro para trazer outros resultados.
       </div>
       <PostSkeleton 
-        v-if="loading || loadingMore"
-        v-for="item in 1"
+        v-if="loading"
+        v-for="item in 2"
         :key="item"
         class="sm:col-span-8 col-span-full"
       />
@@ -83,36 +83,18 @@ import { usePostList } from '@/modules/posts/composables/usePostList/usePostList
 
 
 const containerContentRef = inject<Ref<HTMLDivElement>>('containerContentRef')
-const loadingMore = ref<boolean>(false)
-const page = ref<number>(0)
   
-const services = useServices()
-
 const { scrollEnd } = useScrollBody(containerContentRef)
 const { list: tags, loading: loadingTags } = useTag()
 
-const { filters, canFetchMore, getListLazy } = usePostList()
+const { filters, canFetchMore, getListLazy, getPostList, page } = usePostList()
 
-const { data: postsAsync, status, execute } = useAsyncData('posts', async () => {
-  console.log(page.value);
-  const response = await services.post.getAllPosts({
-    size: 10, 
-    to: page.value,
-    filters: { ...filters }
-  })
-
-  prerenderRoutes(response.toSpliced(0, 10).map(p => {
-    return `/${p.profile.username}/${p.code}`
-  }))
-
-  page.value = 1
-  canFetchMore.value = posts.value.length !== response.length
-
-  return response
+const { data: postsServer, status, execute } = useAsyncData('posts', async () => {
+  return getPostList()
 })
 
 const loading = computed(() => status.value === 'pending')
-const posts = computed(() => postsAsync.value || [])
+const posts = computed(() => postsServer.value || [])
 
 watch(scrollEnd, (nVal, oVal) => {
   if (nVal && !oVal && !loading.value) {
@@ -122,12 +104,10 @@ watch(scrollEnd, (nVal, oVal) => {
 
 const getRequestLazy = debounce(() => {
   getListLazy()
-  loadingMore.value = false
 }, 2000)
 
 watch(filters, () => {
   canFetchMore.value = true
-  loadingMore.value = true
 
   getRequestLazy()
 }, {
@@ -144,10 +124,8 @@ const selectTag = (id: string) => {
 }
 
 const onScroll = async () => {
-  if (!canFetchMore.value) return (loadingMore.value = false)
-  loadingMore.value = true
-  await execute()
-  loadingMore.value = false
+  if (!canFetchMore.value) return
+  execute()
 }
 
 useHead({

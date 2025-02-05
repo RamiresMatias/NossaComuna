@@ -1,7 +1,7 @@
 <template>
   <PostDetailLoading v-if="isBusy || !currentPost?.id" />
   <div v-else class="grid grid-cols-12 w-full max-w-[1380px] px-4 lg:px-0 gap-y-6">
-    <section v-if="!isBusy" class="col-span-0.5 hidden lg:flex flex-col items-center m-0 p-0 gap-4">
+    <section v-if="!isBusy" class="col-span-0.5 hidden lg:flex flex-col items-end m-0 p-0 gap-4">
       <Button
         v-if="isAuthorPost" 
         icon="pi pi-pencil" 
@@ -10,20 +10,37 @@
         rounded 
         aria-label="Editar" 
         v-tooltip="{ value: 'Editar post', showDelay: 300, hideDelay: 300 }"
-        class="text-xl"
+        class="text-base text-primary-300"
         @click="navigateToEdit"
       />
-      <Button 
-        v-if="!isAuthorPost && user?.id"
-        :icon="post.liked ? 'pi pi-heart-fill' : 'pi pi-heart'" 
-        severity="contrast" 
-        text 
-        rounded 
-        aria-label="Editar" 
-        v-tooltip="{ value: 'Curtir post', showDelay: 300, hideDelay: 300 }"
-        class="text-xl text-primary-300"
-        @click="post.liked ? deslikePost() : likePost()"
-      />
+      <div class="flex flex-col items-center">
+        <Button 
+          v-if="user?.id"
+          :icon="post.liked ? 'pi pi-heart-fill' : 'pi pi-heart'" 
+          severity="contrast" 
+          text 
+          rounded 
+          aria-label="Curtir post" 
+          v-tooltip="{ value: 'Curtir post', showDelay: 300, hideDelay: 300 }"
+          class="text-base text-primary-300"
+          @click="post.liked ? deslikePost() : likePost()"
+        />
+        <span class="text-sm text-neutral-500">{{ post.likes }}</span>
+      </div>
+      <div class="flex flex-col items-center">
+        <Button
+          v-if="user?.id"
+          icon="pi pi-comments" 
+          severity="contrast" 
+          text
+          rounded
+          aria-label="Comentários"
+          v-tooltip="{ value: 'Comentários', showDelay: 300, hideDelay: 300 }"
+          class="text-base text-primary-300"
+          @click="() => {}"
+        />
+        <span class="text-sm text-neutral-500">{{ comments.length }}</span>
+      </div>
     </section>
     <section class="w-full h-full mx-auto bg-white rounded-md flex flex-col col-span-full lg:col-span-8 shadow-sm">
       <NuxtImg 

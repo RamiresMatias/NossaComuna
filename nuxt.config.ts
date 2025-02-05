@@ -34,19 +34,23 @@ export default defineNuxtConfig({
     sources: ['/api/__sitemap__/urls'],
   },
 
+  site: {
+    indexable: true
+  },
+
   robots: {
+    UserAgent: '*',
     allow: [
       '/',
       '/posts',
-      ':username/:code'
+      '/:username/:code'
     ],
     disallow: [
       '/profile/edit/:id',
       '/auth',
       '/create-account',
       '/forgot-password',
-      '/confirm/:email',
-      '/sitemap.xml'
+      '/confirm/:email'
     ],
   },
 
@@ -134,7 +138,9 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
-    '/posts': { prerender: true, isr: true }
+    '/posts': { prerender: true, isr: true },
+    '/:username/:code': { prerender: true, isr: true },
+    '/': { prerender: true, isr: true },
   },
 
   hooks: {
