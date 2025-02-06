@@ -8,7 +8,6 @@ export function usePostList() {
 
   const loading = ref<boolean>(false)
   const posts = ref<PostType[]>([])
-  const total = ref<number>(0)
   const filters = reactive<FilterPostListProps>({
     tags: [],
     search: ''
@@ -38,15 +37,13 @@ export function usePostList() {
     }
   }
 
-  const getListLazy = () => {
+  const resetPagination = () => {
     page.value = 0
     posts.value = []
-    total.value = 0
-
-    getPostList()
   }
 
   const setPage = (num: number) => page.value = num
+  const setLoading = (value: boolean) => loading.value = value
 
 
   return {
@@ -56,7 +53,8 @@ export function usePostList() {
     canFetchMore,
     page,
     getPostList,
-    getListLazy,
-    setPage
+    resetPagination,
+    setPage,
+    setLoading
   }
 }

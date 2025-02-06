@@ -14,7 +14,7 @@
       <i class="pi pi-user rounded-full bg-slate-300 text-6xl p-6"></i>
     </div>
     <h1 class=" text-gray-700 font-bold text-2xl md:text-3xl">@{{ props.username }}</h1>
-    <div class="flex gap-2 mt-2 flex-wrap items-center justify-center">
+    <!-- <div class="flex gap-2 mt-2 flex-wrap items-center justify-center">
       <Button 
         label="Ver perfil"
         size="small"
@@ -29,7 +29,7 @@
         icon-pos="right"
         @click="() => emit('share', props.username)" 
       />
-    </div>
+    </div> -->
   </div>
 </template>
 

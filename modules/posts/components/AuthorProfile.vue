@@ -1,7 +1,13 @@
 <template>
   <div class="w-full max-h-96 bg-white shadow-sm border-t-[30px] border-t-primary-600 border-solid rounded-md flex flex-col gap-5 box-border p-4">
     <NuxtLink :to="`/${username}`" :prefetch="false" class="flex gap-2 items-end -mt-8">
-      <Avatar :image="avatarUrl" shape="circle" size="large" aria-label="Avatar do autor do post" alt="Avatar do autor do post" />
+      <NuxtImg 
+        :src="avatarUrl"
+        alt="Avatar do author"
+        class="w-full h-full max-h-[48px] max-w-[48px] object-cover rounded-full"
+        loading="lazy"
+        decoding="auto"
+      />
       <span class="font-bold text-gray-700 text-lg hover:text-blue-900">{{ username }}</span>
     </NuxtLink>
     <div v-if="bio" class="font-medium text-slate-500">

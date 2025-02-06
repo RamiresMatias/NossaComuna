@@ -6,7 +6,7 @@
       <div class="flex items-center gap-2">
         <NuxtImg
           v-if="profile.avatarUrl"
-          :src="profile.avatarUrl + '?c=' + new Date()"
+          :src="profile.avatarUrl"
           alt="Avatar do autor do post"
           class="rounded-full"
           loading="lazy"

@@ -1,6 +1,6 @@
 <template>
   <div class="w-full flex gap-2">
-    <Avatar :image="profilePic" shape="circle" />
+    <Avatar :image="profilePic" shape="circle" alt="Avatar do usuário" />
     <div class="flex flex-col gap-2 flex-1">
       <Textarea v-model="description" autoResize rows="4" class="" :placeholder="placeholder ?? 'Insira seu comentário aqui'" />
       <div class="flex gap-2">

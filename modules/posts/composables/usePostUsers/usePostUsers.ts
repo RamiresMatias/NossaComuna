@@ -22,7 +22,6 @@ export function usePostUsers(profile: Ref<Profile>) {
 
   const getPostsByLiked = async (profileId: string) => {
     try {
-      console.log(profileId);
       loading.value = true
   
       postsLiked.value = await services.post.getPostsByLiked(profileId)
@@ -33,13 +32,10 @@ export function usePostUsers(profile: Ref<Profile>) {
     }
   }
 
-  watch(
-    () => profile.value.id, 
-    () => {
-      getPostsByUser(profile.value.username)
-      getPostsByLiked(profile.value.id)
-    }
-  )
+  onMounted(() =>{
+    getPostsByUser(profile.value.username)
+    getPostsByLiked(profile.value.id)
+  })
   
 
   return {

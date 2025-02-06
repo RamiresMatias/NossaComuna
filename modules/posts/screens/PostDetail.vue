@@ -55,7 +55,7 @@
         <div class="flex w-full gap-2 flex-col min-[300px]:flex-row">
           <NuxtImg 
             :src="post.profile.avatarUrl"
-            alt="ImAvatar do author"
+            alt="Avatar do author"
             class="w-full h-full max-h-[48px] max-w-[48px] object-cover rounded-full"
             loading="lazy"
             decoding="auto"
@@ -97,7 +97,7 @@
         <TiptapEditor ref="tiptapRef" v-model="post.content" readonly class="text-xs"></TiptapEditor>
       </section>
       <div class="w-full h-[2px] bg-gray-200 mt-6"></div>
-      <section class="w-full h-full flex flex-col max-w-[880px] px-4 mx-auto py-6 gap-10">
+      <section id="comments" class="w-full h-full flex flex-col max-w-[880px] px-4 mx-auto py-6 gap-10">
         <h2 class="text-2xl font-semibold">Comentários ({{ comments.length }})</h2>
         <CommentLoading v-if="loadingComments" v-for="item in 4" :key="item" />
         <CreateComment 

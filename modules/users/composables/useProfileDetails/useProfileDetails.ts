@@ -14,10 +14,7 @@ export function useProfileDetails(username: string) {
     createdAt: new Date()
   })
   
-  const getProfileDetails = async () => {
-
-    if (!username) return navigateTo('/404')
-  
+  const getProfileDetails = async (): Promise<Profile> => {  
     try {
       loading.value = true
       const data = await services.users.getProfileByUsername(username)
@@ -26,18 +23,14 @@ export function useProfileDetails(username: string) {
         email: data.user.email
       })
 
-      
-
       loading.value = false
+
+      return profile
     } catch (error) {
       console.log(error);
       loading.value = false
     }
   }
-
-  onMounted(() => {
-    getProfileDetails()
-  })
 
   return {
     loading,

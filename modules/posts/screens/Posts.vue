@@ -2,16 +2,17 @@
   <div class="grid grid-cols-12 w-full gap-4 mx-auto items-start pt-1 pb-8 2xl:px-0 relative mb-4 box-border">
     <div class="col-span-full flex w-full">
       <IconField class="w-full" icon-position="left">
-        <InputIcon v-if="loading || loadingMore" class="pi pi-spin pi-spinner" />
+        <InputIcon v-if="loading" class="pi pi-spin pi-spinner" />
         <InputIcon v-else class="pi pi-search" />
         <InputText 
           v-model="filters.search" 
-          type="text" 
+          type="text"
+          size="small"
           placeholder="Pesquise por um post" 
         ></InputText>
       </IconField>
     </div>
-    <div v-if="!loading && !loadingMore && !posts?.length && !hasFilters" class="col-span-full flex flex-col items-center justify-center gap-4">
+    <div v-if="!loading && !posts?.length && !hasFilters" class="col-span-full flex flex-col items-center justify-center gap-4">
       <CharactersListEmpty class="w-[400px]" />
       <h2 v-if="filters.search?.trim?.()" class="text-xl text-center ">Ops... Não encontramos nenhum post, que tal procurar por outro título</h2>
       <h2 v-else class="text-xl text-center ">Ops... Não há nenhum post criado. Crie um post agora mesmo e compartilhe seus conhecimentos</h2>
@@ -32,7 +33,7 @@
         :likes="item.likes"
         :tags="item.tags"
       />
-      <div v-if="posts.length === 0 && hasFilters && !loadingMore && !loading" class="text-xl text-center bg-white p-4 rounded-md shadow-sm">
+      <div v-if="posts.length === 0 && hasFilters && !loading" class="text-xl text-center bg-white p-4 rounded-md shadow-sm">
         Ops... Nenhum post encontrado, tente alterar o filtro para trazer outros resultados.
       </div>
       <PostSkeleton 
@@ -87,13 +88,13 @@ const containerContentRef = inject<Ref<HTMLDivElement>>('containerContentRef')
 const { scrollEnd } = useScrollBody(containerContentRef)
 const { list: tags, loading: loadingTags } = useTag()
 
-const { filters, canFetchMore, getListLazy, getPostList, page } = usePostList()
+const { filters, canFetchMore, resetPagination, getPostList, setLoading, loading: loadingRequest } = usePostList()
 
-const { data: postsServer, status, execute } = useAsyncData('posts', async () => {
+const { data: postsServer, status, execute, refresh } = useAsyncData('posts', async () => {
   return getPostList()
 })
 
-const loading = computed(() => status.value === 'pending')
+const loading = computed(() => status.value === 'pending' || loadingRequest.value)
 const posts = computed(() => postsServer.value || [])
 
 watch(scrollEnd, (nVal, oVal) => {
@@ -103,12 +104,13 @@ watch(scrollEnd, (nVal, oVal) => {
 })
 
 const getRequestLazy = debounce(() => {
-  getListLazy()
+  resetPagination()
+  refresh()
 }, 2000)
 
 watch(filters, () => {
   canFetchMore.value = true
-
+  setLoading(true)
   getRequestLazy()
 }, {
   deep: true
