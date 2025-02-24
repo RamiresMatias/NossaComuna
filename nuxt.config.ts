@@ -111,25 +111,6 @@ export default defineNuxtConfig({
 
   builder: 'vite',
 
-  vite: {
-    build: {
-      chunkSizeWarningLimit: 1000,
-      cssMinify: false,
-      minify: true,
-      rollupOptions: {
-        output: {
-          inlineDynamicImports: true
-        }
-      }
-    },
-    css: {
-      preprocessorOptions: {
-        scss: {
-          api: 'modern-compiler'
-        }
-      }
-    }
-  },
 
   experimental: {
     componentIslands: true,
