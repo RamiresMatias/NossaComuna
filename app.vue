@@ -7,10 +7,6 @@
 
 <script setup lang="ts">
 
-prerenderRoutes(['/posts'])
-preloadRouteComponents('/posts')
-
-
 useHead({
   title: '👨‍💻 NossaComuna'
 })
