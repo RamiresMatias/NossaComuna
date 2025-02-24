@@ -1,1 +1,0 @@
--- alter table post alter column description varchar;
