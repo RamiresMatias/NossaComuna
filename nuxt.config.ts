@@ -66,14 +66,6 @@ export default defineNuxtConfig({
     },
   },
 
-  nitro: {
-    compressPublicAssets: {
-      brotli: true,
-      gzip: true
-    },
-    minify: true,
-  },
-
   imports: {
     dirs: [
       "./composables/useServices",
