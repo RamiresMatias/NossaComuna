@@ -66,6 +66,14 @@ export default defineNuxtConfig({
     },
   },
 
+  nitro: {
+    compressPublicAssets: {
+      brotli: true,
+      gzip: true
+    },
+    minify: true,
+  },
+
   imports: {
     dirs: [
       "./composables/useServices",
@@ -103,15 +111,49 @@ export default defineNuxtConfig({
 
   builder: 'vite',
 
+  vite: {
+    build: {
+      chunkSizeWarningLimit: 1000,
+      cssMinify: true,
+      minify: true,
+      rollupOptions: {
+        output: {
+          inlineDynamicImports: true
+        }
+      }
+    },
+    css: {
+      preprocessorOptions: {
+        scss: {
+          api: 'modern-compiler'
+        }
+      }
+    }
+  },
+
   experimental: {
     componentIslands: true,
     renderJsonPayloads: false
   },
 
-  routeRules: {
+  /*routeRules: {
     '/posts': { prerender: true, isr: true },
     '/:username/:code': { prerender: true, isr: true },
     '/': { prerender: true, isr: true },
+  },*/
+
+  hooks: {
+    'build:manifest': (manifest) => {
+      const css = manifest['node_modules/nuxt/dist/app/entry.js']?.css
+
+      if (css) {
+
+        for (let i = css.length - 1; i >= 0; i--) {
+
+          if (css[i].startsWith('entry')) css.splice(i, 1)
+        }
+      }
+    },
   },
 
   plugins: [
