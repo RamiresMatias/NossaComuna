@@ -136,6 +136,10 @@ export default defineNuxtConfig({
     }
   },
 
+  image: {
+    provider: 'none'
+  },
+
   experimental: {
     componentIslands: true,
     renderJsonPayloads: false
