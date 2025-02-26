@@ -128,6 +128,11 @@ export default defineNuxtConfig({
           api: 'modern-compiler'
         }
       }
+    },
+    server: {
+      headers: {
+        "cache-control": 'no-transform'
+      }
     }
   },
 
