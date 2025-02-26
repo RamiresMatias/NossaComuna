@@ -13,7 +13,6 @@
           decoding="async"
           width="40px"
           height="40px"
-          format="webp"
           :ismap="false"
         />
         <i v-else class="pi pi-user rounded-full w-10 h-10"></i>
