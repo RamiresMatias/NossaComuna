@@ -140,6 +140,11 @@ export default defineNuxtConfig({
     provider: 'none'
   },
 
+  sourcemap: {
+    server: true,
+    client: true
+  },
+
   experimental: {
     componentIslands: true,
     renderJsonPayloads: false
