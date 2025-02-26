@@ -16,10 +16,6 @@ export default defineNuxtConfig({
     },
   },
 
-  image: {
-    provider: 'static'
-  },
-
   modules: [
     '@nuxtjs/tailwindcss',
     'nuxt-primevue',
