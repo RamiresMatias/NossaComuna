@@ -23,7 +23,6 @@ export function useTag() {
       loading.value = false
     } catch (error) {
       loading.value = false
-      console.log(error);
     }
   }
 
@@ -31,20 +30,14 @@ export function useTag() {
     try {
       loading.value = true
       
-      const { data } = await services.tag.create(description)
-      const newTag = data[0]
+      const data = await services.tag.create(description)
+      list.value.push(data)
       
       loading.value = false
-      
-      if (newTag) {
-        list.value.push(newTag)
-        return newTag
-      }
-      
-      return false
+
+      return data
     } catch (error) {
       loading.value = false
-      console.log(error);
     }
   }
 

@@ -65,7 +65,7 @@
               {{ post.profile.username }}
             </p>
             <p class="text-xs font-regular text-gray-500">
-              Postado em {{ new Date(post.createdAt).toLocaleDateString('pt-br') }}
+              Postado em {{ post.createdAt }}
             </p>
           </div>
         </div>
@@ -99,9 +99,10 @@
       <div class="w-full h-[2px] bg-gray-200 mt-6"></div>
       <section id="comments" class="w-full h-full flex flex-col max-w-[880px] px-4 mx-auto py-6 gap-10">
         <h2 class="text-2xl font-semibold">Comentários ({{ comments.length }})</h2>
+        <CommentLoading v-if="loadingUser" />
         <CommentLoading v-if="loadingComments" v-for="item in 4" :key="item" />
         <CreateComment 
-          v-if="!loadingComments && user?.id" 
+          v-if="user?.id" 
           v-model="myComment" 
           :profile-pic="user?.avatarUrl" 
           :loading="loadingComments" 
@@ -156,7 +157,7 @@ import { useLike } from '@/modules/posts/composables/useLike/useLike'
 
 import { myselfKey, type MyselfContextProvider } from '@/modules/users/composables/useMyself/useMyself'
 
-const { user } = inject(myselfKey) as MyselfContextProvider
+const { user, loading: loadingUser } = inject(myselfKey) as MyselfContextProvider
 
 const route = useRoute()
 

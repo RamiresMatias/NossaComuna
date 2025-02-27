@@ -27,7 +27,7 @@ export function useUserUpdate({user}: UseUserUpdateOptions) {
     email: '',
     username: '',
     bio: '',
-    createdAt: new Date(),
+    createdAt: null,
     avatar: null
   })
 

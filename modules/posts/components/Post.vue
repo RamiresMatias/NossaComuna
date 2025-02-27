@@ -22,7 +22,7 @@
             {{ profile?.username }}
           </p>
           <p class="text-xs text-gray-600">
-            {{ new Date(createdAt).toLocaleDateString('pt-br') }}
+            {{ createdAt }}
           </p>
         </div>
       </div>

@@ -1,6 +1,3 @@
-import type { BindTagProps, ReadAllPostTags } from "~/types"
-import { readAllPostTagsAdapter } from "./adapter"
-import { v4 } from "uuid"
 import type { AxiosInstance } from "axios"
 
 export default (client: AxiosInstance) => ({ 

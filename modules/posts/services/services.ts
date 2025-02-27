@@ -2,6 +2,7 @@ import type { CreatePostType, EditPostType, FilterPostListProps } from "@/types"
 
 import type { AxiosInstance } from "axios"
 import type { ICreateComment, IPostResponse } from "../types/post"
+import { formatPtBr } from '@/utils/index'
 
 interface GetAllPosts {
   to: number,
@@ -28,7 +29,8 @@ export default (http: AxiosInstance) => ({
         ...el,
         likes: el._count.likes,
         comments: el._count.comments,
-        tags: el.tags.map(el => ({...el.Tag}))
+        tags: el.tags.map(el => ({...el.Tag})),
+        createdAt: formatPtBr(el.createdAt)
       })),
       totalItems: data.totalItems
     }
@@ -43,7 +45,12 @@ export default (http: AxiosInstance) => ({
       tags: data.tags.map((el) => ({
         description: el.Tag.description,
         id: el.tagId
-      }))
+      })),
+      profile: {
+        ...data.profile,
+        createdAt: formatPtBr(data.profile.createdAt)
+      },
+      createdAt: formatPtBr(data.createdAt)
     }
   },
 

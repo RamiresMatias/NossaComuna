@@ -46,8 +46,6 @@
 </template>
 
 <script setup lang="ts">
-import type { Tag } from '~/types'
-
 import { useTag } from '@/modules/tag/composables/useTag/useTag'
 
 const tags = defineModel<string[]>({

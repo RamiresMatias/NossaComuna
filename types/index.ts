@@ -21,7 +21,7 @@ export interface PostType {
   id: string
   code: string
   title: string
-  createdAt?: Date
+  createdAt?: string
   profile: Partial<Profile>
   coverImage: string
   isDraft?: boolean

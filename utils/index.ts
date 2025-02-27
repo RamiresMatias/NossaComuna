@@ -50,15 +50,6 @@ export const debounce = (callback: Function, timeout: number = 1000) => {
   };
 }
 
-export const debounce_v2 = (callback: Function, timeout: number = 1000) => {
-  let timer
-  clearTimeout(timer)
-
-  timer = setTimeout(() => {
-    callback()
-  }, timeout);
-}
-
 export const serializeParams = (params: any) => {
   let str = ''
 
@@ -73,4 +64,11 @@ export const serializeParams = (params: any) => {
   }
 
   return str
+}
+
+export const formatPtBr = (date: string | Date): string => {
+  if (!date) return ''
+
+  const dtTemp = typeof date === 'string' ? new Date(date) : date
+  return new Intl.DateTimeFormat('pt-BR').format(dtTemp)
 }

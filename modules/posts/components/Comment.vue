@@ -2,12 +2,11 @@
   <div class="w-full flex flex-col gap-2">
     <div class="w-full flex gap-2">
       <NuxtImg
-        :src="props.avatarUrl + '?c=' + new Date()"
+        :src="props.avatarUrl"
         alt="Avatar do usuário"
         class="w-8 h-8 rounded-full"
         loading="lazy"
         decoding="auto"
-        format="webp"
       />
       <div class="w-full flex flex-col">
         <section class="w-full border border-solid border-gray-200 rounded-md flex flex-col p-2">
@@ -74,7 +73,7 @@
         :email="reply.email"
         :id="reply.id"
         :is-author="reply.profileId === user?.id"
-        :comments="reply?.comments"
+        :comments="reply.comments"
         class="mt-4"
         :level="1"
         :liked="reply.liked"

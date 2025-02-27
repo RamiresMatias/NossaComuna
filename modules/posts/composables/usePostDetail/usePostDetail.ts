@@ -15,10 +15,10 @@ export function usePostDetail({ username, code }: UsePostDetailProps) {
   const post = reactive<PostDetail>({
     id: '',
     title: '',
-    description: null,
+    content: null,
     coverImageUrl: '',
     code: '',
-    createdAt: new Date(),
+    createdAt: null,
     isDraft: false,
     likes: 0,
     profile: {},
@@ -29,9 +29,9 @@ export function usePostDetail({ username, code }: UsePostDetailProps) {
     try {
       loading.value = true
     
-      const data = await services.post.getRpcPostByCode({username, code, userId: user.value.id})
+      // const data = await services.post.getRpcPostByCode({username, code, userId: user.value.id})
   
-      Object.assign(post, data)
+      // Object.assign(post, data)
   
       loading.value = false
     } catch (error) {

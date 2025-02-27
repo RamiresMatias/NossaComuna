@@ -18,8 +18,8 @@ export function useAuthor(post: Ref<PostDetail>) {
     if (!post.value?.profile?.id) return
     try {
       loading.value = true
-      const data = await services.users.getUserById(post.value.profile.id)
-      Object.assign(author, data)
+      // const data = await services.users.getUserById(post.value.profile.id)
+      // Object.assign(author, data)
   
       loading.value = false
     } catch (error) {

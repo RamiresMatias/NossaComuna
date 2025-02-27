@@ -19,7 +19,7 @@
     </div>
     <div class="info">
       <span class="info__title">Entrou em</span>
-      <span v-if="createdAt" class="info__description">{{ new Date(createdAt).toLocaleDateString('pt-br') }}</span>
+      <span v-if="createdAt" class="info__description">{{ createdAt }}</span>
     </div>
   </div>
 </template>

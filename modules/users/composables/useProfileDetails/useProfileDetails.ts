@@ -6,12 +6,12 @@ export function useProfileDetails(username: string) {
   const loading = ref<boolean>(true)
 
   const profile = reactive<Profile>({
-    avatarUrl: 'http://127.0.0.1:54321/storage/v1/object/public/avatars/bd6a03fa-ebc1-4f59-9e8d-c77a30aa6d73/bd6a03fa-ebc1-4f59-9e8d-c77a30aa6d73',
-    bio: 'Software Developer',
-    email: 'teste@teste.com.br',
+    avatarUrl: '',
+    bio: '',
+    email: '',
     id: '',
-    username: 'Usuário teste',
-    createdAt: new Date()
+    username: '',
+    createdAt: null
   })
   
   const getProfileDetails = async (): Promise<Profile> => {  
