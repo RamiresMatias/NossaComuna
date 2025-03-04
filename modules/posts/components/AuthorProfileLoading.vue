@@ -4,7 +4,7 @@
       <Skeleton width="3rem" height="3rem" shape="circle"></Skeleton>
       <Skeleton width="10rem" height="1rem"></Skeleton>
     </NuxtLink>
-    <div class=" font-regular text-gray-500">
+    <div class="  text-gray-500">
       <Skeleton width="18rem" height="1rem"></Skeleton>
     </div>
     <div class="info">

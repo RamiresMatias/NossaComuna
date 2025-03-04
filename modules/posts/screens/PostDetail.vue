@@ -64,7 +64,7 @@
             <p class=" text-base text-[--title-color] font-bold text-balance">
               {{ post.profile.username }}
             </p>
-            <p class="text-xs font-regular text-gray-500">
+            <p class="text-xs  text-gray-500">
               Postado em {{ post.createdAt }}
             </p>
           </div>

@@ -1,5 +1,5 @@
 <template>
-  <div class="p-1 box-border h-full text-inherit text-sm font-regular rounded-md flex items-center justify-center gap-1">
+  <div class="p-1 box-border h-full text-inherit text-sm  rounded-md flex items-center justify-center gap-1">
     <slot name="preffix" />
     <span class="text-inherit">{{ count }}</span>
     <slot name="suffix" />

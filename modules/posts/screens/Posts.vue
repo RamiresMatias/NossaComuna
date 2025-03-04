@@ -52,7 +52,7 @@
         <Tag 
           v-for="tag in tags" 
           :key="tag.id"
-          class="flex gap-2 items-center cursor-pointer transition-all text-xs" 
+          class="flex gap-2 items-center cursor-pointer transition-all text-xs font-light" 
           severity="secondary"
           :class="{
             'bg-primary-300': filters.tags.includes(tag.id),
@@ -62,7 +62,7 @@
         >
           <span 
             :class="{
-              'text-neutral-100': filters.tags.includes(tag.id),
+              'text-neutral-100 ': filters.tags.includes(tag.id),
               'text-gray-600 ': !filters.tags.includes(tag.id)
             }"
           >{{ tag.description }}</span>

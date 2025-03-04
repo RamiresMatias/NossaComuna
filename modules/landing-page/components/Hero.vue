@@ -4,7 +4,7 @@
       Bem vindo a nossa Comunidade
     </h1>
     <div class="w-full h-full bg-white flex flex-col items-center justify-center gap-10">
-      <p class="max-w-5xl w-full font-regular text-balance text-xl lg:text-3xl text-center text-black">
+      <p class="max-w-5xl w-full  text-balance text-xl lg:text-3xl text-center text-black">
         Colabore com a comunidade. Escreva postagens, interaja 
         com as pessoas e compartilhe conhecimento
       </p>

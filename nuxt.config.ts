@@ -30,6 +30,14 @@ export default defineNuxtConfig({
     '@nuxtjs/sitemap'
   ],
 
+  googleFonts: {
+    families: {
+      Poppins: [300, 400, 500, 600, 700]
+    },
+    preload: true,
+    display: 'swap'
+  },
+
   sitemap: {
     sources: ['/api/__sitemap__/urls'],
   },
