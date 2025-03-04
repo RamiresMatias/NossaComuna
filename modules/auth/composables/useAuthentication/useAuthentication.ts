@@ -83,9 +83,9 @@ export function useAuthentication() {
     form,
     loading,
     errors,
+    token,
     authWithEmail,
     validateForm,
     authGithub,
-    token
   }
 }
