@@ -12,7 +12,13 @@
           @navigate-to-edit-profile="handleNavigateEditProfile"
           @navigate-to-post-create="handleNavigateToCreatePost"
         /> 
-        <Header v-if="!loading && !user?.id" @authenticate="handleAuth" @navigate-to-post-create="handlePostCreate" />
+        <Header 
+          v-if="!loading && !user?.id" 
+          :is-authenticated="!!user?.id" 
+          @authenticate="handleAuth" 
+          @navigate-to-post-create="handlePostCreate" 
+          @create-account="handleToCreateAccount"
+        />
       </template>
       <template #content>
         <main class="h-full">
@@ -36,6 +42,7 @@ const handleAuth = () => {
 }
 
 const handlePostCreate = () => router.push('/posts/create')
+const handleToCreateAccount = () => router.push('/create-account')
 
 const handleLogout = async () => {
   logout()

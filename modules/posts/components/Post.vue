@@ -41,7 +41,7 @@
           </Tag>
         </div>
         <div class="w-full flex gap-4 flex-wra">
-          <Stat class="text-primary-600 text-xs" :count="likes">
+          <Stat class="text-primary-700 text-xs" :count="likes">
             <template #preffix>
               <i class="pi pi-heart-fill"></i>
             </template>
@@ -49,7 +49,7 @@
               {{ likes === 1 ? 'Curtida' : 'Curtidas' }}
             </template>
           </Stat>
-          <Stat class="text-primary-600 text-xs" :count="comments">
+          <Stat class="text-primary-700 text-xs" :count="comments">
             <template #preffix>
               <i class="pi pi-comments"></i>
             </template>
