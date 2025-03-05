@@ -13,9 +13,8 @@
         class="text-base text-primary-300"
         @click="navigateToEdit"
       />
-      <div class="flex flex-col items-center">
+      <div v-if="user?.id" class="flex flex-col items-center">
         <Button 
-          v-if="user?.id"
           :icon="post.liked ? 'pi pi-heart-fill' : 'pi pi-heart'" 
           severity="contrast" 
           text 
@@ -27,9 +26,8 @@
         />
         <span class="text-sm text-neutral-500">{{ post.likes }}</span>
       </div>
-      <div class="flex flex-col items-center">
+      <div v-if="user?.id" class="flex flex-col items-center">
         <Button
-          v-if="user?.id"
           icon="pi pi-comments" 
           severity="contrast" 
           text
@@ -61,7 +59,7 @@
             decoding="auto"
           />
           <div class="w-full h-full flex flex-col flex-1 gap-1">
-            <p class=" text-base text-[--title-color] font-bold text-balance">
+            <p class=" text-base text-surface-800 text-balance">
               {{ post.profile.username }}
             </p>
             <p class="text-xs  text-gray-500">
@@ -85,7 +83,7 @@
           <Tag 
             v-for="tag in post.tags" 
             :key="tag.id" 
-            class="flex gap-2 items-center bg-neutral-100" 
+            class="flex gap-2 font-light items-center bg-neutral-100 text-xs" 
             severity="secondary"
           >
             <span class="text-gray-600 text-xs">{{ tag.description }}</span>
@@ -98,7 +96,7 @@
       </section>
       <div class="w-full h-[2px] bg-gray-200 mt-6"></div>
       <section id="comments" class="w-full h-full flex flex-col max-w-[880px] px-4 mx-auto py-6 gap-10">
-        <h2 class="text-2xl font-semibold">Comentários ({{ comments.length }})</h2>
+        <h2 class="text-lg font-semibold">Comentários ({{ comments.length }})</h2>
         <CommentLoading v-if="loadingUser" />
         <CommentLoading v-if="loadingComments" v-for="item in 4" :key="item" />
         <CreateComment 

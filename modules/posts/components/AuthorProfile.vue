@@ -8,9 +8,9 @@
         loading="lazy"
         decoding="auto"
       />
-      <span class="font-bold text-gray-700 text-lg hover:text-blue-900">{{ username }}</span>
+      <span class="font-medium text-base text-surface-800 hover:text-blue-900">{{ username }}</span>
     </NuxtLink>
-    <div v-if="bio" class="font-medium text-slate-500">
+    <div v-if="bio" class="text-surface-500 text-sm">
       {{ bio }}
     </div>
     <div class="info">
@@ -50,7 +50,7 @@ withDefaults(
   }
 
   &__description {
-    @apply text-slate-500 font-medium;
+    @apply text-surface-500 text-sm;
   }
 }
 </style>
