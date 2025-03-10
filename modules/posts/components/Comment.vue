@@ -3,8 +3,10 @@
     <div class="w-full flex gap-2">
       <NuxtImg
         :src="props.avatarUrl"
-        alt="Avatar do usuário"
-        class="w-8 h-8 rounded-full"
+        alt="Avatar"
+        class="rounded-full"
+        height="32px"
+        width="32px"
         loading="lazy"
         decoding="auto"
       />

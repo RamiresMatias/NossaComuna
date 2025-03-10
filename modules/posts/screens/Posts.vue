@@ -90,7 +90,7 @@ const { list: tags, loading: loadingTags } = useTag()
 
 const { filters, canFetchMore, resetPagination, getPostList, setLoading, loading: loadingRequest } = usePostList()
 
-const { data: postsServer, status, execute, refresh } = useAsyncData('posts', async () => {
+const { data: postsServer, status, refresh } = useAsyncData('posts', async () => {
   return getPostList()
 })
 
@@ -127,7 +127,7 @@ const selectTag = (id: string) => {
 
 const onScroll = async () => {
   if (!canFetchMore.value) return
-  execute()
+  refresh()
 }
 
 useHead({

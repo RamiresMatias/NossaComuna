@@ -42,7 +42,6 @@ export function usePostList() {
     posts.value = []
   }
 
-  const setPage = (num: number) => page.value = num
   const setLoading = (value: boolean) => loading.value = value
 
 
@@ -54,7 +53,6 @@ export function usePostList() {
     page,
     getPostList,
     resetPagination,
-    setPage,
     setLoading
   }
 }

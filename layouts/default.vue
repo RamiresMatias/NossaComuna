@@ -14,7 +14,6 @@
         /> 
         <Header 
           v-if="!loading && !user?.id" 
-          :is-authenticated="!!user?.id" 
           @authenticate="handleAuth" 
           @navigate-to-post-create="handlePostCreate" 
           @create-account="handleToCreateAccount"
