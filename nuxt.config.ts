@@ -123,12 +123,7 @@ export default defineNuxtConfig({
     build: {
       chunkSizeWarningLimit: 1000,
       cssMinify: true,
-      minify: true,
-      rollupOptions: {
-        output: {
-          inlineDynamicImports: true
-        }
-      }
+      minify: 'terser',
     },
     css: {
       preprocessorOptions: {

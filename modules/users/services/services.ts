@@ -1,5 +1,4 @@
 
-import { getMySelfAdapter } from "./adapters"
 import type { FormEditUser } from "~/types"
 import type { AxiosInstance } from "axios"
 import type { ICreateProfile, ICreateUser } from "../types/users"
