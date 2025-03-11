@@ -45,7 +45,7 @@
         v-if="post.coverImageUrl"
         :src="post.coverImageUrl"
         alt="Capa do post"
-        class="object-cover rounded-t-md mb-8"
+        class="object-cover rounded-t-md mb-8 h-[380px] w-full"
         loading="lazy"
         height="380px"
         width="920px"
