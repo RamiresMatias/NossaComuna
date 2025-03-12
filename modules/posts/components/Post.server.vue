@@ -34,14 +34,14 @@
           <Tag 
             v-for="tag in tags" 
             :key="tag.id" 
-            class="flex gap-2 items-center bg-surface-100" 
+            class="flex gap-2 items-center bg-primary-50" 
             severity="secondary"
           >
-            <span class="text-surface-600 text-xs font-light">{{ tag.description }}</span>
+            <span class="text-surface-900 text-xs font-light">{{ tag.description }}</span>
           </Tag>
         </div>
         <div class="w-full flex gap-4 flex-wra">
-          <Stat class="text-primary-700 text-xs" :count="likes">
+          <Stat class="text-surface-500 text-xs" :count="likes">
             <template #preffix>
               <i class="pi pi-heart-fill"></i>
             </template>
@@ -49,7 +49,7 @@
               {{ likes === 1 ? 'Curtida' : 'Curtidas' }}
             </template>
           </Stat>
-          <Stat class="text-primary-700 text-xs" :count="comments">
+          <Stat class="text-surface-500 text-xs" :count="comments">
             <template #preffix>
               <i class="pi pi-comments"></i>
             </template>

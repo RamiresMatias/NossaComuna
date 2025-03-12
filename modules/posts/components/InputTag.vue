@@ -2,11 +2,11 @@
   <div class="select-tag">
     <ul class="select-tag__list">
       <li v-for="(tag, i) in tagsSelected" :key="`${i}-${tag}`" class="select-tag__item">
-        <Tag class="flex gap-2 items-center bg-neutral-100" severity="secondary">
-          <span class="text-gray-600 text-base">{{ tag.description }}</span>
+        <Tag class="flex gap-2 items-center bg-primary-50" severity="secondary">
+          <span class="text-surface-900">{{ tag.description }}</span>
           <i
-            class="pi pi-times cursor-pointer text-neutral-900 hover:text-red-400 flex items-center justify-center rounded-full
-            transition-all text-base"
+            class="pi pi-times cursor-pointer text-surface-900 hover:text-red-400 flex items-center justify-center rounded-full
+            transition-all"
             @click="removeTag(i)"
           ></i>
         </Tag>
@@ -22,9 +22,9 @@
         />
         <div v-if="showDropdown" class="select-tag__options">
           <div class="w-full border-b border-b-solid border-b-neutral-200 p-3 flex items-center justify-between">
-            <h3 class="font-bold text-lg">Selecione uma tag</h3>
+            <h3 class="text-lg">Selecione uma tag</h3>
             <i
-              class="pi pi-times cursor-pointer text-neutral-900 hover:text-red-400 flex items-center justify-center rounded-full
+              class="pi pi-times cursor-pointer text-surfacec-900 font-normal hover:text-red-400 flex items-center justify-center rounded-full
               transition-all text-base"
               @click="showDropdown = false"
             ></i>
@@ -106,7 +106,7 @@ const openDropdown = () => {
     @apply transition-all delay-500 absolute top-10 left-0 h-[200px] z-10
     w-[400px] rounded-md bg-white overflow-y-auto shadow-md border border-solid border-neutral-200;
     &__tag {
-      @apply transition-all w-full hover:bg-neutral-100 cursor-pointer p-3;
+      @apply transition-all w-full hover:bg-primary-50 cursor-pointer p-3;
     }
   }
 }

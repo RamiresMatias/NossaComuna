@@ -10,7 +10,7 @@
         rounded 
         aria-label="Editar" 
         v-tooltip="{ value: 'Editar post', showDelay: 300, hideDelay: 300 }"
-        class="text-base text-primary-300"
+        class="text-base text-surface-500"
         @click="navigateToEdit"
       />
       <div v-if="user?.id" class="flex flex-col items-center">
@@ -21,7 +21,7 @@
           rounded 
           aria-label="Curtir post" 
           v-tooltip="{ value: 'Curtir post', showDelay: 300, hideDelay: 300 }"
-          class="text-base text-primary-300"
+          class="text-base text-surface-500"
           @click="post.liked ? deslikePost() : likePost()"
         />
         <span class="text-sm text-neutral-500">{{ post.likes }}</span>
@@ -34,7 +34,7 @@
           rounded
           aria-label="Comentários"
           v-tooltip="{ value: 'Comentários', showDelay: 300, hideDelay: 300 }"
-          class="text-base text-primary-300"
+          class="text-base text-surface-500"
           @click="() => {}"
         />
         <span class="text-sm text-neutral-500">{{ comments.length }}</span>
@@ -51,6 +51,7 @@
         width="920px"
         decoding="auto"
         format="webp"
+        preload
       >
       </NuxtImg>
       <section class="w-full h-full flex flex-col max-w-[880px] px-4 mx-auto" :class="{'mt-8': !post.coverImageUrl}">
@@ -71,27 +72,27 @@
             </p>
           </div>
         </NuxtLink>
-        <div class="w-full flex gap-4 my-4">
-          <Stat :count="post.likes" class="text-lg text-primary-400">
+        <div class="my-4 flex items-center gap-2 flex-wrap">
+          <Tag 
+            v-for="tag in post.tags" 
+            :key="tag.id" 
+            class="flex gap-2 font-light items-center bg-primary-50" 
+            severity="secondary"
+          >
+            <span class="text-surface-900 text-xs">{{ tag.description }}</span>
+          </Tag>
+        </div>
+        <div class="w-full flex gap-4 mb-4">
+          <Stat :count="post.likes" class="text-lg text-surface-500">
             <template #preffix>
               <i class="pi pi-heart-fill text-lg"></i>
             </template>
           </Stat>
-          <Stat :count="comments.length" class="text-lg text-primary-400">
+          <Stat :count="comments.length" class="text-lg text-surface-500">
             <template #preffix>
               <i class="pi pi-comments text-lg"></i>
             </template>
           </Stat>
-        </div>
-        <div class="mb-4 flex items-center gap-2 flex-wrap">
-          <Tag 
-            v-for="tag in post.tags" 
-            :key="tag.id" 
-            class="flex gap-2 font-light items-center bg-neutral-100 text-xs" 
-            severity="secondary"
-          >
-            <span class="text-gray-600 text-xs">{{ tag.description }}</span>
-          </Tag>
         </div>
         <h1 class="text-3xl font-bold text-pretty tracking-wide mb-6">
           {{ post.title }}

@@ -55,20 +55,20 @@
           class="flex gap-2 items-center cursor-pointer transition-all text-xs font-light" 
           severity="secondary"
           :class="{
-            'bg-primary-300': filters.tags.includes(tag.id),
-            'hover:bg-neutral-200 bg-neutral-100 ': !filters.tags.includes(tag.id)
+            'bg-primary-500': filters.tags.includes(tag.id),
+            'hover:bg-primary-200 bg-primary-50 ': !filters.tags.includes(tag.id)
           }"
           @click="selectTag(tag.id)"
         >
           <span 
             :class="{
-              'text-neutral-100 ': filters.tags.includes(tag.id),
-              'text-gray-600 ': !filters.tags.includes(tag.id)
+              'text-surface-50': filters.tags.includes(tag.id),
+              'text-surface-900': !filters.tags.includes(tag.id)
             }"
           >{{ tag.description }}</span>
           <i
             v-if="filters.tags.includes(tag.id)"
-            class="pi pi-times cursor-pointer text-neutral-100 hover:text-red-600 flex items-center justify-center rounded-full
+            class="pi pi-times cursor-pointer text-surface-50 hover:text-red-600 flex items-center justify-center rounded-full
             transition-all"
           ></i>
         </Tag>
@@ -102,6 +102,8 @@ watch(scrollEnd, (nVal, oVal) => {
     onScroll()
   }
 })
+
+prerenderRoutes((postsServer.value || []).map(post => `/${post.profile.username}/${post.code}`))
 
 const getRequestLazy = debounce(() => {
   resetPagination()
