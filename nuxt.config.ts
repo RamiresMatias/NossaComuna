@@ -19,7 +19,6 @@ export default defineNuxtConfig({
   modules: [
     '@nuxtjs/tailwindcss',
     'nuxt-primevue',
-    '@nuxtjs/google-fonts',
     '@nuxt/image',
     '@nuxtjs/critters',
     'nuxt-vitalizer',
@@ -29,14 +28,6 @@ export default defineNuxtConfig({
     '@nuxtjs/robots',
     '@nuxtjs/sitemap'
   ],
-
-  googleFonts: {
-    families: {
-      Poppins: [300, 400, 500, 600, 700]
-    },
-    preload: true,
-    display: 'swap'
-  },
 
   sitemap: {
     sources: ['/api/__sitemap__/urls'],

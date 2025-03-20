@@ -3,6 +3,7 @@ import { v4 } from "uuid"
 import {z, type ZodFormattedError} from 'zod'
 
 import { useMyself } from '@/modules/users/composables/useMyself/useMyself'
+import { useDOMPurify } from "~/composables/useDOMPurify/useDOMPurify"
 
 
 const schema = z.object({
@@ -15,6 +16,7 @@ export function usePostCreate() {
 
   const { user } = useMyself()
   const services = useServices()
+  const dompurify = useDOMPurify()
   const toast = useToast()
   const loading = ref<boolean>(false)
   const errors = ref<ZodFormattedError<CreatePostType>>()
@@ -40,20 +42,18 @@ export function usePostCreate() {
   const create = async () => {
     try {
       loading.value = false
+
+      const purified = dompurify.purify(form.content)
   
       const response = await services.post.createPost({
         title: form.title,
-        content: form.content,
+        content: purified,
         coverImage: form.coverImage,
         isDraft: form.isDraft,
         profileId: user.value.id,
         tags: form.tags,
         code: removeAccents(transformCode(form.title))
       })
-
-      // if (!error) {
-      //   await bindTagsInPost({ postId: id, tags: form.tags })
-      // }
 
       toast.add({
         severity: 'success',
@@ -63,7 +63,7 @@ export function usePostCreate() {
       })
   
       loading.value = false
-      navigateTo('/posts')
+      navigateTo(`/${user.value.username}/${response.code}`)
     } catch (error) {
       loading.value = false
     }

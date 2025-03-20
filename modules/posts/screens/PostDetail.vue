@@ -3,7 +3,7 @@
   <div v-else class="grid grid-cols-12 w-full max-w-[1380px] px-4 lg:px-0 gap-y-6">
     <div v-if="!isBusy" class="col-span-0.5 hidden lg:flex flex-col items-end m-0 p-0 gap-4">
       <Button
-        v-if="isAuthorPost" 
+        v-if="isAuthor" 
         icon="pi pi-pencil" 
         severity="contrast" 
         text 
@@ -143,6 +143,7 @@ const CommentLoading = resolveComponent('CommentLoading')
 
 import { useComment } from '@/modules/posts/composables/useComment/useComment'
 import { useLike } from '@/modules/posts/composables/useLike/useLike'
+import { usePostDetail } from '@/modules/posts/composables/usePostDetail/usePostDetail'
 
 import { myselfKey, type MyselfContextProvider } from '@/modules/users/composables/useMyself/useMyself'
 
@@ -172,9 +173,9 @@ const {
 } = useComment(post)
 
 const { likePost, deslikePost } = useLike(post)
+const { isAuthor } = usePostDetail(post)
 
 
-const isAuthorPost = computed(() => post.value?.profile?.id === user.value?.id)
 const isBusy = computed(() => status.value === 'pending')
 const currentPost = computed(() => post.value)
 

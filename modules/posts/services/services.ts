@@ -74,7 +74,7 @@ export default (http: AxiosInstance) => ({
   async editPost (post: EditPostType) {
     const { data } = await http.put(`/post/${post.id}`, post)
 
-    if (data.id && typeof post.coverImage !== 'string') {
+    if (data.id && typeof post.coverImage !== 'string' && post.coverImage) {
       await this.uploadCoverImage(post.coverImage, data.id)
     }
 
@@ -142,5 +142,9 @@ export default (http: AxiosInstance) => ({
         id: el.tagId
       }))
     }))
-  }
+  },
+  async isAuthorPost (postId: string) {
+    const { data } = await http.get(`/post/${postId}/is-author`)
+    return data
+  },
 })

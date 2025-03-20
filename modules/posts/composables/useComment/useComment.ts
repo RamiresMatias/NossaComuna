@@ -1,12 +1,15 @@
 import type { CommentType, PostDetail } from "@/types/index"
 import { myselfKey, type MyselfContextProvider } from '@/modules/users/composables/useMyself/useMyself'
 import type { ICommentPost, ILikeCommentProps } from "../../types/post"
+import { useDOMPurify } from "~/composables/useDOMPurify/useDOMPurify"
 
 export function useComment(post: Ref<PostDetail>) {
 
   const { user } = inject(myselfKey) as MyselfContextProvider
 
   const services = useServices()
+  const dompurify = useDOMPurify()
+  
   const loading = ref<boolean>(false)
   const comments = reactive<ICommentPost[]>([])
   const toast = useToast()
@@ -39,8 +42,10 @@ export function useComment(post: Ref<PostDetail>) {
   const createComment = async (content: string) => {
     try {
       loading.value = true
+
+      const purified = dompurify.purify(content)
       
-      await services.post.createComment({content, postId: post.value?.id, profileId: user.value.id})
+      await services.post.createComment({content: purified, postId: post.value?.id, profileId: user.value.id})
       getComments()
       myComment.value = ''
       
@@ -73,8 +78,10 @@ export function useComment(post: Ref<PostDetail>) {
   const onReply = async ({comment, commentId}: {comment: string, commentId: string}) => {
     try {
       loading.value = true
+
+      const purified = dompurify.purify(comment)
       
-      await services.post.createComment({content: comment, postId: post.value.id, commentId, profileId: user.value.id})
+      await services.post.createComment({content: purified, postId: post.value.id, commentId, profileId: user.value.id})
       getComments()
       
       loading.value = false

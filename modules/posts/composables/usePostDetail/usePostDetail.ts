@@ -1,48 +1,40 @@
-import type { PostDetail } from "@/types/index"
-import { myselfKey, type MyselfContextProvider } from '@/modules/users/composables/useMyself/useMyself'
+import { myselfKey, type MyselfContextProvider } from "~/modules/users/composables/useMyself/useMyself"
+import type { PostDetail } from "~/types"
 
-interface UsePostDetailProps {
-  username: string, 
-  code: string
-}
-
-export function usePostDetail({ username, code }: UsePostDetailProps) {
+export function usePostDetail(post: Ref<PostDetail>) {
 
   const { user } = inject(myselfKey) as MyselfContextProvider
 
   const services = useServices()
   const loading = ref<boolean>(true)
-  const post = reactive<PostDetail>({
-    id: '',
-    title: '',
-    content: null,
-    coverImageUrl: '',
-    code: '',
-    createdAt: null,
-    isDraft: false,
-    likes: 0,
-    profile: {},
-    liked: false,
-  })
+  const isAuthor = ref<boolean>(false)
 
-  const getPost = async () => {
+  const getIsAuthorPost = async () => {
     try {
+      if (!user.value?.id) {
+        isAuthor.value = false
+        return false
+      }
+
       loading.value = true
     
-      // const data = await services.post.getRpcPostByCode({username, code, userId: user.value.id})
-  
-      // Object.assign(post, data)
-  
+      isAuthor.value = await services.post.isAuthorPost(post.value.id)
+
       loading.value = false
     } catch (error) {
       loading.value = false    
     }
   }
 
+  watchEffect(() => {
+    if (post.value.id) {
+      getIsAuthorPost()
+    }
+  })
 
   return {
     loading,
-    post,
-    getPost
+    isAuthor,
+    getIsAuthorPost
   }
 }
