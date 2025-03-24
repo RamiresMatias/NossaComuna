@@ -6,6 +6,7 @@
         label="Salvar"
         icon="pi pi-plus"
         icon-pos="left"
+        size="small"
         :loading="loading"
         :disabled="loading"
         @click="handleCreate"

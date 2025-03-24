@@ -1,11 +1,11 @@
 <template>
-  <Presentation />
+  <Posts />
 </template>
 
 <script setup lang="ts">
-import Presentation from '@/modules/landing-page/screens/Presentation.vue'
+import Posts from '@/modules/posts/screens/Posts.vue'
 
 definePageMeta({
-  layout: 'presentation'
+  layout: 'default'
 })
 </script>

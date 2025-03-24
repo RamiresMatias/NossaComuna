@@ -64,12 +64,12 @@ defineExpose({
 }
 
 .ProseMirror {
-  @apply bg-white text-neutral-900 text-lg p-3 px-8;
+  @apply bg-white text-neutral-900 text-xl p-3 px-8;
 }
 
 .readonly {
   .ProseMirror {
-    @apply p-0 text-base;
+    @apply p-0 text-xl;
   }
 }
 
@@ -121,17 +121,17 @@ defineExpose({
   }
 
   h2 {
-    @apply text-2xl;
+    @apply text-3xl;
   }
 
   h3 {
-    @apply text-xl;
+    @apply text-2xl;
   }
 
   h4,
   h5,
   h6 {
-    @apply text-lg;
+    @apply text-xl;
   }
 
   /* Code and preformatted text styles */

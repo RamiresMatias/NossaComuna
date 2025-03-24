@@ -15,7 +15,7 @@ import Content from '@/modules/landing-page/components/Content.vue'
 const router = useRouter()
 
 const navigaToPosts = () => {
-  router.push('/posts')
+  router.push('/')
 }
 
 useHead({

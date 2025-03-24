@@ -2,13 +2,14 @@
   <header class="w-full shadow">
     <nav class="bg-white px-4 lg:px-6 py-2.5">
       <div class="flex justify-between items-center mx-auto max-w-[1380px]">
-        <NuxtLink to="/posts" :prefetch="false">
+        <NuxtLink to="/" :prefetch="false">
           <Logo size="default" />
         </NuxtLink>
         <div class="hidden md:flex items-center gap-5">
-          <Button label="Login" text @click="() => emit('authenticate')" />
+          <Button label="Login" size="small" text @click="() => emit('authenticate')" />
           <Button 
             label="Criar uma conta"
+            size="small"
             @click="() => emit('create-account')"
           />
         </div>
@@ -17,6 +18,7 @@
           icon="pi pi-bars"
           outlined
           text
+          size="small"
           @click="menu = !menu"
           class="static md:hidden"
         />

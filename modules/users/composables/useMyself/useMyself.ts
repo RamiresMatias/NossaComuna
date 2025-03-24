@@ -9,15 +9,19 @@ export interface MyselfContextProvider {
 export const myselfKey = Symbol('myself')as InjectionKey<MyselfContextProvider> 
 
 export function useMyself() {
+  const rnConfig = useRuntimeConfig()
+
   const token = useCookie('auth-token', {
     default: () => '',
     secure: true,
-    sameSite: 'strict'
+    sameSite: 'strict',
+    httpOnly: rnConfig.public.nodeEnv !== 'development'
   })
   const userLogged = useCookie<User>('user-logged', {
     secure: true,
     sameSite: 'strict',
-    maxAge: 21600
+    maxAge: 21600,
+    httpOnly: rnConfig.public.nodeEnv !== 'development'
   })
   const services = useServices()
 

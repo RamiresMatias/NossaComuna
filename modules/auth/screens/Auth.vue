@@ -1,6 +1,6 @@
 <template>
   <div class="w-full flex flex-col items-center max-w-screen-sm mx-auto p-4">
-    <NuxtLink to="/posts" :prefetch="false" class="mb-10 hover:bg-gray-100 p-4 transition-all rounded-md">
+    <NuxtLink to="/" :prefetch="false" class="mb-10 hover:bg-gray-100 p-4 transition-all rounded-md">
       <Logo size="xl" />
     </NuxtLink>
     <FormLogin v-model="form" :errors="errors" @on-enter="handleAuthentication" />
@@ -11,7 +11,7 @@
       @click="handleAuthentication"
       @keyup.enter="handleAuthentication"
     />
-    <Divider align="center" class="my-8">
+    <!-- <Divider align="center" class="my-8">
       <span>OU</span>
     </Divider>
     <div class="flex flex-col items-center justify-center gap-4 pb-4">
@@ -25,7 +25,7 @@
           @click="authGithub"
         />
       </div>
-    </div>
+    </div> -->
     <Divider />
     <div class="w-full flex flex-col items-center gap-8">
       <span>É novo por aqui? <NuxtLink to="/create-account?state=create-user" :prefetch="false" class="hover:text-blue-400">Crie uma conta</NuxtLink></span>

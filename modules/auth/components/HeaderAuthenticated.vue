@@ -3,7 +3,7 @@
     <nav class="bg-white px-4 lg:px-6 py-2.5">
       <div class="flex justify-center sm:justify-between items-center mx-auto max-w-[1380px]">
         <div class="flex items-center flex-1 justify-center sm:justify-start">
-          <NuxtLink to="/posts" :prefetch="false">
+          <NuxtLink to="/" :prefetch="false">
             <Logo size="default" />
           </NuxtLink>
         </div>
@@ -12,11 +12,12 @@
             label="Novo post" 
             severity="secondary" 
             text
+            size="small"
             icon-pos="right"
             icon="pi pi-plus"
             @click="() => emit('navigate-to-post-create')"
           />
-          <button class="flex items-center h-[40px] w-[40px]" aria-haspopup="tree" aria-label="Menu do perfil" aria-controls="header-auth-menu" @click="toggle">
+          <button size="small" class="flex items-center h-[40px] w-[40px]" aria-haspopup="tree" aria-label="Menu do perfil" aria-controls="header-auth-menu" @click="toggle">
             <NuxtImg
               v-if="props.profilePic"
               :src="props.profilePic"

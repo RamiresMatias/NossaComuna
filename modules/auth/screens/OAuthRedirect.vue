@@ -8,7 +8,7 @@ const router = useRouter()
 
 const navigateToPanel = async () => {
   await new Promise((resolve) => setTimeout(resolve, 2000))
-  router.push('/posts')
+  router.push('/')
 }
 
 onMounted(() => {

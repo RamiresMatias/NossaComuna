@@ -9,13 +9,16 @@ const schema = z.object({
 
 export function useAuthentication() {
 
+  const rnConfig = useRuntimeConfig()
   const toast = useToast()
   const services = useServices()
   const loading = ref<boolean>(false)
+
   const token = useCookie('auth-token', {
     default: () => '',
     secure: true,
-    sameSite: 'strict'
+    sameSite: 'strict',
+    httpOnly: rnConfig.public.nodeEnv !== 'development'
   })
   const useMySelf = useMyself()
 
@@ -54,7 +57,7 @@ export function useAuthentication() {
     
       loading.value = false
 
-      navigateTo('/posts')
+      navigateTo('/')
     } catch (error) {
       loading.value = false
       if (error.status === 401) {

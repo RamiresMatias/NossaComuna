@@ -41,7 +41,6 @@ export default defineNuxtConfig({
     UserAgent: '*',
     allow: [
       '/',
-      '/posts',
       '/:username/:code'
     ],
     disallow: [

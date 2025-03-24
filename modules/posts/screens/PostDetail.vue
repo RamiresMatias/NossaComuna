@@ -1,6 +1,6 @@
 <template>
   <PostDetailLoading v-if="isBusy || !currentPost?.id" />
-  <div v-else class="grid grid-cols-12 w-full max-w-[1380px] px-4 lg:px-0 gap-y-6">
+  <div v-else class="grid grid-cols-12 w-full max-w-[1380px] px-4 lg:px-0 gap-y-6 pb-10">
     <div v-if="!isBusy" class="col-span-0.5 hidden lg:flex flex-col items-end m-0 p-0 gap-4">
       <Button
         v-if="isAuthor" 
@@ -102,10 +102,9 @@
       <div class="w-full h-[2px] bg-gray-200 mt-6"></div>
       <section id="comments" class="w-full h-full flex flex-col max-w-[880px] px-4 mx-auto py-6 gap-10">
         <h2 class="text-lg font-semibold">Comentários ({{ comments.length }})</h2>
-        <CommentLoading v-if="loadingUser" />
         <CommentLoading v-if="loadingComments" v-for="item in 4" :key="item" />
         <CreateComment 
-          v-if="user?.id" 
+          v-if="user?.id && !loadingComments" 
           v-model="myComment" 
           :profile-pic="user?.avatarUrl" 
           :loading="loadingComments" 

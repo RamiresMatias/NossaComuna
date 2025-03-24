@@ -1,10 +1,7 @@
 export default defineSitemapEventHandler(() => {
   return [
     {
-      loc: '/'
-    },
-    {
-      loc: '/posts',
+      loc: '/',
       priority: 1
     },
     {

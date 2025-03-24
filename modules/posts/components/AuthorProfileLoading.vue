@@ -1,6 +1,6 @@
 <template>
   <div class="w-full max-h-96 bg-white shadow-sm border-t-[30px] border-t-gray-300 border-solid rounded-md flex flex-col gap-5 box-border p-4">
-    <NuxtLink to="/posts" :prefetch="false" class="flex gap-2 items-end -mt-8">
+    <NuxtLink to="/" :prefetch="false" class="flex gap-2 items-end -mt-8">
       <Skeleton width="3rem" height="3rem" shape="circle"></Skeleton>
       <Skeleton width="10rem" height="1rem"></Skeleton>
     </NuxtLink>
