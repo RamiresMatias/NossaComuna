@@ -18,7 +18,6 @@ export function useAuthentication() {
     default: () => '',
     secure: true,
     sameSite: 'strict',
-    httpOnly: rnConfig.public.nodeEnv !== 'development'
   })
   const useMySelf = useMyself()
 

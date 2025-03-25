@@ -15,13 +15,11 @@ export function useMyself() {
     default: () => '',
     secure: true,
     sameSite: 'strict',
-    httpOnly: rnConfig.public.nodeEnv !== 'development'
   })
   const userLogged = useCookie<User>('user-logged', {
     secure: true,
     sameSite: 'strict',
     maxAge: 21600,
-    httpOnly: rnConfig.public.nodeEnv !== 'development'
   })
   const services = useServices()
 
