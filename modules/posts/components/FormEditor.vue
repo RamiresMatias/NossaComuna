@@ -8,8 +8,7 @@
         url="/api/upload" 
         accept="image/png, image/jpeg" 
         :maxFileSize="2e+6" 
-        @upload="onUpload"
-        :auto="true"
+        @select="onUpload"
         chooseLabel="Imagem de capa"
       />
       <div v-else class="flex items-center w-full gap-10">
@@ -93,7 +92,6 @@ const removeFile = () => {
 const onUpload = async (event: FileUploadUploadEvent) => {
   const fileFm = Array.isArray(event.files) ? event.files[0] : event.files
 
-  
   const fl = new FileReader()
   fl.readAsDataURL(fileFm)
   fl.onloadend = (ev) => {
