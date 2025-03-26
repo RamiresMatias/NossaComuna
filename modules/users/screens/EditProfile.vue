@@ -12,7 +12,7 @@
         <div class="flex flex-col gap-2 w-full">
           <label for="avatar">Avatar</label>
           <div class="w-full flex gap-4 items-center">
-            <FileUpload mode="basic" name="userAvatar" url="/api/upload" accept="image/png, image/jpeg" :auto="true" @upload="onUpload" chooseLabel="Escolha uma foto" />
+            <FileUpload mode="basic" name="userAvatar" url="/api/upload" accept="image/png, image/jpeg" :auto="true" @select="onUpload" chooseLabel="Escolha uma foto" />
           </div>
         </div>
         <div class="flex flex-col gap-2 w-full">
