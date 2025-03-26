@@ -9425,11 +9425,10 @@ snapshots:
 
   nuxt-primevue@0.3.1(magicast@0.3.5)(vue@3.5.13(typescript@5.7.3)):
     dependencies:
-      '@nuxt/kit': 3.15.4(magicast@0.3.5)
+      '@nuxt/kit': 3.16.0(magicast@0.3.5)
       primevue: 3.49.1(vue@3.5.13(typescript@5.7.3))
     transitivePeerDependencies:
       - magicast
-      - supports-color
       - vue
 
   nuxt-site-config-kit@3.1.1(magicast@0.3.5)(vue@3.5.13(typescript@5.7.3)):

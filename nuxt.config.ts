@@ -26,8 +26,15 @@ export default defineNuxtConfig({
     'nuxt-delay-hydration',
     'nuxt-mailer',
     '@nuxtjs/robots',
-    '@nuxtjs/sitemap'
+    '@nuxtjs/sitemap',
+    '@nuxtjs/google-fonts'
   ],
+
+  googleFonts: {
+    families: {
+      "Noto Sans Georgian": [100,200,300,400,500,600,700,800,900]
+    }
+  },
 
   sitemap: {
     sources: ['/api/__sitemap__/urls'],
