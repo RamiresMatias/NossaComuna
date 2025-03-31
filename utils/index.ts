@@ -72,3 +72,7 @@ export const formatPtBr = (date: string | Date): string => {
   const dtTemp = typeof date === 'string' ? new Date(date) : date
   return new Intl.DateTimeFormat('pt-BR').format(dtTemp)
 }
+
+export const getImageNoCache = (url: string) => {
+  return `${url}?t=${new Date().getTime()}`;
+}

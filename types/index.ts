@@ -23,7 +23,7 @@ export interface PostType {
   title: string
   createdAt?: string
   profile: Partial<Profile>
-  coverImage: string
+  coverImage?: string
   isDraft?: boolean
   likes: number
   comments: number,

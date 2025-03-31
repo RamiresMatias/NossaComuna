@@ -5,13 +5,13 @@
       <h2 v-if="filters.search?.trim?.()" class="text-xl text-center ">Ops... Não encontramos nenhum post, que tal procurar por outro título</h2>
       <h2 v-else class="text-xl text-center ">Ops... Não há nenhum post criado. Crie um post agora mesmo e compartilhe seus conhecimentos</h2>
     </div>
-    <div class="sticky top-2 sm:col-span-3 col-span-full rounded-md p-3 shadow-sm bg-white ">
+    <div v-if="posts.length > 0" class="sticky top-2 sm:col-span-3 col-span-full rounded-md p-3 shadow-sm bg-white ">
       <div class="flex flex-col gap-2">
         <h1 class="font-semibold mb-4">Top tags</h1>
         <div v-if="loadingTags" class="flex gap-2 items-center flex-wrap">
           <Skeleton v-for="item in 5" :key="`skeleton-${item}`" width="6rem" height="1.5rem"></Skeleton>
         </div>
-        <div v-if="(posts.length > 0 || hasFilters) && !loadingTags" class="flex gap-2 items-center flex-wrap">
+        <div v-if="!loadingTags" class="flex gap-2 items-center flex-wrap">
           <Tag 
             v-for="tag in tags" 
             :key="tag.id"

@@ -10,6 +10,7 @@
         :maxFileSize="2e+6" 
         @select="onUpload"
         chooseLabel="Imagem de capa"
+        withCredentials
       />
       <div v-else class="flex items-center w-full gap-10">
         <NuxtImg

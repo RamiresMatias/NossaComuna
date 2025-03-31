@@ -6,7 +6,7 @@
       <div class="flex items-center gap-2">
         <NuxtImg
           v-if="profile.avatarUrl"
-          :src="profile.avatarUrl"
+          :src="avatarUrl"
           alt="Avatar do autor do post"
           class="rounded-full"
           loading="lazy"
@@ -68,5 +68,7 @@ import type { PostType } from '@/types/index'
 
 const Stat = resolveComponent('Stat')
 
-defineProps<PostType>()
+const props = defineProps<PostType>()
+
+const avatarUrl = computed(() => getImageNoCache(props.profile.avatarUrl))
 </script>

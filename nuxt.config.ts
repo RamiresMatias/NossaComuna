@@ -27,7 +27,8 @@ export default defineNuxtConfig({
     'nuxt-mailer',
     '@nuxtjs/robots',
     '@nuxtjs/sitemap',
-    '@nuxtjs/google-fonts'
+    '@nuxtjs/google-fonts',
+    'nuxt-security'
   ],
 
   googleFonts: {
@@ -99,7 +100,48 @@ export default defineNuxtConfig({
     public: {
       siteUrl: process.env.SITE_URL,
       nodeEnv: process.env.NODE_ENV,
-      apiUrl: process.env.API_URL
+      apiUrl: `${process.env.API_URL}/api/v1`
+    }
+  },
+
+  security: {
+    corsHandler: {
+      origin: ['*', process.env.API_URL],
+      methods: ['GET', 'POST', 'PUT', 'DELETE'],
+      allowHeaders: ['Content-Type', 'Authorization'],
+      credentials: true,
+      maxAge: '86400'
+    },
+    headers: {
+      contentSecurityPolicy: {
+        "default-src": ["'self'"],
+        "script-src": ["'self'", "'unsafe-inline'"],
+        "style-src": [
+          "'self'",
+          "'unsafe-inline'",
+          "https://fonts.googleapis.com"
+        ],
+        "font-src": ["'self'"],
+        "img-src": [
+          "'self'", 
+          "data:",
+          "blob:",
+          "https://pub-be4ba7f6a3be445f836c00d73541349e.r2.dev", 
+          "https://pub-5547c6a4a74148ceb84aa54189b62a3e.r2.dev",
+          process.env.API_URL
+        ],
+        "connect-src": [
+          "'self'", 
+          "blob:",
+          process.env.API_URL
+        ],
+        "object-src": ["'self'"],
+        "frame-ancestors": ["'self'"]
+      },
+      xFrameOptions: "DENY",
+      xContentTypeOptions: "nosniff",
+      crossOriginResourcePolicy: "same-site",
+      crossOriginOpenerPolicy: "same-origin-allow-popups"
     }
   },
 

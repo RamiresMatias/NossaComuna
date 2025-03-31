@@ -10,7 +10,7 @@ export default defineNuxtPlugin(nuxtApp => {
 
 
   const httpClient = axios.create({
-    baseURL: nuxtApp.$config.public.apiUrl,
+    baseURL: `${nuxtApp.$config.public.apiUrl}`,
     headers: {
       'Content-Type': 'application/json'
     }
