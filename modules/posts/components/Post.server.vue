@@ -70,5 +70,5 @@ const Stat = resolveComponent('Stat')
 
 const props = defineProps<PostType>()
 
-const avatarUrl = computed(() => getImageNoCache(props.profile.avatarUrl))
+const avatarUrl = computed(() => getImageNoCache(props?.profile?.avatarUrl))
 </script>

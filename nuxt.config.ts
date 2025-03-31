@@ -32,6 +32,10 @@ export default defineNuxtConfig({
   ],
 
   googleFonts: {
+    display: 'swap',
+    download: false,
+    inject: true,
+    preconnect: true,
     families: {
       "Noto Sans Georgian": [100,200,300,400,500,600,700,800,900]
     }
@@ -121,7 +125,11 @@ export default defineNuxtConfig({
           "'unsafe-inline'",
           "https://fonts.googleapis.com"
         ],
-        "font-src": ["'self'"],
+        "font-src": [
+          "'self'",
+          "https://fonts.gstatic.com",
+          "data:"
+        ],
         "img-src": [
           "'self'", 
           "data:",
