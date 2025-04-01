@@ -7,7 +7,7 @@
     </div>
     <div v-if="posts.length > 0" class="sticky top-2 sm:col-span-3 col-span-full rounded-md p-3 shadow-sm bg-white ">
       <div class="flex flex-col gap-2">
-        <h1 class="font-semibold mb-4">Top tags</h1>
+        <h1 class="font-semibold mb-4 text-neutral-800">Top tags</h1>
         <div v-if="loadingTags" class="flex gap-2 items-center flex-wrap">
           <Skeleton v-for="item in 5" :key="`skeleton-${item}`" width="6rem" height="1.5rem"></Skeleton>
         </div>

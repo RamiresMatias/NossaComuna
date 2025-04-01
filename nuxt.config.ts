@@ -1,4 +1,5 @@
-import path from 'path'
+import Aura from '@primeuix/themes/aura';
+
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -18,7 +19,6 @@ export default defineNuxtConfig({
 
   modules: [
     '@nuxtjs/tailwindcss',
-    'nuxt-primevue',
     '@nuxt/image',
     '@nuxtjs/critters',
     'nuxt-vitalizer',
@@ -28,7 +28,9 @@ export default defineNuxtConfig({
     '@nuxtjs/robots',
     '@nuxtjs/sitemap',
     '@nuxtjs/google-fonts',
-    'nuxt-security'
+    'nuxt-security',
+    '@pinia/nuxt',
+    '@primevue/nuxt-module'
   ],
 
   googleFonts: {
@@ -69,10 +71,12 @@ export default defineNuxtConfig({
   primevue: {
     options: { 
       unstyled: false,
-    },
-    importPT: {
-      as: 'lara',
-      from: path.resolve(__dirname, "./assets/presets/lara")
+      theme: {
+        preset: Aura,
+        options: {
+          darkModeSelector: 'none'
+        }
+      }
     },
   },
 

@@ -27,7 +27,7 @@
         </div>
       </div>
       <div class="w-full h-full flex flex-col gap-3">
-        <h1 class="w-full text-lg font-normal">
+        <h1 class="w-full text-lg font-normal text-neutral-800">
           {{ title }}
         </h1>
         <div class="w-full flex flex-wrap gap-2 items-center">
