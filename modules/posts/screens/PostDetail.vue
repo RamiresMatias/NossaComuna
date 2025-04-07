@@ -10,7 +10,7 @@
         rounded 
         aria-label="Editar" 
         v-tooltip="{ value: 'Editar post', showDelay: 300, hideDelay: 300 }"
-        class="text-base text-surface-500"
+        class="text-base text-neutral-500"
         @click="navigateToEdit"
       />
       <div v-if="user?.id" class="flex flex-col items-center">
@@ -21,7 +21,7 @@
           rounded 
           aria-label="Curtir post" 
           v-tooltip="{ value: 'Curtir post', showDelay: 300, hideDelay: 300 }"
-          class="text-base text-surface-500"
+          class="text-base text-neutral-500"
           @click="post.liked ? deslikePost() : likePost()"
         />
         <span class="text-sm text-neutral-500">{{ post.likes }}</span>
@@ -34,7 +34,7 @@
           rounded
           aria-label="Comentários"
           v-tooltip="{ value: 'Comentários', showDelay: 300, hideDelay: 300 }"
-          class="text-base text-surface-500"
+          class="text-base text-neutral-500"
           @click="() => {}"
         />
         <span class="text-sm text-neutral-500">{{ comments.length }}</span>

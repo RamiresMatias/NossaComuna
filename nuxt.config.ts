@@ -1,5 +1,59 @@
 import Aura from '@primeuix/themes/aura';
+import tailwindcss from "@tailwindcss/vite";
+import { definePreset } from '@primeuix/themes'
 
+
+const MyPreset = definePreset(Aura, {
+  semantic: {
+    primary: {
+      50: '#F0F7FF',
+      100: '#E0EEFE',
+      200: '#BADCFD',
+      300: '#7DC0FC',
+      400: '#38A0F8',
+      500: '#0E84E9',
+      600: '#0267C7',
+      700: '#0353A4',
+      800: '#074685',
+      900: '#0C3B6E',
+      950: '#082549'
+    },
+    colorScheme: {
+      light: {
+        surface: {
+          0: '#ffffff',
+          50: '#f4f7fa',
+          100: '#eaeff5',
+          200: '#d3deea',
+          300: '#b4c8dc',
+          400: '#90acca',
+          500: '#7592bc',
+          600: '#637cad',
+          700: '#576c9e',
+          800: '#4b5982',
+          900: '#404b68',
+          950: '#2a3041',
+        }
+      },
+      dark: {
+        surface: {
+          0: '#ffffff',
+          50: '#f4f7fa',
+          100: '#eaeff5',
+          200: '#d3deea',
+          300: '#b4c8dc',
+          400: '#90acca',
+          500: '#7592bc',
+          600: '#637cad',
+          700: '#576c9e',
+          800: '#4b5982',
+          900: '#404b68',
+          950: '#2a3041',
+        }
+      }
+    }
+}
+});
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -18,7 +72,6 @@ export default defineNuxtConfig({
   },
 
   modules: [
-    '@nuxtjs/tailwindcss',
     '@nuxt/image',
     '@nuxtjs/critters',
     'nuxt-vitalizer',
@@ -32,6 +85,10 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     '@primevue/nuxt-module'
   ],
+
+  pinia: {
+    storesDirs: ['./stores/**'],
+  },
 
   googleFonts: {
     display: 'swap',
@@ -66,15 +123,19 @@ export default defineNuxtConfig({
     ],
   },
 
-  css: ['primeicons/primeicons.css'],
+  css: [
+    'primeicons/primeicons.css',
+    '~/assets/css/tailwind.css'  
+  ],
 
   primevue: {
     options: { 
       unstyled: false,
       theme: {
-        preset: Aura,
+        preset: MyPreset,
         options: {
-          darkModeSelector: 'none'
+          darkModeSelector: 'none',
+          cssLayer: false
         }
       }
     },
@@ -174,7 +235,11 @@ export default defineNuxtConfig({
     build: {
       chunkSizeWarningLimit: 1000,
       cssMinify: true,
-      minify: 'terser',
+      minify: 'esbuild',
+      cssCodeSplit: true
+    },
+    esbuild: {
+      drop: ['console', 'debugger'],
     },
     css: {
       preprocessorOptions: {
@@ -187,7 +252,10 @@ export default defineNuxtConfig({
       headers: {
         "cache-control": 'no-transform'
       }
-    }
+    },
+    plugins: [
+      tailwindcss(),
+    ],
   },
 
   image: {

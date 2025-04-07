@@ -19,15 +19,15 @@
           outlined
           text
           size="small"
-          @click="menu = !menu"
+          @click="visibleDrawer = !visibleDrawer"
           class="static md:hidden"
         />
-        <Sidebar v-model:visible="menu" header="Menu" position="right">
+        <Drawer v-model:visible="visibleDrawer" header="Menu" position="right">
           <div class="flex flex-col w-full gap-4 items-start justify-center">
             <Button label="Login" link />
             <Button label="Criar uma conta" link @click="() => emit('create-account')" />
           </div>
-        </Sidebar>
+        </Drawer>
       </div>
     </nav>
   </header>
@@ -35,7 +35,7 @@
 
 <script setup lang="ts">
 
-const menu = ref(false)
+const visibleDrawer = ref(false)
 
 const emit = defineEmits<{
   (e: 'authenticate'): void

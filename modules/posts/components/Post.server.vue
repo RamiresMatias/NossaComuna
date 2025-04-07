@@ -1,12 +1,12 @@
 <template>
   <NuxtLink :to=" profile ? `/${profile.username}/${code}` : ''" :prefetch="false" class="w-full mx-auto">
     <article 
-      class="w-full p-5 bg-white flex flex-col gap-3 border-b border-solid justify-center border-b-gray-200 last:border-b-0 cursor-pointer rounded-md shadow-sm"
+      class="w-full p-5 bg-white flex flex-col gap-3 border border-solid justify-center border-gray-200 cursor-pointer rounded-md"
     >
       <div class="flex items-center gap-2">
         <NuxtImg
           v-if="profile.avatarUrl"
-          :src="avatarUrl"
+          :src="profile.avatarUrl"
           alt="Avatar do autor do post"
           class="rounded-full"
           loading="lazy"
@@ -17,11 +17,12 @@
           :ismap="false"
         />
         <i v-else class="pi pi-user rounded-full w-10 h-10"></i>
-        <div class="w-full h-full flex flex-col flex-1 gap-1">
-          <p class="text-base text-surface-800 text-balance">
+        <div class="w-full h-full flex flex-1 gap-1 items-center">
+          <p class="text-base text-neutral-800 text-balance">
             {{ profile?.username }}
           </p>
-          <p class="text-xs text-surface-500">
+          <LazyIconsDot class="text-neutral-500" />
+          <p class="text-xs text-neutral-500">
             {{ createdAt }}
           </p>
         </div>
@@ -37,13 +38,13 @@
             class="flex gap-2 items-center bg-primary-50" 
             severity="secondary"
           >
-            <span class="text-surface-900 text-xs font-light">{{ tag.description }}</span>
+            <span class="text-neutral-900 text-xs font-light">{{ tag.description }}</span>
           </Tag>
         </div>
-        <div class="w-full flex gap-4 flex-wra">
+        <div class="w-full flex gap-4 flex-wrap">
           <Stat class="text-surface-500 text-xs" :count="likes">
             <template #preffix>
-              <i class="pi pi-heart-fill"></i>
+              <i class="pi pi-heart-fill text-xs"></i>
             </template>
             <template #suffix>
               {{ likes === 1 ? 'Curtida' : 'Curtidas' }}
@@ -51,7 +52,7 @@
           </Stat>
           <Stat class="text-surface-500 text-xs" :count="comments">
             <template #preffix>
-              <i class="pi pi-comments"></i>
+              <i class="pi pi-comments text-xs"></i>
             </template>
             <template #suffix>
               {{ comments === 1 ? 'Comentário' : 'Comentários' }}
@@ -67,8 +68,6 @@
 import type { PostType } from '@/types/index'
 
 const Stat = resolveComponent('Stat')
+defineProps<PostType>()
 
-const props = defineProps<PostType>()
-
-const avatarUrl = computed(() => getImageNoCache(props?.profile?.avatarUrl))
 </script>

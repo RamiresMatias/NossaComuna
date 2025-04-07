@@ -5,8 +5,8 @@
       <h2 v-if="filters.search?.trim?.()" class="text-xl text-center ">Ops... Não encontramos nenhum post, que tal procurar por outro título</h2>
       <h2 v-else class="text-xl text-center ">Ops... Não há nenhum post criado. Crie um post agora mesmo e compartilhe seus conhecimentos</h2>
     </div>
-    <div v-if="posts.length > 0" class="sticky top-2 sm:col-span-3 col-span-full rounded-md p-3 shadow-sm bg-white ">
-      <div class="flex flex-col gap-2">
+    <!-- <div v-if="posts.length > 0" class="sticky top-2 lg:col-span-3 col-span-full px-4 lg:px-0">
+      <div class="flex flex-col gap-2 bg-white rounded-md p-3 shadow-sm">
         <h1 class="font-semibold mb-4 text-neutral-800">Top tags</h1>
         <div v-if="loadingTags" class="flex gap-2 items-center flex-wrap">
           <Skeleton v-for="item in 5" :key="`skeleton-${item}`" width="6rem" height="1.5rem"></Skeleton>
@@ -18,8 +18,8 @@
             class="flex gap-2 items-center cursor-pointer transition-all text-xs font-light" 
             severity="secondary"
             :class="{
-              'bg-primary-500': filters.tags.includes(tag.id),
-              'hover:bg-primary-200 bg-primary-50 ': !filters.tags.includes(tag.id)
+              '!bg-primary-300': filters.tags.includes(tag.id),
+              'hover:bg-primary-200 bg-primary-100 ': !filters.tags.includes(tag.id)
             }"
             @click="selectTag(tag.id)"
           >
@@ -37,8 +37,16 @@
           </Tag>
         </div>
       </div>
+    </div> -->
+    <div class="flex items-center gap-2 flex-wrap lg:col-start-4 lg:col-end-10 col-span-full px-4 lg:px-0">
+      <Button 
+        v-for="item in orders" 
+        :label="item.label" 
+        size="small" 
+        :text="ordering !== item.value"
+      />
     </div>
-    <div class="sm:col-span-6 col-span-full flex flex-col gap-4">
+    <div class=" flex flex-col gap-4 px-4 lg:px-0 lg:col-start-4 lg:col-end-10 col-span-full">
       <Post
         v-if="!loading || posts.length"
         v-for="(item, i) in posts" 
@@ -68,21 +76,24 @@
 </template>
 
 <script setup lang="ts">
-import { useTag } from '@/modules/tag/composables/useTag/useTag'
 import { useScrollBody } from '@/composables/useScrollBody/useScrollBody'
 import { usePostList } from '@/modules/posts/composables/usePostList/usePostList'
-
 
 const containerContentRef = inject<Ref<HTMLDivElement>>('containerContentRef')
   
 const { scrollEnd } = useScrollBody(containerContentRef)
-const { list: tags, loading: loadingTags } = useTag()
 
 const { filters, canFetchMore, resetPagination, getPostList, setLoading, loading: loadingRequest } = usePostList()
 
 const { data: postsServer, status, refresh } = useAsyncData('posts', async () => {
   return getPostList()
 })
+
+const ordering = ref('asc')
+const orders = ref([
+  { label: 'Recentes', value: 'asc' },
+  { label: 'Mais curtidos', value: 'most-liked' },
+])
 
 const loading = computed(() => status.value === 'pending' || loadingRequest.value)
 const posts = computed(() => postsServer.value || [])
@@ -109,13 +120,6 @@ watch(filters, () => {
 })
 
 const hasFilters = computed(() => !!filters.search || filters.tags.length > 0)
-
-const selectTag = (id: string) => {
-  const idx = filters.tags.findIndex(el => el === id)
-  idx >= 0 
-    ? filters.tags.splice(idx, 1)
-    : filters.tags.push(id)
-}
 
 const onScroll = async () => {
   if (!canFetchMore.value) return
