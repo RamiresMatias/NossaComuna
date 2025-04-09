@@ -5,7 +5,7 @@
       <h2 v-if="filters.search?.trim?.()" class="text-xl text-center ">Ops... Não encontramos nenhum post, que tal procurar por outro título</h2>
       <h2 v-else class="text-xl text-center ">Ops... Não há nenhum post criado. Crie um post agora mesmo e compartilhe seus conhecimentos</h2>
     </div>
-    <div v-if="posts.length > 0" class="sticky top-2 sm:col-span-3 col-span-full rounded-md p-3 shadow-sm bg-white ">
+    <!-- <div v-if="posts.length > 0" class="sticky top-2 sm:col-span-3 col-span-full rounded-md p-3 shadow-sm bg-white ">
       <div class="flex flex-col gap-2">
         <h1 class="font-semibold mb-4">Top tags</h1>
         <div v-if="loadingTags" class="flex gap-2 items-center flex-wrap">
@@ -37,8 +37,8 @@
           </Tag>
         </div>
       </div>
-    </div>
-    <div class="sm:col-span-6 col-span-full flex flex-col gap-4">
+    </div> -->
+    <div class="col-span-full lg:col-start-4 lg:col-end-10 lg:px-0 px-2 flex flex-col gap-4">
       <Post
         v-if="!loading || posts.length"
         v-for="(item, i) in posts" 

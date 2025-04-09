@@ -1,7 +1,7 @@
 <template>
   <NuxtLink :to=" profile ? `/${profile.username}/${code}` : ''" :prefetch="false" class="w-full mx-auto">
     <article 
-      class="w-full p-5 bg-white flex flex-col gap-3 border-b border-solid justify-center border-b-gray-200 last:border-b-0 cursor-pointer rounded-md shadow-sm"
+      class="w-full p-5 bg-white flex flex-col gap-3 border border-solid justify-center border-gray-200 cursor-pointer rounded-md"
     >
       <div class="flex items-center gap-2">
         <NuxtImg
@@ -17,10 +17,11 @@
           :ismap="false"
         />
         <i v-else class="pi pi-user rounded-full w-10 h-10"></i>
-        <div class="w-full h-full flex flex-col flex-1 gap-1">
+        <div class="w-full h-full flex flex-1 gap-1 items-center">
           <p class="text-base text-surface-800 text-balance">
             {{ profile?.username }}
           </p>
+          <LazyIconsDot />
           <p class="text-xs text-surface-500">
             {{ createdAt }}
           </p>

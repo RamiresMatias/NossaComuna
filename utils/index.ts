@@ -66,11 +66,11 @@ export const serializeParams = (params: any) => {
   return str
 }
 
-export const formatPtBr = (date: string | Date): string => {
+export const formatDate = (date: string | Date, options?: Intl.DateTimeFormatOptions): string => {
   if (!date) return ''
 
   const dtTemp = typeof date === 'string' ? new Date(date) : date
-  return new Intl.DateTimeFormat('pt-BR').format(dtTemp)
+  return new Intl.DateTimeFormat('pt-BR', options).format(dtTemp)
 }
 
 export const getImageNoCache = (url: string) => {

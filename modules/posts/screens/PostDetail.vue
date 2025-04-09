@@ -40,7 +40,7 @@
         <span class="text-sm text-neutral-500">{{ comments.length }}</span>
       </div>
     </div>
-    <section class="w-full h-full mx-auto bg-white rounded-md flex flex-col col-span-full lg:col-span-8 shadow-sm">
+    <section class="w-full h-full mx-auto bg-white rounded-md flex flex-col col-span-full lg:col-span-8 border-[1px] border-solid border-gray-100">
       <NuxtImg 
         v-if="post.coverImageUrl"
         :src="post.coverImageUrl"
@@ -59,14 +59,15 @@
           <NuxtImg 
             :src="post.profile.avatarUrl"
             alt="Avatar do author"
-            class="w-full h-full max-h-[48px] max-w-[48px] object-cover rounded-full"
+            class="w-full h-full max-h-[48px] max-w-[48px] object-cover rounded-full border-[1px] border-solid border-gray-100"
             loading="lazy"
             decoding="auto"
           />
-          <div class="w-full h-full flex flex-col flex-1 gap-1">
+          <div class="w-full h-full flex items-center flex-1 gap-1">
             <p class=" text-base text-surface-800 text-balance">
               {{ post.profile.username }}
             </p>
+            <LazyIconsDot />
             <p class="text-xs  text-gray-500">
               Postado em {{ post.createdAt }}
             </p>
@@ -97,9 +98,18 @@
         <h1 class="text-3xl font-bold text-pretty tracking-wide mb-6">
           {{ post.title }}
         </h1>
-        <TiptapEditor ref="tiptapRef" v-model="post.content" readonly class="text-xs"></TiptapEditor>
+        <Skeleton v-if="loadingContent" width="100%" height="10rem"></Skeleton>
+        <TiptapEditor
+          v-show="!loadingContent"
+          ref="tiptapRef" 
+          v-model="post.content" 
+          readonly 
+          class="text-xs" 
+          @on-before-create="loadingContent = true"
+          @on-create="loadingContent = false"
+        ></TiptapEditor>
       </section>
-      <div class="w-full h-[2px] bg-gray-200 mt-6"></div>
+      <div class="w-full h-[1px] border-b border-b-solid bg-gray-200 mt-6"></div>
       <section id="comments" class="w-full h-full flex flex-col max-w-[880px] px-4 mx-auto py-6 gap-10">
         <h2 class="text-lg font-semibold">Comentários ({{ comments.length }})</h2>
         <CommentLoading v-if="loadingComments" v-for="item in 4" :key="item" />
@@ -146,7 +156,7 @@ import { usePostDetail } from '@/modules/posts/composables/usePostDetail/usePost
 
 import { myselfKey, type MyselfContextProvider } from '@/modules/users/composables/useMyself/useMyself'
 
-const { user, loading: loadingUser } = inject(myselfKey) as MyselfContextProvider
+const { user } = inject(myselfKey) as MyselfContextProvider
 
 const route = useRoute()
 
@@ -158,7 +168,11 @@ const { data, status } = await useLazyAsyncData('post-details', () => {
   return services.post.getPostByCode({username, code})
 })
 
+const loadingContent = ref<boolean>(true)
+
 const post = computed(() => data.value)
+
+
 
 const { 
   comments, 

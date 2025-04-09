@@ -14,6 +14,8 @@ const modelValue = defineModel<string | null>()
 
 const emit = defineEmits<{
   (e: 'update:modelValue', description: string): void
+  (e: 'onBeforeCreate'): void
+  (e: 'onCreate'): void
 }>()
 
 const props = withDefaults(
@@ -43,6 +45,12 @@ const editor = useEditor({
   },
   onUpdate: ({editor}) => {
     emit('update:modelValue', editor.getHTML())
+  },
+  onBeforeCreate () {
+    emit('onBeforeCreate')
+  },
+  onCreate () {
+    emit('onCreate')
   }
 })
 
