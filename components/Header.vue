@@ -21,6 +21,7 @@
           size="small"
           @click="menu = !menu"
           class="static md:hidden"
+          aria-label="Menu button"
         />
         <Sidebar v-model:visible="menu" header="Menu" position="right">
           <div class="flex flex-col w-full gap-4 items-start justify-center">

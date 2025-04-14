@@ -54,7 +54,7 @@
         preload
       >
       </NuxtImg>
-      <section class="w-full h-full flex flex-col max-w-[880px] px-4 mx-auto" :class="{'mt-8': !post.coverImageUrl}">
+      <section class="w-full h-full flex flex-col max-w-[880px] px-4 mx-auto mb-8" :class="{'mt-8': !post.coverImageUrl}">
         <NuxtLink class="flex w-full gap-2 flex-col min-[300px]:flex-row" :to="`/${post.profile.username}`">
           <NuxtImg 
             :src="post.profile.avatarUrl"
@@ -63,27 +63,12 @@
             loading="lazy"
             decoding="auto"
           />
-          <div class="w-full h-full flex items-center flex-1 gap-1">
-            <p class=" text-base text-surface-800 text-balance">
-              {{ post.profile.username }}
-            </p>
-            <LazyIconsDot />
-            <p class="text-xs  text-gray-500">
-              Postado em {{ post.createdAt }}
-            </p>
+          <div class="flex flex-col gap-1">
+            <span class="text-sm font-medium">{{ post.profile.username }}</span>
+            <span class="text-xs text-gray-500">Postado em {{ post.createdAt }}</span>
           </div>
         </NuxtLink>
-        <div class="my-4 flex items-center gap-2 flex-wrap">
-          <Tag 
-            v-for="tag in post.tags" 
-            :key="tag.id" 
-            class="flex gap-2 font-light items-center bg-primary-50" 
-            severity="secondary"
-          >
-            <span class="text-surface-900 text-xs">{{ tag.description }}</span>
-          </Tag>
-        </div>
-        <div class="w-full flex gap-4 mb-4">
+        <div class="w-full flex gap-4 mt-2 mb-4">
           <Stat :count="post.likes" class="text-lg text-surface-500">
             <template #preffix>
               <i class="pi pi-heart-fill text-lg"></i>
@@ -95,9 +80,19 @@
             </template>
           </Stat>
         </div>
-        <h1 class="text-3xl font-bold text-pretty tracking-wide mb-6">
+        <h1 class="text-3xl font-bold text-pretty tracking-wide mb-4">
           {{ post.title }}
         </h1>
+        <div class="flex items-center gap-2 flex-wrap mb-4">
+          <Tag 
+            v-for="tag in post.tags" 
+            :key="tag.id" 
+            class="flex gap-2 font-light items-center bg-primary-50" 
+            severity="secondary"
+          >
+            <span class="text-surface-900 text-xs">{{ tag.description }}</span>
+          </Tag>
+        </div>
         <Skeleton v-if="loadingContent" width="100%" height="10rem"></Skeleton>
         <TiptapEditor
           v-show="!loadingContent"
@@ -109,9 +104,8 @@
           @on-create="loadingContent = false"
         ></TiptapEditor>
       </section>
-      <div class="w-full h-[1px] border-b border-b-solid bg-gray-200 mt-6"></div>
       <section id="comments" class="w-full h-full flex flex-col max-w-[880px] px-4 mx-auto py-6 gap-10">
-        <h2 class="text-lg font-semibold">Comentários ({{ comments.length }})</h2>
+        <h2 class="text-xl font-semibold mb-3">Comentários ({{ comments.length }})</h2>
         <CommentLoading v-if="loadingComments" v-for="item in 4" :key="item" />
         <CreateComment 
           v-if="user?.id && !loadingComments" 

@@ -56,7 +56,10 @@ export default (http: AxiosInstance) => ({
 
   async getAllComments ({postId}: {postId: string}) {
     const { data } = await http.get(`/comment/post/${postId}`)
-    return data
+    return data.map(el => ({
+      ...el,
+      createdAt: formatDate(el.createdAt, { day: 'numeric', month: 'long'})
+    }))
   },
 
   async createPost (post: CreatePostType) {

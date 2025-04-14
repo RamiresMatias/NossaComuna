@@ -1,7 +1,6 @@
 <template>
-  <NuxtLink :to=" profile ? `/${profile.username}/${code}` : ''" :prefetch="false" class="w-full mx-auto">
     <article 
-      class="w-full p-5 bg-white flex flex-col gap-3 border border-solid justify-center border-gray-200 cursor-pointer rounded-md"
+      class="w-full p-4 bg-white flex flex-col gap-1 border border-solid justify-center border-gray-200 rounded-md"
     >
       <div class="flex items-center gap-2">
         <NuxtImg
@@ -17,20 +16,19 @@
           :ismap="false"
         />
         <i v-else class="pi pi-user rounded-full w-10 h-10"></i>
-        <div class="w-full h-full flex flex-1 gap-1 items-center">
-          <p class="text-base text-surface-800 text-balance">
-            {{ profile?.username }}
-          </p>
-          <LazyIconsDot />
-          <p class="text-xs text-surface-500">
-            {{ createdAt }}
-          </p>
+        <div class="flex flex-col">
+          <span class="font-medium text-gray-900">{{ profile?.username }}</span>
+          <span class="text-xs text-gray-500">{{ createdAt }}</span>
         </div>
+
       </div>
       <div class="w-full h-full flex flex-col gap-3">
-        <h1 class="w-full text-lg font-normal">
+        <NuxtLink 
+          :to="profile ? `/${profile.username}/${code}` : ''" 
+          class="hover:text-blue-800 w-full text-xl font-bold text-gray-900 hover:text-brand transition-colors duration-200"
+        >
           {{ title }}
-        </h1>
+        </NuxtLink>
         <div class="w-full flex flex-wrap gap-2 items-center">
           <Tag 
             v-for="tag in tags" 
@@ -41,27 +39,20 @@
             <span class="text-surface-900 text-xs font-light">{{ tag.description }}</span>
           </Tag>
         </div>
-        <div class="w-full flex gap-4 flex-wra">
+        <div class="w-full flex gap-4 flex-wrap">
           <Stat class="text-surface-500 text-xs" :count="likes">
             <template #preffix>
               <i class="pi pi-heart-fill"></i>
-            </template>
-            <template #suffix>
-              {{ likes === 1 ? 'Curtida' : 'Curtidas' }}
             </template>
           </Stat>
           <Stat class="text-surface-500 text-xs" :count="comments">
             <template #preffix>
               <i class="pi pi-comments"></i>
             </template>
-            <template #suffix>
-              {{ comments === 1 ? 'Comentário' : 'Comentários' }}
-            </template>
           </Stat>
         </div>
       </div>
     </article>
-  </NuxtLink>
 </template>
 
 <script setup lang="ts">

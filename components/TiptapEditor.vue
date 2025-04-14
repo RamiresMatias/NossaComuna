@@ -125,21 +125,21 @@ defineExpose({
   }
 
   h1 {
-    @apply text-4xl;
-  }
-
-  h2 {
     @apply text-3xl;
   }
 
-  h3 {
+  h2 {
     @apply text-2xl;
+  }
+
+  h3 {
+    @apply text-xl;
   }
 
   h4,
   h5,
   h6 {
-    @apply text-xl;
+    @apply text-lg;
   }
 
   /* Code and preformatted text styles */

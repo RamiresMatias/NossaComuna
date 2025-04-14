@@ -1,56 +1,45 @@
 <template>
-  <div class="w-full flex flex-col gap-2">
+  <div class="w-full flex flex-col gap-2 border-b border-b-solid border-b-gray-200">
     <div class="w-full flex gap-2">
       <NuxtImg
         :src="props.avatarUrl"
         alt="Avatar do usuário"
         class="rounded-full"
-        height="32px"
-        width="32px"
+        height="40px"
+        width="40px"
         loading="lazy"
         decoding="auto"
       />
-      <div class="w-full flex flex-col">
-        <section class="w-full border border-solid border-gray-200 rounded-md flex flex-col p-2">
-          <div class="flex gap-2 w-full items-center justify-start mb-4">
-            <span class="text-base text-[#3d3d3d] ">{{ props.username }}</span>
-            <span class="text-xs text-gray-400 ">• {{ new Date(props.createdAt).toLocaleDateString('pt-br') }}</span>
-            <span v-if="isAuthor"class="ml-auto">
-              <i 
-                class="pi pi-ellipsis-h cursor-pointer text-neutral-500" 
-                @click="toggle"
-                aria-haspopup="tree" 
-                aria-controls="comment-options"
-              ></i>
-            </span>
-          </div>
-          <p class="text-sm md:text-base text-pretty text-left w-full  font-normal">
-            {{ props.content }}
-          </p>
-        </section>
-        <div class="flex items-center gap-2 justify-start py-2 flex-wrap">
-          <Button 
-            :label="`${likes} Curtidas`" 
-            :icon="props.liked ? 'pi pi-thumbs-up-fill' : 'pi pi-thumbs-up'" 
-            icon-pos="left" 
-            everity="secondary" 
-            text 
-            size="small" 
-            class="text-xs"
-            @click="props.liked ? emit('on-deslike', props.id) : emit('on-like', props.id)"
-          />
-          <Button 
-            label="Responder" 
-            icon="pi pi-comments" 
-            icon-pos="left" 
-            everity="secondary" 
-            text 
-            size="small" 
-            class="text-xs"
-            @click="isReply = !isReply"
-          />
-        </div>
-        <Menu ref="menu" :model="items" popup></Menu>
+      <div class="flex flex-col gap-1">
+        <span class="text-sm font-medium">{{ props.username }}</span>
+        <span class="text-xs text-gray-500">{{ props.createdAt }}</span>
+      </div>
+    </div>
+    <div class="w-full flex flex-col gap-2">
+      <p class="text-pretty text-left w-full font-normal text-gray-700">
+        {{ props.content }}
+      </p>
+      <div class="flex items-center gap-2 justify-start py-2 flex-wrap w-full">
+        <Button 
+          :label="`${likes}`" 
+          :icon="props.liked ? 'pi pi-thumbs-up-fill' : 'pi pi-thumbs-up'" 
+          icon-pos="left" 
+          severity="secondary" 
+          text 
+          size="small" 
+          class="text-xs"
+          @click="props.liked ? emit('on-deslike', props.id) : emit('on-like', props.id)"
+        />
+        <Button 
+          label="Responder" 
+          icon="pi pi-comments" 
+          icon-pos="left" 
+          severity="secondary" 
+          text 
+          size="small" 
+          class="text-xs"
+          @click="isReply = !isReply"
+        />
       </div>
     </div>
     <div class="box-border" :class="{'ml-10': level !== 1}">
