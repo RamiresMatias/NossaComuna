@@ -22,7 +22,7 @@
       <div class="flex items-center gap-2 justify-start py-2 flex-wrap w-full">
         <Button 
           :label="`${likes}`" 
-          :icon="props.liked ? 'pi pi-thumbs-up-fill' : 'pi pi-thumbs-up'" 
+          :icon="props.liked ? 'pi pi-heart-fill' : 'pi pi-heart'" 
           icon-pos="left" 
           severity="secondary" 
           text 
